@@ -1,0 +1,31 @@
+services:
+  idbox_gpt:
+    image: idbox_gpt:latest
+    build: 
+      context: ..
+      dockerfile: docker/Dockerfile
+    pull_policy: build
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    ports:
+      - 11002:8000
+    environment:
+      - PYTHONUNBUFFERED: 1
+    labels:
+      - homepage.group=Prod
+      - homepage.name=Idbox
+      - homepage.icon=https://idboxrt.com/wp-content/themes/idbox/images/favicon.png
+      - homepage.href=https://idboxgpt.deducedata.solutions/?__theme=dark
+      - homepage.ping=https://idboxgpt.deducedata.solutions/
+      - homepage.description=Idbox GPT Project
+    # volumes:
+    #   - pped_data:/app/data
+
+networks:
+  default:
+    name: supabase_default
+    external: true
+
+# volumes:
+#   pped_data:
