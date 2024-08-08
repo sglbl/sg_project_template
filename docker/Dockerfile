@@ -4,22 +4,20 @@ RUN apt update && apt install ffmpeg -y
 
 RUN pip install --upgrade pip
 
-COPY minreqs-cpu.txt . 
+COPY requirements.txt . 
 
-RUN pip3 install --use-deprecated=legacy-resolver -r minreqs-cpu.txt
+RUN pip3 install requirements.txt
 # --no-cache-dir 
 
 WORKDIR /app
 
-RUN mkdir models
-
-COPY app.py ./
-
-COPY src ./src
+COPY app ./app
 
 COPY data/images ./data/images
 
 COPY data/input ./data/input
+
+RUN mkdir data/models
 
 EXPOSE 8000
 
