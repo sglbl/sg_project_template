@@ -4,8 +4,7 @@
 Make python and pip commands run python3 and pip3 and install virtualenv if you don't have it already.
 ```bash
 sudo apt-get update
-sudo apt-get install python3-pip python-is-python3
-sudo apt-get install build-essential libpython3-dev libdbus-1-dev libglib2.0 libpq-dev python-dev 
+sudo apt-get install python3-pip python-is-python3 build-essential
 python -m pip install virtualenv
 ```
 
@@ -29,15 +28,15 @@ deactivate
 
 ### Installation of requirements
 
-Install requirements.
+Install requirements with the last version of pip
 
 ```bash
-pip install --use-deprecated=legacy-resolver -r requirements.txt
+pip install --upgrade pip
+pip install -r requirements.txt
 ```
 
 ### Models
-There are 2 types of models used.
-- Run [this](./app/src/model_downloader.py) code to download the models.
+- Run [this](./app/src/model_downloader.py) code to download the model/s.
 
 Download required model/s and put it in `models` folder.  
 For now only NER model is used.
