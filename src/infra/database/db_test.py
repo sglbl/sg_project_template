@@ -1,4 +1,4 @@
-from src.database.db_engine import create_schema_and_tables, insert_validated_data
+from src.infra.database.db_engine import create_schema_and_tables, insert_validated_data
 
 if __name__ == "__main__":
     # Create schema and tables

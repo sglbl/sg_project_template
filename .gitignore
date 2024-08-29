@@ -140,4 +140,5 @@ dmypy.json
 dask-worker-space
 /data/qdrant_data/
 /data/chroma_data/
-/models/**
+data/models/**
+data/docs/*.docx
