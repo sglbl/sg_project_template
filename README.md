@@ -1,14 +1,15 @@
 # SG GPT Project
 
-### Creating Virtual Environment with Requirements
+### Creating Virtual Environment with Requirements (**python3.10**+)
 Make python and pip commands run python3 and pip3 and install virtualenv if you don't have it already.
 ```bash
-sudo apt-get update
-sudo apt-get install python3-pip python-is-python3 build-essential
+sudo apt-get update -y &&
+sudo apt-get install python3-pip python-is-python3 -y &&
+python -m pip install --upgrade pip &&
 python -m pip install virtualenv
 ```
 
-Create virtual environment.
+Create a virtual environment named `.venv`
 
 ```bash
 python -m virtualenv .venv
@@ -26,14 +27,19 @@ You can deactivate virtual environment with the following command.
 deactivate
 ```
 
-### Installation of requirements
+### Requirements
 
-Install requirements with the last version of pip
+Install the requirements.
 
 ```bash
-pip install --upgrade pip
 pip install -r requirements.txt
 ```
+<!-- pip install --use-deprecated=legacy-resolver -r requirements.txt
+# or install without cuda
+grep -iv "cuda" requirements.txt | python -m pip install --no-deps -r /dev/stdin  -->
+
+#### Other Requirements
+Put the secret key and db info (that is needed to generate token and database access) in `.env` file in root. (Like in `.env.example`)
 
 <!-- ### Models
 - Run [this](./app/src/model_downloader.py) code to download the model/s.
@@ -41,23 +47,15 @@ pip install -r requirements.txt
 Download required model/s and put it in `models` folder.  
 For now only NER model is used. -->
 
-<!-- ### Other Requirements
-Put the secret key and db info (that is needed to generate token and database access) in `.env` file in root. (Like in `.env.example`) -->
-
 ### Full Structure
 ```python
 .
 ├── README.md                            # Project overview and instructions for use.
 ├── data                                 # Directory for data-related files.
 │   ├── docs                             # Documentation files related to data.
-│   │   ├── example.txt                  # Example text file, likely for testing or reference.
-│   │   └── info.MD                      # Markdown file with additional documentation or notes.
 │   ├── images                           # Directory for storing image assets.
-│   │   ├── favicon.ico                  # Favicon for the project, used in web interfaces.
-│   │   └── logo.png                     # Logo image file for branding or UI purposes.
 │   ├── models                           # Directory for storing machine learning models or related files.
 │   └── processed                        # Directory for processed data outputs.
-│       └── data.csv                     # Processed data in CSV format, likely for analysis or training.
 ├── docker                               # Docker-related configurations and scripts.
 │   ├── Dockerfile                       # Dockerfile for building the project's container.
 │   ├── azure-pipelines.yml              # CI/CD pipeline configuration for Azure.
