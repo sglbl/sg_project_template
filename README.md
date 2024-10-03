@@ -1,5 +1,5 @@
 # SG GPT Project
-
+<!-- @author: sglbl -->
 
 ### Creating Virtual Environment with Requirements ( _**python3.10**_+ )
 Make python and pip commands run python3 and pip3 and install virtualenv if you don't have it already.
@@ -17,7 +17,7 @@ python -m virtualenv .venv && source .venv/bin/activate
 ```
 
 ### Activation / Deactivation 
-Next time the project workstation is opened, these commands can be used to activate the virtual environment.
+Next time the project workstation is opened, these commands can be used to activate/deactivate the virtual environment.
 ```bash
 # You can activate the virtual environment with the following command.
 . .venv/bin/activate
@@ -30,8 +30,8 @@ deactivate
 
 Install the requirements.
 
-```bash
-pip install -r requirements.txt
+```powershell
+pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
 ```
 <!-- pip install --use-deprecated=legacy-resolver -r requirements.txt
 # or install without cuda
