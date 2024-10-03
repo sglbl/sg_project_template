@@ -30,7 +30,7 @@ deactivate
 
 Install the requirements.
 
-```powershell
+```markdown
 pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
 ```
 <!-- pip install --use-deprecated=legacy-resolver -r requirements.txt
