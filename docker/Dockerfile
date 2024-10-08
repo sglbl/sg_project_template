@@ -11,11 +11,9 @@ RUN pip3 install requirements.txt
 
 WORKDIR /app
 
-COPY app ./app
+COPY src ./app
 
 COPY data/images ./data/images
-
-COPY data/input ./data/input
 
 RUN mkdir data/models
 
@@ -26,5 +24,5 @@ RUN python3 src/model_downloader.py
 # COPY models/gliner_model_weight.pt ./models/gliner_model_weight.pt
 # COPY models/mdeberta-v3-base ./models/mdeberta-v3-base
 
-CMD ["python3", "app/main.py"]
+CMD ["python3", "-m", "src.main"]
 
