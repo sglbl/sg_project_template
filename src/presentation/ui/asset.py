@@ -1,3 +1,6 @@
+"""Css settings and Js functions for the UI"""
+
+# Set footer unvisible and add css for the table
 gradio_css = """
     #chatbot table {
         border: 1px solid;

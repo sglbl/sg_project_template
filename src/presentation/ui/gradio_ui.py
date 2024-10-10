@@ -1,4 +1,3 @@
-# API server setup
 import base64
 import os
 import time
@@ -6,7 +5,7 @@ import gradio as gr
 import pprint
 from src.infra.database.db_engine import insert_validated_data
 from src.application.services.llm_services import ask_to_model
-from src.presentation.ui import css
+from src.presentation.ui.asset import *
 # from src.utils_gliner_api import *
 
 
@@ -80,7 +79,7 @@ def add_info_to_database_disliked():
 
 def run():
     # Run the app
-    with gr.Blocks(css=css.gradio_css, title="Sg GPT") as demo:        
+    with gr.Blocks(css=gradio_css, title="Sg GPT") as demo:        
         # create title with the logo
         with open("data/images/logo.png", "rb") as f:
             logo_base64 = base64.b64encode(f.read()).decode()

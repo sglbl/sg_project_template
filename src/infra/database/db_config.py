@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
-load_dotenv()
+load_dotenv(override=True)
 
 # Database connection details
 DB_USER = os.getenv("DB_USER", "postgres")

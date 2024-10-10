@@ -4,7 +4,7 @@ import traceback
 from loguru import logger
 
 
-def set_logger(level):
+def set_logger(level="TRACE"):
     ''' 
     Set logger settings with level\n
     To see all the logs, set the level to TRACE; for normal logs set to DEBUG, if you don't want to see those logs, set the level to INFO
