@@ -2,11 +2,7 @@ accelerate==0.33.0
 bitsandbytes==0.43.3
 fastapi==0.109.0
 gradio==4.37.2
-langchain==0.1.13
-langchain-community==0.0.29
-langchain-core==0.1.33
-langchain-experimental==0.0.55
-langchain-text-splitters==0.0.1
+loguru==0.7.2
 matplotlib
 numpy==1.26.3
 pandas==2.2.0
@@ -17,6 +13,8 @@ pydantic_core==2.20.1
 pydantic==2.8.2
 pydantic_core==2.20.1
 python-dotenv==1.0.1
+scikit-learn==1.5.1
+scipy==1.12.0
 torch==2.3.1+cpu
 torchaudio==2.3.1+cpu
 torchvision==0.18.1+cpu
