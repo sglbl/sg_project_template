@@ -31,7 +31,7 @@ deactivate
 Install the requirements.
 
 ```markdown
-python -m pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+pip install --extra-index-url https://download.pytorch.org/whl/cpu -e .
 ```
 <!-- pip install --use-deprecated=legacy-resolver -r requirements.txt
 # or install without cuda

@@ -3,10 +3,10 @@ import os
 import time
 import gradio as gr
 import pprint
-from src.infra.database.db_engine import insert_validated_data
-from src.application.services.llm_services import ask_to_model
-from src.presentation.ui.asset import *
-# from src.utils_gliner_api import *
+from sgproject.infra.database.db_engine import insert_validated_data
+from sgproject.application.services.llm_services import ask_to_model
+from sgproject.presentation.ui.asset import *
+# from sgproject.utils_gliner_api import *
 
 
 # examples=[["Where did normans invade"], ["where did normans invade, answer in english"]]

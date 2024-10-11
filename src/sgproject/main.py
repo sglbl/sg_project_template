@@ -1,6 +1,6 @@
 import argparse
-from src.application.services.llm_services import create_model, refresh_db
-from src.presentation.ui import gradio_ui
+from sgproject.application.services.llm_services import create_model, refresh_db
+from sgproject.presentation.ui import gradio_ui
 
 def argument_parser():
     # Argument parsing logic

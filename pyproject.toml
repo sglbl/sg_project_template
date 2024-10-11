@@ -1,18 +1,14 @@
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
 [project]
-name = "sg-project"
+name = "sgproject"
 version = "0.1"
-description = "A small project to demonstrate the use of the project"
+description = "A small project to demonstrate the template of the project"
 dynamic = ["dependencies"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 
 [project.scripts]
-run = "sg_project:main"
+run = "sgproject.main:main"
 
 # Create a pip.conf file inside .venv directory and put the following content
 # [global]

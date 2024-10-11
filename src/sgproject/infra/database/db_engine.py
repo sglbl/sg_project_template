@@ -1,6 +1,6 @@
 import os
-from src.infra.database.db_config import DB_URL, SCHEMA
-from src.infra.database.db_models import Base, PromptFeedback, PromptFeedbackValidator
+from sgproject.infra.database.db_config import DB_URL, SCHEMA
+from sgproject.infra.database.db_models import Base, PromptFeedback, PromptFeedbackValidator
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
