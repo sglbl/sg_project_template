@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sg-project"
+version = "0.1"
+description = "A small project to demonstrate the use of the project"
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.scripts]
+run = "sg_project:main"
+
+# Create a pip.conf file inside .venv directory and put the following content
+# [global]
+# extra-index-url = https://download.pytorch.org/whl/cpu
