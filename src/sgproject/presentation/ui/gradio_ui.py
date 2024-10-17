@@ -4,13 +4,12 @@ import time
 import gradio as gr
 import pprint
 from sgproject.infra.database.db_engine import insert_validated_data
-from sgproject.application.services.llm_services import ask_to_model
+from sgproject.application.api_services import *
 from sgproject.presentation.ui.asset import *
-# from sgproject.utils_gliner_api import *
-
 
 # examples=[["Where did normans invade"], ["where did normans invade, answer in english"]]
 examples = [[{"text": "Where did normans invade", "files": []}], [{"text": "where did normans invade, answer in english", "files": []}]]
+
 
 def add_to_db(x: gr.LikeData):
     # print(x.index, x.value, x.liked)
@@ -39,7 +38,7 @@ def ask_and_get_trigger(history, chat_text_input):
     # model_result, unique_label_len, labels_with_entities = ask_to_nlp_model(chat_text_input)
     # response = json_to_md_table(model_result[0:unique_label_len])
     print(f"User input: {chat_text_input}")
-    model_result = ask_to_model(chat_text_input)
+    model_result = f"Answering the question: {chat_text_input}"
     response = model_result
 
     history[-1][1] = ""
@@ -77,14 +76,15 @@ def add_info_to_database_disliked():
         feedback=False,
     )
 
-def run():
+
+def run_ui():
     # Run the app
     with gr.Blocks(css=gradio_css, title="Sg GPT") as demo:        
         # create title with the logo
         with open("data/images/logo.png", "rb") as f:
             logo_base64 = base64.b64encode(f.read()).decode()
         title_with_logo = f""" <h1 style="text-align:center; font-family:'system-ui'; display:block;">SG GPT</h1>
-                            <img src="data:image/jpeg;base64,{logo_base64}" width="300" style='display:block; margin-left: auto; 
+                            <img src="data:image/jpeg;base64,{logo_base64}" width="100" style='display:block; margin-left: auto; 
                             margin-right: auto; padding-top: 1ch; align-items: center; justify-content: center;'>"""
         # Header with logo
         gr.Markdown(title_with_logo)
@@ -99,8 +99,7 @@ def run():
         with gr.Row():
             with gr.Column(scale=7):
                 # chat_text_input = gr.Textbox(label="Question", scale=7, placeholder="Type your question here")
-                mydict = {"text": "sample text", "files": []}
-                chat_text_input = gr.MultimodalTextbox(interactive=True, placeholder="Enter message or upload file...", show_label=False, file_types=["text", "other"], value=mydict)
+                chat_text_input = gr.MultimodalTextbox(interactive=True, placeholder="Enter message or upload file...", show_label=False, file_types=["text", "other"])
             # with gr.Column(scale=1):
                 # chat_text_button = gr.Button(size="lg", elem_id="button", scale=1)
                 # button_hidden_other_results = gr.Button(elem_id="hidden_other_results", visible=False)
@@ -143,4 +142,4 @@ def run():
     )
 
 if __name__ == "__main__":
-    run()
+    print("Please run src.main with -m mod parameter [python -m src.main]")

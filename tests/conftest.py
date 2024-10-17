@@ -44,7 +44,7 @@ def args(pytestconfig):
 def pytest_generate_tests(metafunc):
     if "question" in metafunc.fixturenames:
         # Get the path to examples.txt file
-        examples_file_path = metafunc.config.getoption("--input_path") + '/questionsmini.txt'        
+        examples_file_path = metafunc.config.getoption("--input_path") + '/example.txt'        
         # Ensure the file exists
         if os.path.exists(examples_file_path):
             with open(examples_file_path, 'r') as file:

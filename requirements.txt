@@ -2,11 +2,7 @@ accelerate==0.33.0
 bitsandbytes==0.43.3
 fastapi==0.109.0
 gradio==4.37.2
-langchain==0.1.13
-langchain-community==0.0.29
-langchain-core==0.1.33
-langchain-experimental==0.0.55
-langchain-text-splitters==0.0.1
+loguru
 matplotlib
 numpy==1.26.3
 pandas==2.2.0

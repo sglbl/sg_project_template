@@ -28,10 +28,11 @@ deactivate
 
 ### Requirements
 
-Install the requirements.
+Install the requirements.  
+<!-- <small>If you have `--extra-index-url` you can add it into global section of `.venv/pip.conf`</small> -->
 
 ```markdown
-pip install --extra-index-url https://download.pytorch.org/whl/cpu -e .
+python -m pip install -e .
 ```
 <!-- pip install --use-deprecated=legacy-resolver -r requirements.txt
 # or install without cuda
@@ -63,8 +64,8 @@ For now only NER model is used. -->
 ├── requirements.txt                     # Python dependencies required for the project.
 └── src                                  # Main source code directory.
     ├── application                      # Contains high-level application logic.
-    │   └── services                     # Service layer of the application.
-    │       └── llm_services.py          # Implementation of large language model (LLM) services.
+    │   └── api_services                 # Service layer of the application.
+    │       └── service_utils.py         # Implementation of large language model (LLM) services.
     ├── domain                           # Contains core business logic and domain models.
     │   └── models                       # Directory for domain-specific data models.
     │       └── data_models.py           # Implementation of domain data models.
