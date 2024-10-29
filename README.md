@@ -33,6 +33,7 @@ Install requirements with the last version of pip
 ```bash
 pip install --upgrade pip
 pip install -r requirements.txt
+pip install -e .
 ```
 
 ### Models
