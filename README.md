@@ -33,6 +33,8 @@ Install the requirements.
 
 ```markdown
 python -m pip install -e .
+# Or install with optional dependencies such as jupyter and pytest
+python -m pip install -e .[dev]
 ```
 <!-- pip install --use-deprecated=legacy-resolver -r requirements.txt
 # or install without cuda
@@ -64,23 +66,20 @@ For now only NER model is used. -->
 ├── requirements.txt                     # Python dependencies required for the project.
 └── src                                  # Main source code directory.
     ├── application                      # Contains high-level application logic.
-    │   └── api_services                 # Service layer of the application.
-    │       └── service_utils.py         # Implementation of large language model (LLM) services.
+    │   ├── utils.py                     # Helper function for the app.
+    │   └── x_services                   # Service layer(s) of the application.
     ├── domain                           # Contains core business logic and domain models.
     │   └── models                       # Directory for domain-specific data models.
-    │       └── data_models.py           # Implementation of domain data models.
+    │       └── data_models.py           # Implementation of domain data models with data classes.
     ├── infra                            # Infrastructure-related code, particularly for database handling.
     │   └── database                     # Database-related configurations and utilities.
-    │       ├── db_config.py             # Configuration settings for the database connection.
-    │       ├── db_engine.py             # Code to set up and manage the database engine.
-    │       ├── db_models.py             # Database models, likely using an ORM like SQLAlchemy.
-    │       └── db_test.py               # Test cases for database interactions.
     ├── main.py                          # Main entry point for the application.
     ├── presentation                     # Contains code related to presentation layers like APIs and UIs.
     │   ├── api                          # API-related presentation logic.
     │   │   └── serve_api.py             # Code to serve the API, possibly using FastAPI or Flask.
-    │   └── ui                           # UI-related presentation logic.
-    │       └── gradio_ui.py             # Gradio
+    │   └── ui                           # API and UI-related presentation logic.
+    │       ├── asset.py                 # Css & Js functions needed for UI.
+    │       └── gradio_ui.py             # UI Implementation
 ```
 
 
