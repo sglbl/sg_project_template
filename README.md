@@ -19,7 +19,7 @@ uv venv
 Activate the virtual environment.
 ```bash
 # You can activate the virtual environment with the following command.
-. .venv/bin/activate
+source .venv/bin/activate
 
 # You can deactivate the virtual environment with the following command.
 deactivate
