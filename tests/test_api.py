@@ -11,7 +11,7 @@ pytest -s src/tests/test_api.py --access local --model llama3.1 --input_path ./d
 import os
 import gradio_client as grc
 from loguru import logger
-from sgproject.application import utils
+from src.application import utils
 
 utils.set_logger("TRACE")
 

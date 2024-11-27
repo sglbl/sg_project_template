@@ -1,20 +1,21 @@
 [project]
-name = "sgproject"
-version = "1.0.0"
-description = "A small project to demonstrate the template of a project"
+name = "sg-project-template"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
 requires-python = ">=3.10"
-dynamic = ["dependencies"]
-
-[tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
-# Add development dependencies
-[project.optional-dependencies]
-dev = ["ipykernel", "jupyter", "pytest"]
-
-[project.scripts]
-run = "sgproject.main:main"
-# pytest tests # Test the project
-
-# To add extra index urls, create a pip.conf file inside .venv directory and put the following content
-# [global]
-# extra-index-url = https://download.pytorch.org/whl/cpu
+dependencies = [
+    "accelerate==0.33.0",
+    "bitsandbytes==0.43.3",
+    "fastapi==0.109.0",
+    "gradio==4.37.2",
+    "loguru>=0.7.2",
+    "matplotlib>=3.9.2",
+    "numpy==1.26.3",
+    "pandas==2.2.0",
+    "pillow==10.4.0",
+    "psycopg2-binary==2.9.9",
+    "pydantic-core==2.20.1",
+    "pydantic==2.8.2",
+    "python-dotenv==1.0.1",
+]

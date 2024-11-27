@@ -1,23 +1,22 @@
-# SG GPT Project
-<!-- @author: sglbl -->
+# Project Setup
 
-### Creating Virtual Environment with Requirements ( _**python3.10**_+ )
-Make python and pip commands run python3 and pip3 and install virtualenv if you don't have it already.
-```bash
-sudo apt-get update -y &&
-sudo apt-get install python3-pip python-is-python3 build-essential -y &&
-python -m pip install --upgrade pip &&
-python -m pip install virtualenv
-```
+### Installing `uv` project manager
 
-Create a virtual environment named `.venv` and activate it for the current project.
+Ensure you have `uv` installed on your system. If not, install it using the following command:
 
 ```bash
-python -m virtualenv .venv && source .venv/bin/activate
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### Activation / Deactivation 
-Next time the project workstation is opened, these commands can be used to activate/deactivate the virtual environment.
+### Managing the Virtual Environment
+
+Create the `.venv` virtual environment with this command
+
+```bash
+uv venv
+```
+
+Activate the virtual environment.
 ```bash
 # You can activate the virtual environment with the following command.
 . .venv/bin/activate
@@ -25,33 +24,32 @@ Next time the project workstation is opened, these commands can be used to activ
 # You can deactivate the virtual environment with the following command.
 deactivate
 ```
+> Next time the project workstation is opened, these commands can be used to activate/deactivate the virtual environment.
 
-### Requirements
+### Setting Up the Project Environment
 
-Install the requirements.  
-<!-- <small>If you have `--extra-index-url` you can add it into global section of `.venv/pip.conf`</small> -->
+Once `uv` is installed, use this to set up the project dependencies and environment:
 
-```markdown
-python -m pip install -e .
-# Or install with optional dependencies such as jupyter and pytest
-python -m pip install -e .[dev]
+```bash
+uv sync
+# or
+uv pip install -r pyproject.toml
 ```
-<!-- pip install --use-deprecated=legacy-resolver -r requirements.txt
-# or install without cuda
-grep -iv "cuda" requirements.txt | python -m pip install --no-deps -r /dev/stdin  -->
 
-#### Other Requirements
-Put the secret key and db access info (that is needed to generate token and database access) in `.env` file in root directory. (Like the example structure in `.env.example` file)
+### Running the Application
 
-<!-- ### Models
-- Run [this](./app/src/model_downloader.py) code to download the model/s.
+Launch the application with:
 
-Download required model/s and put it in `models` folder.  
-For now only NER model is used. -->
-
+```bash
+uv run src/main.py
+# or
+python -m src.main
+```
+---
 ### Full Structure
 ```python
 .
+├── pyproject.toml                       # All project details and python dependencies required for the project.
 ├── README.md                            # Project overview and instructions for use.
 ├── data                                 # Directory for data-related files.
 │   ├── docs                             # Documentation files related to data.
@@ -63,7 +61,6 @@ For now only NER model is used. -->
 │   ├── azure-pipelines.yml              # CI/CD pipeline configuration for Azure.
 │   ├── docker-build.sh                  # Shell script to automate Docker builds.
 │   └── docker-compose.yml               # Docker Compose file for defining multi-container Docker applications.
-├── requirements.txt                     # Python dependencies required for the project.
 └── src                                  # Main source code directory.
     ├── application                      # Contains high-level application logic.
     │   ├── utils.py                     # Helper function for the app.
@@ -80,10 +77,4 @@ For now only NER model is used. -->
     │   └── ui                           # API and UI-related presentation logic.
     │       ├── asset.py                 # Css & Js functions needed for UI.
     │       └── gradio_ui.py             # UI Implementation
-```
-
-
-### Running the app from terminal
-```bash
-python -m src.main
 ```

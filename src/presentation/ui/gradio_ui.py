@@ -3,9 +3,9 @@ import os
 import time
 import gradio as gr
 import pprint
-from sgproject.infra.database.db_engine import insert_validated_data
-from sgproject.application.api_services import *
-from sgproject.presentation.ui.asset import *
+from src.infra.database.db_engine import insert_validated_data
+from src.application.api_services import *
+from src.presentation.ui.asset import *
 
 # examples=[["Where did normans invade"], ["where did normans invade, answer in english"]]
 examples = [[{"text": "Where did normans invade", "files": []}], [{"text": "where did normans invade, answer in english", "files": []}]]

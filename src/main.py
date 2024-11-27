@@ -1,5 +1,5 @@
 import argparse
-from sgproject.presentation.ui import gradio_ui
+from src.presentation.ui import gradio_ui
 
 def argument_parser():
     # Argument parsing logic

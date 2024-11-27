@@ -1,4 +1,4 @@
-from sgproject.infra.database.db_config import SCHEMA
+from src.infra.database.db_config import SCHEMA
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Integer, String, Boolean, JSON
 from pydantic import BaseModel, field_validator
