@@ -3,7 +3,6 @@ import os
 import time
 import gradio as gr
 import pprint
-from src.infra.database.db_engine import insert_validated_data
 from src.application.api_services import *
 from src.presentation.ui.asset import *
 
@@ -14,23 +13,7 @@ examples = [[{"text": "Where did normans invade", "files": []}], [{"text": "wher
 def add_to_db(x: gr.LikeData):
     # print(x.index, x.value, x.liked)
     print(f"Adding 'liked: {x.liked}' data to database...")
-    all_dict_labels_with_entities = {}
     
-    # Convert sets to lists to make the dictionary JSON serializable
-    all_dict_labels_with_entities = {}
-    for key, value in labels_with_entities.items():
-        if isinstance(value, set):
-            all_dict_labels_with_entities[key] = list(value)
-        else:
-            all_dict_labels_with_entities[key] = value
-    
-    insert_validated_data(
-        prompt=last_question,
-        entities=all_dict_labels_with_entities,
-        json_data={"answer": model_result[-1]},
-        feedback=x.liked
-    )    
-
 
 def ask_and_get_trigger(history, chat_text_input):
     global model_result, unique_label_len, last_question, labels_with_entities
@@ -61,20 +44,11 @@ def add_user_dont_like_message(history):
 
 def add_info_to_database_liked(): 
     # Example usage
-    insert_validated_data(
-        prompt=last_question,
-        json_data={"answer": model_result[-1]},
-        feedback=True,
-    )    
-
+    print("Liked")
 
 def add_info_to_database_disliked():
     # Example usage
-    insert_validated_data(
-        prompt=last_question,
-        json_data={"answer": model_result[-1]},
-        feedback=False,
-    )
+    print(f'Disliked')
 
 
 def run_ui():
