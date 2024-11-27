@@ -47,7 +47,7 @@ python -m src.main
 ```
 ---
 ### Full Structure
-```python
+```bash
 .
 ├── pyproject.toml                       # All project details and python dependencies required for the project.
 ├── README.md                            # Project overview and instructions for use.
