@@ -25,3 +25,8 @@ dev = [
 
 [[tool.uv.index]]
 url = "https://download.pytorch.org/whl/cpu"
+
+# filter dependencies warnings and future warnings
+[tool.pytest.ini_options]
+pythonpath = "."
+filterwarnings = ["ignore::DeprecationWarning", "ignore::FutureWarning"]
