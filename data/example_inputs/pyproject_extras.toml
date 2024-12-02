@@ -50,3 +50,8 @@ explicit = true
 name = "pytorch-gpu"
 url = "https://download.pytorch.org/whl/cu124"
 explicit = true
+
+# filter dependencies warnings and future warnings
+[tool.pytest.ini_options]
+pythonpath = "."
+filterwarnings = ["ignore::DeprecationWarning", "ignore::FutureWarning"]
