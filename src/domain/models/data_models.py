@@ -1,6 +1,7 @@
 # Domain models [data models as classes]
 from dataclasses import dataclass
 
+
 @dataclass
 class ProviderFeatures:
     name: str
@@ -10,6 +11,7 @@ class ProviderFeatures:
     price: str
     rating: float
     iso: str
+
 
 @dataclass
 class Provider:
@@ -21,4 +23,9 @@ class Provider:
     rating: float
     iso: str
     features: ProviderFeatures
-    
+
+
+@dataclass
+class ResponseMessageDC:
+    detail: str = "Success"
+    data: dict = {}
