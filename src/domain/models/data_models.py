@@ -24,8 +24,3 @@ class Provider:
     iso: str
     features: ProviderFeatures
 
-
-@dataclass
-class ResponseMessageDC:
-    detail: str = "Success"
-    data: dict = {}
