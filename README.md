@@ -10,10 +10,10 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ### Managing the Virtual Environment
 
-Create the `.venv` virtual environment with this command
+Create the **python3.10** `.venv` virtual environment with this command
 
 ```bash
-uv venv
+uv venv --python 3.10.12
 ```
 
 Activate the virtual environment.
@@ -28,7 +28,7 @@ deactivate
 
 ### Setting Up the Project Environment
 
-Once `uv` is installed, use this to set up the project dependencies and environment:
+Once `uv` is installed and environment is activated, use this to set up the project dependencies:
 
 ```bash
 uv sync
@@ -41,9 +41,9 @@ uv pip install -r pyproject.toml
 Launch the application with:
 
 ```bash
-uv run src/main.py
-# or
 python -m src.main
+# or
+uv run src/main.py
 ```
 ---
 ### Full Structure
