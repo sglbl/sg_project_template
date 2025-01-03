@@ -2,7 +2,7 @@
 
 ### Installing `uv` project manager
 
-Ensure you have `uv` installed on your system. If not, install it using the following command:
+Ensure you have [`uv`](https://sglbl.notion.site/UV-149a7f36b84480b0b4f4f074883bcd42) installed on your system. If not, install it using the following command:
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
