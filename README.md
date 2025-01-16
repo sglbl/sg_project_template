@@ -71,7 +71,7 @@ uv run src/main.py
     │   └── database             # Database-related configurations and utilities.
     ├── main.py                  # Main entry point for the application.
     ├── presentation             # Presentation layer like APIs and UIs.
-    │   ├── dependencies.py      # Dependencies for presentation layer. (api token checks etc.)
+    │   ├── dependencies.py      # Dependencies for presentation layer. (api token checks..)
     │   ├── rest                 # API-related presentation logic.
     │   │   └── serve_api.py     # Code to serve the API, possibly using FastAPI or Flask.
     │   └── ui                   # UI-related presentation logic.
