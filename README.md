@@ -36,6 +36,9 @@ uv sync
 uv pip install -r pyproject.toml
 ```
 
+#### Other Requirements
+Put the secret tokens, keys, etc. in `.env` file in root directory. (Check the example in [`.env.example`](data/example_inputs/.env.example) file)
+
 ### Running the Application
 
 Launch the application with:
