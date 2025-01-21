@@ -1,7 +1,7 @@
-from src.presentation.dependencies import *
 from fastapi import APIRouter, HTTPException, Depends
-from pydantic import BaseModel, ValidationError
-
+from pydantic import ValidationError
+from src.presentation.dependencies import *
+from src.presentation.rest.schemas import *
 
 router = APIRouter(
     prefix="/items",

@@ -16,14 +16,6 @@ response_examples = {
         "application/json": {"example": {"detail": "Item not found"}}}},
 }
 
-
-items_db = {"project1": {"name": "zoe"}, 
-            "project2": {"name": "calipso"}}
-
-class ResponseMessage(BaseModel):
-    detail: str = "Success"
-    data: dict = items_db
-
 # HTTP STATUS CODES
 # 4xx Client Error
 # 400 Bad Request
