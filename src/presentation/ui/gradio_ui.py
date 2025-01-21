@@ -22,24 +22,21 @@ def ask_and_get_trigger(history, chat_text_input):
     # response = json_to_md_table(model_result[0:unique_label_len])
     print(f"User input: {chat_text_input}")
     model_result = f"Answering the question: {chat_text_input}"
-    response = model_result
 
-    history[-1][1] = ""
-    for character in response:
-        history[-1][1] += character
+    history.append({"role": "assistant", "content": ""})
+    for character in model_result:
+        history[-1]['content'] += character
         if character == "}":
-         time.sleep(0.0001)
+                time.sleep(0.0001)
         yield history
 
 def add_user_message(history, message):
-    return history + [[message["text"], None]]
+    return history + [{"role": "user", "content": message["text"]}]
 
 
 def add_user_dont_like_message(history):
     other_response = "Showing other possible results...\n" + pprint.pformat(model_result[unique_label_len:], indent=2)
-    ret_res = history + [["I didn't like the results, show me others",  other_response]]
-
-    return ret_res
+    return history + [{"role": "user", "content": f"I like the result, show me the metadata!"}, {"role": "assistant", "content": other_response}]
 
 
 def add_info_to_database_liked(): 
@@ -68,7 +65,7 @@ def run_ui():
             [],
             elem_id="chatbot",
             bubble_full_width=True,
-            likeable=True
+            type="messages"
         )
         with gr.Row():
             with gr.Column(scale=7):
@@ -101,7 +98,7 @@ def run_ui():
         """
         chatbot.like(add_to_db, inputs=None, outputs=None) #, js=js_hidden_results)
 
-        bot_msg = user_msg1.then(ask_and_get_trigger, inputs=[chatbot, chat_text_input], outputs=chatbot)
+        bot_msg = user_msg1.then(ask_and_get_trigger, inputs=[chatbot, chat_text_input], outputs=[chatbot])
         # bot_msg = user_msg2.then(ask_and_get_trigger, inputs=[chatbot, chat_text_input], outputs=chatbot)
 
         with gr.Row():

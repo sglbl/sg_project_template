@@ -142,10 +142,12 @@ uv.lock
 dask-worker-space
 /data/qdrant_data/
 /data/chroma_data/
-data/models/**
 data/docs/*.docx
 
-
+# all files that start with _
+_**
+# except __init__.py
+!__init__.py
 
 # pytype static type analyzer
 

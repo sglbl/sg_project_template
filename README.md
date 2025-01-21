@@ -42,9 +42,8 @@ Launch the application with:
 
 ```bash
 python -m src.main
-# or
-uv run src/main.py
 ```
+
 ---
 ### Full Structure
 ```bash
