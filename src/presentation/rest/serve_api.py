@@ -25,5 +25,8 @@ async def docs_redirect():
 async def greet_user():
     return PlainTextResponse(content="Hello to the API World", status_code=200)
 
-if __name__ == "__main__":
+def run_api():
     uvicorn.run(app, host="0.0.0.0", port=8001)
+
+if __name__ == "__main__":
+    run_api()

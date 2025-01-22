@@ -26,4 +26,9 @@ async def add_item(item_name: str):
         return ResponseMessage(detail="Item added successfully", data=items_db)
     except ValidationError as e:
         raise HTTPException(status_code=400, detail=str(e))
+   
     
+@router.get("/gpt", response_model=ResponseMessage)
+async def use_gpt_dependency(llm_service: LLMPipeline = Depends(get_llm_service)):
+    items_db.update({"using_dependency_inversion": {"name": f"{llm_service.llmmodel.name}"}})
+    return ResponseMessage(detail="GPT dependency used and llm model is added to the db successfully", data=items_db)

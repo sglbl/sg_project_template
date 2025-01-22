@@ -2,6 +2,8 @@ from typing import Annotated
 from pydantic import BaseModel
 from fastapi import Header, HTTPException
 from src.domain.models import *
+from src.application.llm_services.llm_service import *
+from src.infra.implementations.qdrant_repository import *
 
 async def get_token(token: Annotated[str, Header()]):
     if token != "sg_super_secret_token":
@@ -15,6 +17,10 @@ response_examples = {
     404: {"description": "Item not found", "content": {
         "application/json": {"example": {"detail": "Item not found"}}}},
 }
+
+def get_llm_service() -> LLMPipeline:
+    return LLMPipeline(vectordb_repository=QdrantDBRepository())
+
 
 # HTTP STATUS CODES
 # 4xx Client Error

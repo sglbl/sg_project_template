@@ -1,26 +1,18 @@
 # Domain models [data models as classes]
+from enum import Enum
 from dataclasses import dataclass
 
 
-@dataclass
-class ProviderFeatures:
-    name: str
-    description: str
-    url: str
-    image: str
-    price: str
-    rating: float
-    iso: str
-
+class Modes(Enum):
+    OPENAI = "openai"
+    OLLAMA = "ollama"
 
 @dataclass
-class Provider:
+class LLMModel:
     name: str
-    description: str
     url: str
-    image: str
-    price: str
-    rating: float
-    iso: str
-    features: ProviderFeatures
-
+    embedding_name: str
+    embedding_dim: int = 768
+    mode: Modes = Modes.OLLAMA
+    api_key: str = None # only for OpenAI
+    
