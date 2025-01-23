@@ -1,4 +1,4 @@
-from src.domain.interfaces.vectordb_repository import *
+from src.domain.repo_interfaces.vectordb_repository import *
 from src.domain.models.data_models import *
 from haystack_integrations.document_stores.qdrant import QdrantDocumentStore
 from haystack_integrations.components.retrievers.qdrant import QdrantEmbeddingRetriever

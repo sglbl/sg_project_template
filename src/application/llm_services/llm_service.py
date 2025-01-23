@@ -1,5 +1,5 @@
 from src.domain.models.data_models import *
-from src.domain.interfaces.vectordb_repository import IVectorDBRepository
+from src.domain.repo_interfaces.vectordb_repository import IVectorDBRepository
 from haystack import Pipeline
 from haystack_integrations.components.generators.ollama import OllamaGenerator
 from haystack.components.writers import DocumentWriter

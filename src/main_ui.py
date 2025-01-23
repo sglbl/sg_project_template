@@ -1,6 +1,5 @@
+import os
 import argparse
-from src.presentation.ui import gradio_ui
-from src.presentation.dependencies import get_llm_service
 
 
 def argument_parser():
@@ -31,4 +30,9 @@ def main():
     
 
 if __name__ == "__main__":
-    main()
+    try: 
+        from src.presentation.ui import gradio_ui
+        from src.presentation.dependencies import get_llm_service
+        main()
+    except ModuleNotFoundError as e:
+        print(f'{e}, please run:\033[92m python -m src.main_ui \033[0m')
