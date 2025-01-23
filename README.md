@@ -1,5 +1,5 @@
 # Project Setup
-
+<!-- Author: @sglbl -->
 ### Installing `uv` project manager
 
 Ensure you have [`uv`](https://sglbl.notion.site/UV-149a7f36b84480b0b4f4f074883bcd42) installed on your system. If not, install it using the following command:
@@ -10,7 +10,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ### Managing the Virtual Environment
 
-Create the **python3.10** `.venv` virtual environment with this command
+Create the **python3.10** `.venv` virtual environment with this command on the project root directory.
 
 ```bash
 uv venv --python 3.10.12
@@ -44,11 +44,12 @@ Put the secret tokens, keys, etc. in `.env` file in root directory. (Check the e
 Launch the application with:
 
 ```bash
-python -m src.main
+python -m src.main_ui
+python -m src.main_api
 ```
 
 ---
-### Full Structure
+### Full Structure 
 <img src="data/docs/onion-architecture.png" width="500"/>
 
 ```bash
@@ -64,11 +65,12 @@ python -m src.main
 │   ├── x.Dockerfile                    # Dockerfile for building the project's container for x.
 │   ├── docker-build.sh                 # Shell script to automate Docker builds.
 │   └── docker-compose.yml              # Defining multi-container Docker applications.
-├── src                                 # Source code  
+├── src                                 # Source code using onion architecture (Dependency goes inwards)
 │   ├── main_api.py                     # Entry point for the API layer of the application.  
 │   ├── main_ui.py                      # Entry point for the UI layer of the application.  
 │   ├── application                     # Contains high-level application logic.  
 │   │   ├── x_services/                 # Service layer for LLM-related operations.  
+│   │   ├── service_interfaces/         # Interface for abstraction of services.
 │   │   └── utils.py                    # Helper functions for the app.  
 │   ├── domain                          # Contains core business logic and domain models.  
 │   │   ├── models                      # Directory for domain-specific data models.  
