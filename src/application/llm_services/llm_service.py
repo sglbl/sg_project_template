@@ -1,4 +1,5 @@
 from src.domain.models.data_models import *
+from src.application.service_interfaces.llm_abstraction import ILLMPipeline
 from src.domain.repo_interfaces.vectordb_repository import IVectorDBRepository
 from haystack import Pipeline
 from haystack_integrations.components.generators.ollama import OllamaGenerator
@@ -12,7 +13,7 @@ from haystack.document_stores.types import DuplicatePolicy
 from haystack.components.converters import PyPDFToDocument
 
 
-class LLMPipeline:
+class LLMPipeline(ILLMPipeline):
     def __init__(self, vectordb_repository: IVectorDBRepository):
         self.vectordb_repository = vectordb_repository
         self.llmmodel = LLMModel(name="llama3.1", url="https://ollama-plain.deducedata.solutions/api/generate", embedding_name="sentence-transformers/msmarco-distilroberta-base-v2")
