@@ -68,7 +68,7 @@ python -m src.main_api
 !── src                                 # Source code using onion architecture (Dependency goes inwards)
 │   ├── main_api.py                     # Entry point for the API layer of the application.  
 │   ├── main_ui.py                      # Entry point for the UI layer of the application.  
-+   ├── application                    # Contains high-level application logic.  
++   ├── application                     # Contains high-level application logic.  
 │   │   ├── x_services/                 # Service layer for LLM-related operations.  
 │   │   ├── service_interfaces/         # Interface for abstraction of services.
 │   │   └── utils.py                    # Helper functions for the app.  
