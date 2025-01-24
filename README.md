@@ -51,9 +51,9 @@ python -m src.main
 ### Full Structure
 <img src="data/docs/onion-architecture.png" width="500"/>
 
-```bash
+```diff
 .
-├── pyproject.toml                      # All project details and python dependencies.
+@@─ pyproject.toml                      # All project details and python dependencies. @@
 ├── README.md                           # Project overview and instructions for use.
 ├── data                                # Directory for data-related files.
 │   ├── docs                            # Documentation files related to data.
@@ -64,23 +64,23 @@ python -m src.main
 │   ├── x.Dockerfile                    # Dockerfile for building the project's container for x.
 │   ├── docker-build.sh                 # Shell script to automate Docker builds.
 │   └── docker-compose.yml              # Defining multi-container Docker applications.
-├── src                                 # Source code  
+!── src                                 # Source code using onion architecture (Dependency goes inwards)
 │   ├── main_api.py                     # Entry point for the API layer of the application.  
 │   ├── main_ui.py                      # Entry point for the UI layer of the application.  
-│   ├── application                     # Contains high-level application logic.  
-│   │   ├── x_services/                 # Service layer for LLM-related operations.  
-│   │   └── utils.py                    # Helper functions for the app.  
-│   ├── domain                          # Contains core business logic and domain models.  
++   ├── domain                          # Contains core business logic and domain models.  
 │   │   ├── models                      # Directory for domain-specific data models.  
 │   │   │   └── data_models.py          # Business logic / domain data models with data classes.  
 │   │   └── repository_interfaces       # Interfaces for repository patterns.  
 │   │       └── y_repository.py         # Interface for some external operations.  
-│   ├── infra                           # Infrastructure code, particularly for database handling.  
++   ├── application                     # Contains high-level application logic.  
+│   │   ├── x_services/                 # Service layer for LLM-related operations.  
+│   │   └── utils.py                    # Helper functions for the app.  
++   ├── infra                           # Infrastructure code, particularly for database handling.  
 │   │   ├── database                    # Database-related configurations and utilities.  
 │   │   │   └── db_create.py            # Script to initialize and create database schema.  
 │   │   └── repository_implementations  # Implementations of repository interfaces.  
 │   │       └── y_repository.py         # Implementation of repository.  
-│   └── presentation                    # Presentation layer like APIs and UIs.  
++   └── presentation                    # Presentation layer like APIs and UIs.  
 │       ├── dependencies.py             # Dependencies for presentation layer (API token checks, etc.).  
 │       ├── rest                        # API-related presentation logic.  
 │       │   ├── routers                 # API route definitions.  
@@ -90,7 +90,7 @@ python -m src.main
 │       └── ui                          # UI-related presentation logic.  
 │           ├── asset.py                # CSS & JS functions needed for UI.  
 │           └── gradio_ui.py            # UI Implementation.  
-├── tests                               # Directory for test cases and configurations.  
+-── tests                               # Directory for test cases and configurations.  
 │   ├── conftest.py                     # Test fixtures and setup configurations.  
 │   └── test_api.py                     # Test cases for API endpoints.  
 ```
