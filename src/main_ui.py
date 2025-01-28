@@ -1,9 +1,10 @@
 import os
 import argparse
-
+from src.presentation.ui import gradio_ui
+from src.presentation.dependencies import get_llm_service
 
 def argument_parser():
-    # Argument parsing logic
+    """Argument parsing logic"""
     llm_models = ['gemma', 'llama3.1', 'gemma:2b', 'gemma:7b', "none"]
     embedding_models = ["bge-m3", "bge-m3-unsupervised", "nomic-embed-text-v1", "multilingual-e5-large-instruct"] # even worse: #"bge-large-en-v1.5" #"all-MiniLM-L6-v2" # or "all-mpnet-base-v2"
     # Define the parser
@@ -18,7 +19,7 @@ def argument_parser():
 
 
 def main():
-    # Main application logic (e.g., initializing models, handling input/output)
+    """ Main application logic (e.g., initializing models, handling input/output) """
     # Parse the arguments to get the model name
     args = argument_parser()
     print(f'LLM: {args.llm}')

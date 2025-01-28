@@ -5,7 +5,19 @@ from src.domain.models import *
 from src.application.llm_services.llm_service import *
 from src.infra.repo_implementations.qdrant_repository import *
 
+# Generate docs with: pdoc3 --html .  || pdoc3 --html -o data/docs/ .
 async def get_token(token: Annotated[str, Header()]):
+    """Gets dependency token
+
+    Parameters
+    ----------
+    token : Annotated[str, Header
+        Super secret token
+
+    Raises
+    ------
+    HTTPException
+    """
     if token != "sg_super_secret_token":
         raise HTTPException(status_code=400, detail="Token is invalid. Maybe it's something like sg_super_secret_token ?")
 
@@ -19,6 +31,10 @@ response_examples = {
 }
 
 def get_llm_service() -> LLMPipeline:
+    """ Get the LLM service from application layer
+    It uses the QdrantDBRepository as the vectordb_repository
+    Returns - LLMPipeline
+    """
     return LLMPipeline(vectordb_repository=QdrantDBRepository())
 
 
