@@ -74,10 +74,6 @@ instance/
 # Sphinx documentation
 docs/_build/
 
-# Pdoc3 / Pdoc / Pydoc documentation
-/html/
-data/docs/sg_**
-
 # PyBuilder
 target/
 
@@ -133,66 +129,25 @@ venv.bak/
 .dmypy.json
 dmypy.json
 .vscode 
-.DS_Store
-uv.lock
-
+.~lock.**
 # Pyre type checker
 .pyre/
 
 # Weights & Biases
 /wandb
+*.lnk
 
 # Dask
 dask-worker-space
+
+# Data Files
 /data/qdrant_data/
 /data/chroma_data/
-data/docs/*.docx
-
-# all files that start with _
 _**
 # except __init__.py
-!__init__.py
-
-# pytype static type analyzer
-
-.pytype/
+!__**.py 
 
 
-
-# Cython debug symbols
-
-cython_debug/
-
-
-
-# PyCharm
-
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-
-#.idea/
-
-
-
-### Python Patch ###
-
-# Poetry local configuration file - https://python-poetry.org/docs/configuration/#local-configuration
-
-poetry.toml
-
-
-
-# ruff
-
-.ruff_cache/
-
-
-
-# LSP config files
-
-pyrightconfig.json
+# Pdoc3 / Pdoc / Pydoc documentation
+/html/
+data/docs/sg_**
