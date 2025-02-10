@@ -48,7 +48,9 @@ python -m src.main
 ```
 
 ---
-### Full Structure
+### Full Structure 
+<img src="data/docs/onion-architecture.png" width="500"/>
+
 ```bash
 .
 ├── pyproject.toml               # All project details and python dependencies.
