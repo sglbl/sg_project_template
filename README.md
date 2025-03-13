@@ -41,12 +41,19 @@ Put the secret tokens, keys, etc. in `.env` file in root directory. (Check the e
 
 ### Running the Application
 
-Launch the application with:
 
 ```bash
-python -m src.main_ui
+python -m src.main
 python -m src.main_api
 ```
+
+### Generate Html Docs
+
+```bash
+pdoc3 --html -o data/_app_docs/ .
+```
+
+**Note:** Docs will compile the written Google Docstring for the classes and functions.
 
 ---
 ### Full Structure 

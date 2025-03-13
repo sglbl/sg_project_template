@@ -29,6 +29,6 @@ async def add_item(item_name: str):
    
     
 @router.get("/gpt", response_model=ResponseMessage)
-async def use_gpt_dependency(llm_service: LLMPipeline = Depends(get_llm_service)):
+async def use_gpt_dependency(llm_service: LLMService = Depends(get_llm_service)):
     items_db.update({"using_dependency_inversion": {"name": f"{llm_service.llmmodel.name}"}})
     return ResponseMessage(detail="GPT dependency used and llm model is added to the db successfully", data=items_db)

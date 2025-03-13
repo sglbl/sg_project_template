@@ -2,7 +2,7 @@ from typing import Annotated
 from pydantic import BaseModel
 from fastapi import Header, HTTPException
 from src.domain.models import *
-from src.application.llm_services.llm_service import *
+from src.application.llm_service import *
 from src.infra.repo_implementations.qdrant_repository import *
 
 # Generate docs with: pdoc3 --html .  || pdoc3 --html -o data/docs/ .
@@ -30,12 +30,14 @@ response_examples = {
         "application/json": {"example": {"detail": "Item not found"}}}},
 }
 
-def get_llm_service() -> LLMPipeline:
-    """ Get the LLM service from application layer
-    It uses the QdrantDBRepository as the vectordb_repository
-    Returns - LLMPipeline
+
+def get_llm_service(qdrantdb) -> LLMService:
+    """ Get the LLM service from application layer. It uses the QdrantDBRepository as the vectordb_repository  
+    
+    Returns:
+        LLMPipeline
     """
-    return LLMPipeline(vectordb_repository=QdrantDBRepository())
+    return LLMService(vectordb_repository=qdrantdb)
 
 
 # HTTP STATUS CODES

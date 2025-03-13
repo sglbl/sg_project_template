@@ -2,7 +2,7 @@ import base64
 import os
 import time
 import gradio as gr
-from src.application.llm_services.llm_service import *
+from src.application.llm_service import *
 from src.presentation.ui.asset import *
 
 
@@ -32,11 +32,11 @@ def add_user_message(history, message):
     return history + [{"role": "user", "content": message["text"]}]
 
 
-def run_ui(llmservice_dependency: LLMPipeline):
+def run_ui(llmservice_dependency: LLMService):
     global llm_service
     llm_service = llmservice_dependency
     # Run the app
-    with gr.Blocks(css=gradio_css, title="Sg GPT") as demo:        
+    with gr.Blocks(title="Sg GPT") as demo:        
         # create title with the logo
         with open("data/images/logo.png", "rb") as f:
             logo_base64 = base64.b64encode(f.read()).decode()
