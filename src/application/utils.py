@@ -76,3 +76,34 @@ class Interface(EnforceOverrides):
                 if name not in cls.__dict__ or cls.__dict__[name] == method:
                     raise TypeError(f"Subclass {cls.__name__} must override the method '{name}'")
         return super().__new__(cls)
+
+
+class Interface2(EnforceOverrides):
+    def __new__(cls, *args, **kwargs):
+        if cls is Interface or Interface in cls.__bases__:
+            raise TypeError(f"Can't instantiate abstract class ({cls.__name__})")
+        return super().__new__(cls, *args, **kwargs)
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+
+        # Collect all parent methods recursively
+        parent_methods = {}
+        for base in cls.__mro__[1:]:  # Skip the current class itself
+            if issubclass(base, Interface):
+                parent_methods.update({
+                    name: method
+                    for name, method in base.__dict__.items()
+                    if callable(method) and not name.startswith("__")
+                })
+
+        # Find missing methods
+        missing_methods = [
+            name for name, method in parent_methods.items()
+            if name not in cls.__dict__ or getattr(cls, name) is method
+        ]
+
+        if missing_methods:
+            raise NotImplementedError(
+                f"Subclass '{cls.__name__}' must implement methods: {', '.join(missing_methods)}"
+            )
