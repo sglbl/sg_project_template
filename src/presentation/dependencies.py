@@ -3,9 +3,9 @@ from pydantic import BaseModel
 from fastapi import Header, HTTPException
 from src.domain.models import *
 from src.application.llm_service import *
-from src.infra.repo_implementations.qdrant_repository import *
 
-# Generate docs with: pdoc3 --html .  || pdoc3 --html -o data/docs/ .
+
+# Generate docs with: pdoc3 --html -o data/_docs/ src --force
 async def get_token(token: Annotated[str, Header()]):
     """Gets dependency token
 

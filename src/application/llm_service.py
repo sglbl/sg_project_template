@@ -3,7 +3,7 @@ import dotenv
 import time
 from loguru import logger
 from overrides import override
-from src.domain.models.data_models import *
+from src.domain.models.data_classes import *
 from src.application.service_interfaces.llm_abstraction import ILLMService
 from src.domain.repo_interfaces.vectordb_repository import IVectorDBRepository
 

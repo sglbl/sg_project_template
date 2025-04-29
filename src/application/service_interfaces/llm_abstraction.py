@@ -1,6 +1,6 @@
 from typing import Protocol
 from overrides import override
-from src.domain.models.data_models import *
+from src.domain.models.data_classes import *
 from src.application.utils import Interface
 from src.domain.repo_interfaces.vectordb_repository import IVectorDBRepository
 

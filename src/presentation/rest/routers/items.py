@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import ValidationError
 from src.presentation.dependencies import *
-from src.presentation.rest.schemas import *
+from src.domain.models.pydantic_schemas import *
 
 router = APIRouter(
     prefix="/items",
@@ -10,6 +10,10 @@ router = APIRouter(
     responses=response_examples
 )
 
+items_db = {
+    "project1": {"name": "sightjump"},
+    "project2": {"name": "hefesto"}
+}
 
 @router.get("/", response_model=ResponseMessage)
 async def read_items():
