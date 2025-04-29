@@ -1,16 +1,24 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse, PlainTextResponse, JSONResponse
+from contextlib import asynccontextmanager
+from ...infra.postgres import database
+from ...application import utils
+from ...config import settings
 from ..dependencies import *
 from .routers import items
 
 
-''' Run with:
-python -m src.presentation.rest.serve_api
-'''
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    ''' The lifespan function to initialize the database before the app starts and close it after the app stops '''
+    await database.init_db()
+    await database.create_tables()
+    yield    
+
 
 app = FastAPI(
-    # dependencies=[Depends(get_token)] # you can also add mandatory dependencies here [instead of only for items router]
+    lifespan=lifespan #, dependencies=[Depends(get_token)] # you can also add mandatory dependencies here [instead of only for items router],
 )
 app.include_router(items.router)
 
@@ -23,10 +31,15 @@ async def docs_redirect():
 
 @app.get("/greet", response_class=PlainTextResponse)
 async def greet_user():
+    ''' Example endpoint to return a greeting message '''
     return PlainTextResponse(content="Hello to the API World", status_code=200)
 
+
 def run_api():
+    ''' Set the global logger level and run the API with specified host and port '''
+    utils.set_logger(level=settings.LOG_LEVEL)
     uvicorn.run(app, host="0.0.0.0", port=8001)
+
 
 if __name__ == "__main__":
     run_api()
