@@ -50,7 +50,7 @@ python -m src.main_api
 ### Generate Html Docs
 
 ```bash
-pdoc3 --html -o data/_app_docs/ .
+pdoc3 --html -o data/_app_docs/ src --force
 ```
 
 **Note:** Docs will compile the written Google Docstring for the classes and functions.

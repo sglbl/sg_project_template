@@ -1,5 +1,8 @@
 [project]
-name = "data-getter"
+name = "sg-project-template"
+authors = [
+    { name = "Süleyman Gölbol"}
+]
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -21,7 +24,9 @@ dependencies = [
     "gradio-log>=0.0.8",
     "overrides>=7.7.0",
     "pypdf>=5.3.1",
-    "torch[cpu]>=2.5.1",
+    "pydantic-settings>=2.9.1",
+    "sqlmodel>=0.0.24",
+    "asyncpg>=0.30.0",
 ]
 
 
