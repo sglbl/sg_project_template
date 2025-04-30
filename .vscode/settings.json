@@ -1,0 +1,10 @@
+{
+    "jupyter.notebookFileRoot": "${workspaceFolder}",
+    "python.testing.pytestArgs": [
+        "app/test/unit",
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "autoDocstring.docstringFormat": "google",
+    // "autoDocstring.customTemplatePath": "data/extras/swagger_template.mustache",
+}

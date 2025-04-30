@@ -56,7 +56,6 @@ dene**
 # Translations
 *.mo
 *.pot
-.vscode
 
 # Django stuff:
 *.log
@@ -128,7 +127,6 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
-.vscode 
 .~lock.**
 # Pyre type checker
 .pyre/
