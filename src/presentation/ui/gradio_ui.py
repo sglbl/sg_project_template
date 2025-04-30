@@ -2,26 +2,23 @@ import base64
 import os
 import time
 import gradio as gr
-import pprint
-from src.application.api_services import *
+from src.application.llm_service import *
 from src.presentation.ui.asset import *
 
-# examples=[["Where did normans invade"], ["where did normans invade, answer in english"]]
+
 examples = [[{"text": "Where did normans invade", "files": []}], [{"text": "where did normans invade, answer in english", "files": []}]]
 
 
 def add_to_db(x: gr.LikeData):
-    # print(x.index, x.value, x.liked)
     print(f"Adding 'liked: {x.liked}' data to database...")
     
 
 def ask_and_get_trigger(history, chat_text_input):
-    global model_result, unique_label_len, last_question, labels_with_entities
-    last_question = chat_text_input
-    # model_result, unique_label_len, labels_with_entities = ask_to_nlp_model(chat_text_input)
-    # response = json_to_md_table(model_result[0:unique_label_len])
+    global model_result
+
     print(f"User input: {chat_text_input}")
     model_result = f"Answering the question: {chat_text_input}"
+    model_result, _prompt = llm_service.llm_rag_handler(chat_text_input["text"], chat_text_input["files"])
 
     history.append({"role": "assistant", "content": ""})
     for character in model_result:
@@ -30,27 +27,16 @@ def ask_and_get_trigger(history, chat_text_input):
                 time.sleep(0.0001)
         yield history
 
+
 def add_user_message(history, message):
     return history + [{"role": "user", "content": message["text"]}]
 
 
-def add_user_dont_like_message(history):
-    other_response = "Showing other possible results...\n" + pprint.pformat(model_result[unique_label_len:], indent=2)
-    return history + [{"role": "user", "content": f"I like the result, show me the metadata!"}, {"role": "assistant", "content": other_response}]
-
-
-def add_info_to_database_liked(): 
-    # Example usage
-    print("Liked")
-
-def add_info_to_database_disliked():
-    # Example usage
-    print(f'Disliked')
-
-
-def run_ui():
+def run_ui(llmservice_dependency: LLMService):
+    global llm_service
+    llm_service = llmservice_dependency
     # Run the app
-    with gr.Blocks(css=gradio_css, title="Sg GPT") as demo:        
+    with gr.Blocks(title="Sg GPT") as demo:        
         # create title with the logo
         with open("data/images/logo.png", "rb") as f:
             logo_base64 = base64.b64encode(f.read()).decode()
@@ -85,7 +71,6 @@ def run_ui():
         user_msg1 = chat_text_input.submit(add_user_message, [chatbot, chat_text_input], [chatbot])
         # user_msg2 = chat_text_button.click(add_user_message, inputs=[chatbot, chat_text_input], outputs=[chatbot])
 
-        # button_hidden_other_results.click(add_user_dont_like_message, inputs=[chatbot], outputs=[chatbot])
 
         js_hidden_results = """
             () => {

@@ -1,0 +1,272 @@
+/* width */
+/* ::-webkit-scrollbar {
+    width: 0px;
+} */
+
+body::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--neutral-900);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--primary-600);
+    border-radius: 3px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-800);
+}
+
+body>gradio-app {
+    padding-top: 30px !important;
+    transition: opacity 0.4s linear;
+    position: relative;
+}
+
+body>gradio-app::before {
+    position: absolute;
+    content: "";
+    background: var(--primary-800);
+    width: 100%;
+    height: 355px;
+    top: 0;
+    z-index: 0;
+}
+
+body>gradio-app.has-bg-image::before {
+    background-image: var(--bg-image-path);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(12px);
+
+}
+
+gradio-app .gradio-container {
+    font-family: sans-serif !important;
+	font-weight: 400;
+
+	& .md-header {
+    	padding: var(--size-2) var(--size-1);
+    	& h1 {
+    		color: var(--text-color-by-luminance) !important;
+    	}
+    
+    	& p,
+    	span {
+    		color: var(--text-color-by-luminance) !important;
+    		line-height: 1.5 !important;
+    		font-size: 1.1rem !important;
+    
+    		& i {
+    			display: inline-flex;
+    			align-items: center;
+    			justify-content: center;
+    
+    			& svg {
+    				font-size: inherit !important;
+    				width: 16px !important;
+    				height: 16px !important;
+    			}
+    		}
+    	}
+    }
+	
+    & div.row-main {
+        background-color: var(--neutral-900) !important;
+        border-right-width: 0px !important;
+        border-bottom-width: 0px !important;
+        border-left-width: 0px !important;
+        border-top: 8px solid var(--primary-600) !important;
+        border-radius: var(--container-radius) !important;
+        padding: var(--block-padding);
+    }
+
+    & div.inp-options {
+
+        & div:last-child {
+            display: flex;
+            gap: var(--checkbox-label-gap);
+            flex-direction: column;
+        }
+
+        & div>label>input {
+            display: none;
+        }
+
+        & div>label>span {
+            margin-left: 0;
+        }
+
+    }
+}
+
+
+/* MARK: Toggle Button Checkbox */
+/* INFO: gr.Checkbox elem_classes".toggle-btn" */
+
+.toggle-btn {
+	display: flex;
+	flex-direction: column-reverse;
+
+	& > div.wrap {
+		display: none;
+	}
+
+	& > div:not(.wrap) {
+		margin-top: var(--spacing-lg);
+		margin-bottom: 0;
+	}
+
+	& > label {
+		position: relative;
+		width: 57px;
+		height: 27px;
+		display: inline-block;
+		border-radius: 13px;
+		background: var(--neutral-700);
+		box-shadow: var(--shadow-inset);
+		transition: background-color 0.3s, cursor 0.3s;
+		border: solid 0.4px var(--border-color-primary);
+		cursor: pointer;
+
+		& > input[type="checkbox"] {
+			width: 0;
+			height: 0;
+			opacity: 0;
+		}
+
+		& > span {
+			position: absolute;
+			left: 60px;
+			height: 27px;
+			min-width: 140px;
+			line-height: 27px;
+		}
+	}
+
+	& > label:has(input[type="checkbox"])::after {
+		content: "";
+		position: absolute;
+		top: 3px;
+		left: 3px;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background: var(--neutral-900);
+		box-shadow: var(--shadow-inset);
+		transition: left 0.2s ease-in-out, background 0.2s ease-in-out;
+	}
+
+	& > label:has(input[type="checkbox"]:checked)::after {
+		content: "";
+		position: absolute;
+		background: var(--neutral-900);
+		opacity: 0.8;
+		left: 32px;
+	}
+
+	& > label:has(input[type="checkbox"]:checked) {
+		background: var(--primary-600);
+	}
+}
+
+
+/* MARK: Range Input */
+input[type="range"].svelte-pc1gm4 {
+	accent-color: var(--slider-color);
+	background: var(--neutral-700) !important;
+	background-image: linear-gradient(var(--slider-color), var(--slider-color)) !important;
+	background-size: 0% 100%;
+}
+
+input[type="range"].svelte-pc1gm4::-webkit-slider-thumb {
+	background-color: var(--primary-600);
+	border-width: 0;
+}
+
+input[type="range"].svelte-pc1gm4::-webkit-slider-thumb:hover {
+	background-color: var(--primary-500);
+}
+
+
+/* MARK: Text-Color Override */
+label.svelte-1b6s6s,
+label.svelte-9gxdi0,
+span.svelte-1gfkn6j,
+span.svelte-1gfkn6j,
+.primary.svelte-cmf5ev,
+.secondary.svelte-cmf5ev:hover,
+label.selected.svelte-1k4wjf2.svelte-1k4wjf2.svelte-1k4wjf2,
+label.selected.svelte-1mhtq7j.svelte-1mhtq7j.svelte-1mhtq7j,
+label.svelte-1mhtq7j.svelte-1mhtq7j.svelte-1mhtq7j:hover,
+#genre_list button,
+#genre_list button button {
+	transition: color 0.2s ease-out;
+	color: var(--text-color-by-luminance) !important;
+}
+
+
+#run_btn.run-btn-running {
+  >svg {
+    display: none;
+  }
+  >dotlottie-player {
+    display: block;
+  }
+}
+
+/* from before */
+#chatbot table {
+	border: 1px solid;
+	border-collapse: collapse;
+	text-align: center;
+	vertical-align: middle;
+	width: 100%;
+	table-layout: auto;
+}
+
+#chatbot table th,
+#chatbot table td {
+	border: 1px solid;
+	padding: 4px;
+}
+
+#chatbot table th:first-child, /* file_name column */
+#chatbot table td:first-child {
+	width: auto; /* Adjust for smaller columns */
+}
+
+#chatbot table th:nth-child(2), /* page_number column */
+#chatbot table td:nth-child(2) {
+	width: auto; /* Minimal space for numbers */
+}
+
+#chatbot table th:nth-child(3), /* score column */
+#chatbot table td:nth-child(3) {
+	width: auto; /* Minimal space for short values */
+}
+
+#chatbot table th:nth-child(4), /* content column */
+#chatbot table td:nth-child(4) {
+	width: auto; /* Let this column take up the remaining space */
+}
+
+.message-buttons-right {
+	display: none;
+}
+
+.radio-group .wrap {
+	display: block;
+    grid-template-columns: auto;
+    width: fit-content;
+}
+
+
+footer {visibility: hidden}
