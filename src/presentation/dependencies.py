@@ -18,6 +18,7 @@ async def get_token(token: Annotated[str, Header()]):
     ------
     HTTPException
     """
+
     if token != "sg_super_secret_token":
         raise HTTPException(status_code=400, detail="Token is invalid. Maybe it's something like sg_super_secret_token ?")
 

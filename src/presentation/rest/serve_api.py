@@ -1,7 +1,9 @@
 import uvicorn
+import gradio as gr
 from fastapi import FastAPI
-from fastapi.responses import RedirectResponse, PlainTextResponse, JSONResponse
+from fastapi.responses import RedirectResponse, JSONResponse, PlainTextResponse
 from contextlib import asynccontextmanager
+from src.presentation.ui.app_ui import run_ui
 from ...infra.postgres import database
 from ...application import utils
 from ...config import settings
@@ -38,7 +40,10 @@ async def greet_user():
 def run_api():
     ''' Set the global logger level and run the API with specified host and port '''
     utils.set_logger(level=settings.LOG_LEVEL)
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    
+    # inject gradio
+    # app_with_gradio = gr.mount_gradio_app(app, run_ui(launch_demo=False), path="/")
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
 if __name__ == "__main__":

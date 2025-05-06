@@ -1,6 +1,7 @@
 import os
 import argparse
-from src.presentation.ui import gradio_ui
+from src.infra.repo_implementations.qdrant_repository import QdrantDBRepository
+from src.presentation.ui import ui_with_multimodal
 from src.presentation.dependencies import get_llm_service
 
 def argument_parser():
@@ -24,16 +25,12 @@ def main():
     args = argument_parser()
     print(f'LLM: {args.llm}')
     
-    llm_service = get_llm_service()
+    qdrantdb = QdrantDBRepository()
+    llm_service = get_llm_service(qdrantdb)
     
     # Create the model
-    gradio_ui.run_ui(llm_service)
+    ui_with_multimodal.run_ui(llm_service)
     
 
 if __name__ == "__main__":
-    try: 
-        from src.presentation.ui import gradio_ui
-        from src.presentation.dependencies import get_llm_service
-        main()
-    except ModuleNotFoundError as e:
-        print(f'{e}, please run:\033[92m python -m src.main_ui \033[0m')
+    main()

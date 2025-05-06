@@ -51,7 +51,7 @@ def add_to_db(x: gr.LikeData):
     print(f'Printing liked: {x.liked}')
 
    
-def run_ui():
+def run_ui(launch_demo: bool = True) -> gr.Blocks:
     # Create a logger
     utils.set_logger("DEBUG", write_to_file=True)
     # Remove the previous db
@@ -128,14 +128,18 @@ def run_ui():
 
     demo.queue()
 
-    demo.launch(
-        server_name=os.getenv("GRADIO_SERVER_NAME", "0.0.0.0"),
-        server_port=os.getenv("GRADIO_SERVER_PORT", 8000),
-        favicon_path="./data/images/favicon.ico",
-        allowed_paths=["./data/images", "./data/example_inputs", "/tmp/**"],
-        show_error=True,
-        show_api=True
-    )
+    if launch_demo:
+        demo.launch(
+            server_name=os.getenv("GRADIO_SERVER_NAME", "0.0.0.0"),
+            server_port=os.getenv("GRADIO_SERVER_PORT", 8000),
+            favicon_path="./data/images/favicon.ico",
+            allowed_paths=["./data/images", "./data/example_inputs", "/tmp/**"],
+            show_error=True,
+            show_api=True
+        )
+    
+    # Return the block
+    return demo
 
 
 if __name__ == "__main__":
