@@ -32,8 +32,6 @@ Once `uv` is installed and environment is activated, use this to set up the proj
 
 ```bash
 uv sync
-# or
-uv pip install -r pyproject.toml
 ```
 
 #### Other Requirements
