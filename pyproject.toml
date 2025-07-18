@@ -42,6 +42,7 @@ dev = [
     "pdoc3>=0.11.5",
     "pyproject-toml>=0.0.12",
     "pytest>=8.3.3",
+    "pyright>=1.1.403",
 ]
 
 
