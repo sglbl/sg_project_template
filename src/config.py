@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "DEBUG"  
     
     # Sqlalchemy Logger
-    SQLALCHEMY_DEBUG_LOG: bool = False
+    SQLALCHEMY_LOG_LEVEL: bool = False
 
     # Computed properties
     @property

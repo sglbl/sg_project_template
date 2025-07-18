@@ -115,6 +115,10 @@ ENV/
 env.bak/
 venv.bak/
 
+# other secret files
+secrets.toml
+credentials.json
+
 # Spyder project settings
 .spyderproject
 .spyproject
