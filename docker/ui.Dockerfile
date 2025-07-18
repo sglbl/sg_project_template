@@ -3,7 +3,7 @@ FROM python:3.10.12-slim
 # Install git to clone the repository 
 RUN apt-get update && apt-get install git ffmpeg libsm6 libxext6 -y
 # Copy the uv and uvx binaries from the uv package manager image
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.7.8 /uv /uvx /bin/
 # Set the working directory
 WORKDIR /app
 # Copy files to the working directory [except the files mentioned in .dockerignore]

@@ -6,5 +6,5 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "autoDocstring.docstringFormat": "google",
-    // "autoDocstring.customTemplatePath": "data/extras/swagger_template.mustache",
+    "autoDocstring.customTemplatePath": "data/config/swagger.mustache",
 }

@@ -1,0 +1,36 @@
+name: sgproject
+
+services:
+  ui:
+    # image: sgproject:latest
+    # pull_policy: build
+    build: 
+      context: .
+      dockerfile: docker/ui.Dockerfile
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+      # - OPENAI_API_KEY=${OPENAI_API_KEY:-12345}
+    ports:
+      - 11013:8000
+    # volumes:
+    #   - type: bind
+    #     source: .streamlit/secrets.toml
+    #     target: /app/.streamlit/secrets.toml
+    # env_file:
+    #   - ../.env
+    # labels:
+    #   - homepage.group=Prod
+    #   - homepage.name=Digit
+    #   - homepage.icon=https://moracabanas.github.io/deduce-assets/logo-signature.png
+    #   - homepage.href=https://sgproject.deducedata.solutions/?__theme=dark
+    #   - homepage.ping=https://sgproject.deducedata.solutions/
+    #   - homepage.description=SG Project
+    
+# networks:
+#   default:
+#     name: supabase_default
+#     external: true
+
+# volumes:
+#   pped_data:
