@@ -28,7 +28,7 @@ app.include_router(items.router)
 @app.get("/", include_in_schema=False)
 async def docs_redirect():
     ''' Redirect root page to /docs '''
-    return RedirectResponse(url='/docs', status_code=308)
+    return RedirectResponse(url='/docs')
 
 
 @app.get("/greet", response_class=PlainTextResponse)
@@ -41,10 +41,12 @@ def run_api():
     ''' Set the global logger level and run the API with specified host and port '''
     utils.set_logger(level=settings.LOG_LEVEL)
     
-    # inject gradio
-    # app_with_gradio = gr.mount_gradio_app(app, run_ui(launch_demo=False), path="/")
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # # inject gradio
+    # app_with_gradio = gr.mount_gradio_app(app, run_ui(launch_demo=False), path="/gradio")
+    # uvicorn.run(app_with_gradio, host="0.0.0.0", port=8001)
 
+    # without injecting gradio
+    uvicorn.run(app, host="0.0.0.0", port=8001)
 
 if __name__ == "__main__":
     run_api()
