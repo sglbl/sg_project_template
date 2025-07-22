@@ -85,8 +85,5 @@ explicit = true
 pythonpath = "." # Add the project root path to the pythonpath [to be able to import the 'src' module]
 filterwarnings = ["ignore::DeprecationWarning", "ignore::FutureWarning", "ignore::PendingDeprecationWarning"]
 
-[tool.ruff]
-line-length = 120  # Allow lines to be as long as 120.
-
-[tool.ruff.lint.isort]
-lines-after-imports = 2 # Require two blank line after imports.
+[tool.autopep8]
+max_line_length = 150
