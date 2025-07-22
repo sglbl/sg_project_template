@@ -111,8 +111,8 @@ def run_ui(launch_demo: bool = True) -> gr.Blocks:
                 # else:    
                 #     chat = gr.ChatInterface(fn=ask_rag_pipeline, type="messages", chatbot=chatbot, multimodal=True, save_history=True, additional_outputs=[_metadata_info])
 
-                chat.textbox.placeholder = "Enter message or upload file (.csv, .db)..."
-                chat.textbox.file_types = [".csv", ".db"]
+                chat.textbox.placeholder = "Enter message or upload file (.csv, .db, .txt)..."
+                chat.textbox.file_types = [".csv", ".db", ".txt"]
                 chat.textbox.file_count = "multiple"
                 chat.textbox.show_label = False
                 
@@ -135,7 +135,7 @@ def run_ui(launch_demo: bool = True) -> gr.Blocks:
     if launch_demo:
         demo.launch(
             server_name=os.getenv("GRADIO_SERVER_NAME", "0.0.0.0"),
-            server_port=os.getenv("GRADIO_SERVER_PORT", 8000),
+            server_port=int(os.getenv("GRADIO_SERVER_PORT", 8000)),
             favicon_path="./data/images/favicon.ico",
             allowed_paths=["./data/images", "./data/example_inputs", "/tmp/**"],
             show_error=True,

@@ -9,7 +9,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "gradio==5.20.0",
-    "haystack-ai==2.7.0",
+    "haystack-ai>=2.15.2",
     "lingua-language-detector==2.0.2",
     "loguru==0.7.3",
     "matplotlib<=3.10.0",

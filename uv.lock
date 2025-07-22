@@ -645,6 +645,15 @@ wheels = [
 ]
 
 [[package]]
+name = "docstring-parser"
+version = "0.17.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b2/9d/c3b43da9515bd270df0f80548d9944e389870713cc1fe2b8fb35fe2bcefd/docstring_parser-0.17.0.tar.gz", hash = "sha256:583de4a309722b3315439bb31d64ba3eebada841f2e2cee23b99df001434c912", size = 27442, upload-time = "2025-07-21T07:35:01.868Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/55/e2/2537ebcff11c1ee1ff17d8d0b6f4db75873e3b0fb32c2d4a2ee31ecb310a/docstring_parser-0.17.0-py3-none-any.whl", hash = "sha256:cf2569abd23dce8099b300f9b4fa8191e9582dda731fd533daf54c4551658708", size = 36896, upload-time = "2025-07-21T07:35:00.684Z" },
+]
+
+[[package]]
 name = "et-xmlfile"
 version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1025,18 +1034,20 @@ wheels = [
 
 [[package]]
 name = "haystack-ai"
-version = "2.7.0"
+version = "2.15.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "docstring-parser" },
     { name = "haystack-experimental" },
     { name = "jinja2" },
+    { name = "jsonschema" },
     { name = "lazy-imports" },
     { name = "more-itertools" },
     { name = "networkx" },
     { name = "numpy" },
     { name = "openai" },
-    { name = "pandas" },
     { name = "posthog" },
+    { name = "pydantic" },
     { name = "python-dateutil" },
     { name = "pyyaml" },
     { name = "requests" },
@@ -1044,9 +1055,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/44/04/8caf936c7510d60de601ff33ca8270013fe642d386e00d48fd035abf66f7/haystack_ai-2.7.0.tar.gz", hash = "sha256:b950bbba229c3cb036cf4db1726bea8c8d1ca8c8b7a9afe27225394e55c6ba65", size = 243195, upload-time = "2024-11-11T10:41:37.805Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0c/e6/16acc7f43938c932d93c4efc32b5f8f09e61a46450d62235f4670233d8a3/haystack_ai-2.15.2.tar.gz", hash = "sha256:97c8927ded613235bedb80caf082923961c2f5c55891ba43ae84feb32d478ae9", size = 355446, upload-time = "2025-07-04T12:11:12.739Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bc/7d/6d4f17f5f97c4eea1d78a2b51f8c17aba2ff526471b648cf31636120a17b/haystack_ai-2.7.0-py3-none-any.whl", hash = "sha256:9226fb099403ed676a7fee908a0c0dd6435d52bc5a092c867c34958333a0d358", size = 379969, upload-time = "2024-11-11T10:41:39.102Z" },
+    { url = "https://files.pythonhosted.org/packages/da/00/16d11c0132aceb5f7593f6dba35db5de0cf156b4c9cf18ffac147ca0d18e/haystack_ai-2.15.2-py3-none-any.whl", hash = "sha256:650db9a8491c74385d862d0db3becc9a034304ea75a76791cf1c7474789f1ae6", size = 530127, upload-time = "2025-07-04T12:11:10.898Z" },
 ]
 
 [[package]]
@@ -3687,7 +3698,7 @@ requires-dist = [
     { name = "asyncpg", specifier = ">=0.30.0" },
     { name = "gradio", specifier = "==5.20.0" },
     { name = "gradio-log", specifier = ">=0.0.8" },
-    { name = "haystack-ai", specifier = "==2.7.0" },
+    { name = "haystack-ai", specifier = ">=2.15.2" },
     { name = "lingua-language-detector", specifier = "==2.0.2" },
     { name = "loguru", specifier = "==0.7.3" },
     { name = "matplotlib", specifier = "<=3.10.0" },
