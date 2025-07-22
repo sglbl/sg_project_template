@@ -23,7 +23,7 @@ class DataGraph(SQLModel, table=True):
     values: dict[str, float] = Field(sa_column=Column(JSONB))
     
     # Define the relationship back to Data
-    data: "Data" = Relationship(back_populates="data_graphs")
+    data: "Data" = Relationship(back_populates="graphs")
 
     # Validator for values to ensure each timestamp has a single float value
     @field_validator("values")
