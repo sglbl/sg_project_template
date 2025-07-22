@@ -5,7 +5,7 @@ To get the usage details, run the following command:
 pytest tests/test_api.py --get-help
 
 Example:
-pytest -s
+pytest -s --tb=line
 pytest -s tests/test_api.py --access local --model llama3.1 --input_path ./data/example_inputs/
 '''
 
@@ -33,23 +33,21 @@ def get_gradio_api_url(local_or_remote):
     else:  # local
         return os.environ.get("GRADIO_API_URL", "http://localhost:8000")
 
+
 def test_gradio(args, question):
     # Construct the API URL dynamically
     gradio_api_url = get_gradio_api_url(local_or_remote=args.access)
     client = grc.Client(gradio_api_url)
-    input_file_paths = [grc.handle_file(os.path.join(args.input_path, file)) for file in os.listdir(args.input_path)]
-    result = client.predict(
-        history=[["Answer the question if the file has answer", None]],
-        chat_text_input={"text": question, "files": input_file_paths},
-        api_name="/ask_and_get_trigger/"
-    )
+    input_file_paths = [grc.handle_file(os.path.join(args.input_path, file)) for file in os.listdir(args.input_path) if file.endswith(('.csv', '.db', '.txt'))]
     
+    result = client.predict(
+        message={"text":"Answer the question if the file has answer", "files": input_file_paths},
+		param_2="No models available",
+		api_name="/chat"
+    )
 
     logger.opt(colors=True).debug(f"\n<i><u>Question:</u></i> {question}")
-    
-    # assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
-    # assert response.json(), "Response JSON is empty"
-    # result = response.json()
+    assert result, "Response is empty"
 
     logger.opt(colors=True).trace(f"<i><u>Answer:</u></i> {result}")
 
