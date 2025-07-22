@@ -7,16 +7,29 @@ from src.domain.models.sql_models import DataGraph, Data
 
 
 async def insert_sqlmodel_list(model_list: list[SQLModel]):
-    async for session in get_db():
-        for entity in model_list.values():
+    async with get_db() as session:
+        if not model_list:
+            logger.warning("No value on the list to insert.")
+            return
+        for entity in model_list:
             session.add(entity)
         await session.commit()
 
 
+async def get_data_by_name(name: str) -> Data:
+    async with get_db() as session:
+        query = select(Data).where(Data.name == name)
+        result = await session.exec(query)
+        bf = result.scalars().first()
+        if bf is None:
+            raise ValueError(f"Data with id {name} not found")
+        return bf
+
+
 async def get_data_by_id(data_id: str) -> Data:
-    async for session in get_db():
+    async with get_db() as session:
         query = select(Data).where(Data.id_ == data_id)
-        result = await session.execute(query)
+        result = await session.exec(query)
         bf = result.scalars().first()
         if bf is None:
             raise ValueError(f"Data with id {data_id} not found")

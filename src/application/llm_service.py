@@ -35,6 +35,8 @@ class LLMService(ILLMService):
         if mode == Modes.OPENAI:
             dotenv.load_dotenv(override=True)
             openai_token = os.getenv("OPENAI_API_KEY")
+            if openai_token is None:
+                raise ValueError("You need to put the OpenAI API key in .env file")
             self.llmmodel = LLMModel(name=llm_model_name, url="NOT_USED", embedding_name=embedding_model_name, embedding_dim=1536, mode=mode, api_key=openai_token)
         else: # Modes.OLLAMA
             self.llmmodel = LLMModel(name=llm_model_name, url="https://ollama-plain.deducedata.solutions/api/generate", embedding_name=embedding_model_name)
@@ -47,19 +49,11 @@ class LLMService(ILLMService):
         document_store = self.vectordb_repository.create_document_store()
         # PIPELINE CSV
         self.pipeline_csv = self.create_indexing_pipeline(document_store, converter=CSVToDocument(encoding="unicode_escape"), metadata_fields_to_embed=['file_name'])
+        self.pipeline_pdf = self.create_indexing_pipeline(document_store, converter=PyPDFToDocument(), metadata_fields_to_embed=['file_name'])
         
         # MAIN RETRIEVAL PIPELINE
         self.retrieval_pipeline = self.create_retrieval_pipeline(document_store)
        
-
-    @override
-    def create_pipelines(self):    
-        document_store = self.vectordb_repository.create_document_store()
-        # PIPELINE PDF
-        self.pipeline_pdf = self.create_indexing_pipeline(document_store, converter=PyPDFToDocument(), metadata_fields_to_embed=['file_name'])
-        # MAIN RETRIEVAL PIPELINE
-        self.retrieval_pipeline = self.create_retrieval_pipeline(document_store)
-                
 
     @override
     def create_indexing_pipeline(self, document_store, converter, metadata_fields_to_embed=None):

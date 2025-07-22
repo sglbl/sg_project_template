@@ -15,7 +15,7 @@ from src.config import settings
 # EVERY_SQL_MODEL_TO_CREATE_DECLARATIVELY
 
 class DataGraph(SQLModel, table=True):
-    __tablename__ = "data_graph"
+    __tablename__: str = "data_graph" #  type: ignore (pyright)
     __table__args__ = {'schema': settings.DB_SCHEMA}
     
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -56,10 +56,9 @@ class DataGraph(SQLModel, table=True):
         
 
 class Data(SQLModel, table=True):
-    __tablename__ = "data"
+    __tablename__: str = "data"  #  type: ignore
     __table__args__ = {'schema': settings.DB_SCHEMA}
 
     name: Optional[str] = Field(default=None, primary_key=True, index=False, nullable=True)
-    
     graphs: list["DataGraph"] = Relationship(back_populates="data", sa_relationship_kwargs={"lazy": "joined"})
     

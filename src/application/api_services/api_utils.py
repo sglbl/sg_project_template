@@ -22,11 +22,10 @@ def get_token(domain):
 
     try:
         response = requests.post(f'https://{domain}/token', data=data, timeout=10)
+    except requests.exceptions.RequestException as e:
+        raise ConnectionError(f"Error in connection. Make sure VPN is connected. Details: {e}")
+    try:
         return response.json()['access_token']
     except KeyError as e:
         print(f"Error in getting token: {response.text}")
         raise ValueError(f"Error in {e}: {response.text}")
-    except requests.exceptions.RequestException as e:
-        raise ConnectionError(f"Error in connection. Make sure VPN is connected. Details: {e}")
-
-    

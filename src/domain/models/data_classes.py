@@ -14,5 +14,5 @@ class LLMModel:
     embedding_name: str
     embedding_dim: int = 768
     mode: Modes = Modes.OLLAMA
-    api_key: str = None # only for OpenAI
+    api_key: str | None = None # only for OpenAI
     

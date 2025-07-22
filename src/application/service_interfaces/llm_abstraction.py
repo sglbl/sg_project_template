@@ -78,5 +78,5 @@ class ILLMService(Interface):
         """
         raise NotImplementedError
 
-    def ask_rag_pipeline(chat_input: dict):
-        return f"RAG: {chat_input}", f"Metadata"
+    def ask_rag_pipeline(self, chat_input: dict):
+        return f"RAG: {chat_input}", {"metadata": "metadata"}

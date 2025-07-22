@@ -93,7 +93,7 @@ def run_ui(llmservice_dependency: LLMService):
 
     demo.launch(
         server_name=os.getenv("GRADIO_SERVER_NAME", "0.0.0.0"),
-        server_port=os.getenv("GRADIO_SERVER_PORT", 8000),
+        server_port=int(os.getenv("GRADIO_SERVER_PORT", 8000)),
         favicon_path="./data/images/favicon.ico"
     )
 
