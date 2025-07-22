@@ -27,6 +27,8 @@ dependencies = [
     "pydantic-settings>=2.9.1",
     "sqlmodel>=0.0.24",
     "asyncpg>=0.30.0",
+    "pytest-cov>=6.2.1",
+    "sympy>=1.13.1",
 ]
 
 

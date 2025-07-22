@@ -8,25 +8,49 @@ def pytest_addoption(parser):
     # Create a parameter group for user defined custom options    
     p_group = parser.getgroup("custom", "Custom options")
 
-    p_group.addoption("--access", action="store", default="local")
-    p_group.addoption("--model", action="store", default="llama3.1")
-    p_group.addoption("--input_path", action="store", default="./data/example_inputs/")
-    p_group.addoption("--output_file", action="store", default=None)
+    p_group.addoption("--access", action="store", default="local", choices=["local", "remote"],
+                      help="Api access method.")
+    p_group.addoption("--model", action="store", default="llama3.1",
+                        choices=["llama3.1", "gpt4"],
+                        help="Model mode to run.")
+    p_group.addoption("--input_path", action="store", default="./data/example_inputs/", 
+                      help="Input folder path with videos.")
+    p_group.addoption("--output_file", action="store", default=None, 
+                      help="Output file name with results.")
         
-    parser.addoption("--test-help", action="store_true", help="Show custom options")
+    parser.addoption("--get-help", action="store_true", help="Show custom options")
 
 
 def pytest_configure(config: pytest.Config):
-    # Additional help message for the user with "--test-help" option
-    if config.getoption("--test-help"):
-        print("""\nCustom Options:
-            --access=ACCESS       Api access method [local, cloud]
-            --model=MODEL         Model mode to run [llama3.1, gpt4]
-            --input_path=INPUT_PATH   Input folder path with videos
-            --output_file=OUTPUT_FILE   Output file name with results
-        """)
+    if config.getoption("--get-help"):
+        for group in config._parser._groups:
+            if group.name == "custom":
+                print("\nCustom Options:")
+                for option in group.options:
+                    # CLI flags: --model, --access, etc.
+                    opts = ", ".join(option._long_opts + option._short_opts)
 
-        pytest.exit("User defined options are shown.")
+                    # Get help, default, and choices from internal _attrs dict
+                    attrs = option._attrs
+                    help_str = attrs.get("help", "")
+                    default = attrs.get("default")
+                    choices = attrs.get("choices")
+
+                    # Format choices and default
+                    details = []
+                    if choices:
+                        details.append(f"choices: {choices}")
+                    if default is not None:
+                        details.append(f"default: {default}")
+                    if details:
+                        help_str += f" ({'; '.join(details)})"
+
+                    print(f"  {opts:<25} {help_str}")
+                break
+        else:
+            print("No custom options group found.")
+
+        pytest.exit("User-defined options are shown above.")
 
 
 # Define a fixture for the arguments
