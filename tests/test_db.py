@@ -1,23 +1,11 @@
 # tests/test_db.py
 import pytest
 import asyncio
-from sqlmodel import select
-from httpx import AsyncClient
-from src.infra.postgres.database import (
-    engine,
-    get_db,
-    create_tables,
-    init_db
-)
+from src.infra.postgres.database import get_db
 from src.infra.postgres.db_operations import insert_sqlmodel_list, get_data_by_name
 from src.domain.models.sql_models import Data, DataGraph
-from src.config import settings
 
-# @pytest.mark.asyncio
-# async def test_force_schema_create():
-#     await init_db()
-#     await create_tables(drop_first=True)
-    
+
 @pytest.fixture(scope="session")
 def event_loop():
     """Ensure event loop works for pytest-asyncio."""
@@ -32,17 +20,6 @@ async def db_session():
     async with get_db() as session:
         yield session
 
-
-# @pytest.fixture(scope="session", autouse=True)
-# async def prepare_test_db():
-#     """
-#     Set up the database schema and tables before tests.
-#     Assumes test database URL and schema are set via settings.
-#     """
-#     await init_db()
-#     await create_tables(drop_first=True)
-#     yield
-#     # Optional teardown logic
 
 @pytest.mark.asyncio
 async def test_insert_and_retrieve_data_graph(db_session):
