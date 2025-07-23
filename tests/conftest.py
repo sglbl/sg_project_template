@@ -1,6 +1,16 @@
 import os
 import pytest
 import argparse
+import asyncio
+from src.infra.postgres.database import init_db, create_tables
+
+@pytest.fixture(scope="session", autouse=True)
+async def init_test_db_once():
+    """
+    Run once before all tests to initialize test DB schema/tables.
+    """
+    await init_db()
+    await create_tables(drop_first=True)
 
 def pytest_addoption(parser):
     """Add custom CLI parameters to the pytest command"""

@@ -84,6 +84,8 @@ explicit = true
 
 [tool.pytest.ini_options]
 pythonpath = "." # Add the project root path to the pythonpath [to be able to import the 'src' module]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
 filterwarnings = ["ignore::DeprecationWarning", "ignore::FutureWarning", "ignore::PendingDeprecationWarning"]
 
 [tool.autopep8]

@@ -55,11 +55,9 @@ async def init_db():
 
 
 @logger.catch(reraise=True)
-async def create_tables(drop_first: bool = False): # Added drop_first parameter
-    # engine.url = settings.DB_SCHEMA_URL
-    # engine.execution_options(schema_translate_map={"schema": settings.DB_SCHEMA})
-
+async def create_tables(drop_first: bool = False): 
     async with engine.begin() as conn:
+        await conn.execute(text(f"CREATE SCHEMA IF NOT EXISTS {settings.DB_SCHEMA};"))
         await conn.execute(text(f"SET search_path TO {settings.DB_SCHEMA}"))
         if drop_first:
             logger.warning(f"Dropping all tables in schema '{settings.DB_SCHEMA}' before creation...")
