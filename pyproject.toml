@@ -30,6 +30,8 @@ dependencies = [
     "pytest-cov>=6.2.1",
     "sympy>=1.13.1",
     "pytest-asyncio>=1.1.0",
+    "psycopg2>=2.9.10",
+    "pgvector>=0.4.1",
 ]
 
 
