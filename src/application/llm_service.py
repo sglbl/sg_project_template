@@ -3,6 +3,7 @@ import dotenv
 import time
 from loguru import logger
 from overrides import override
+from src.config import settings
 from src.domain.models.data_classes import *
 from src.application.service_interfaces.llm_abstraction import ILLMService
 from src.domain.repo_interfaces.vectordb_repository import IVectorDBRepository
@@ -15,6 +16,7 @@ from haystack.components.preprocessors import DocumentCleaner, DocumentSplitter
 from haystack.components.embedders import SentenceTransformersDocumentEmbedder, SentenceTransformersTextEmbedder
 from haystack.components.builders.answer_builder import AnswerBuilder
 from haystack_integrations.components.retrievers.qdrant import QdrantEmbeddingRetriever
+from haystack_integrations.components.retrievers.pgvector import PgvectorEmbeddingRetriever
 from haystack.document_stores.types import DuplicatePolicy
 from haystack.components.converters import PyPDFToDocument, CSVToDocument
 
@@ -39,7 +41,7 @@ class LLMService(ILLMService):
                 raise ValueError("You need to put the OpenAI API key in .env file")
             self.llmmodel = LLMModel(name=llm_model_name, url="NOT_USED", embedding_name=embedding_model_name, embedding_dim=1536, mode=mode, api_key=openai_token)
         else: # Modes.OLLAMA
-            self.llmmodel = LLMModel(name=llm_model_name, url="https://ollama-plain.deducedata.solutions/api/generate", embedding_name=embedding_model_name)
+            self.llmmodel = LLMModel(name=llm_model_name, url=f"{settings.OLLAMA_API_URL}/api/generate", embedding_name=embedding_model_name)
 
         self.create_pipelines()
 
@@ -52,7 +54,7 @@ class LLMService(ILLMService):
         self.pipeline_pdf = self.create_indexing_pipeline(document_store, converter=PyPDFToDocument(), metadata_fields_to_embed=['file_name'])
         
         # MAIN RETRIEVAL PIPELINE
-        self.retrieval_pipeline = self.create_retrieval_pipeline(document_store)
+        self.retrieval_pipeline = self.create_retrieval_pipeline(document_store, embedding_retriver=self.vectordb_repository.embedding_retriever)
        
 
     @override
@@ -74,7 +76,7 @@ class LLMService(ILLMService):
 
 
     @override
-    def create_retrieval_pipeline(self, document_store):
+    def create_retrieval_pipeline(self, document_store, embedding_retriver):
         template = """
         Given only the following information, answer the question.
         Ignore your own knowledge.
@@ -89,7 +91,7 @@ class LLMService(ILLMService):
 
         retrieval_pipeline = Pipeline()
         retrieval_pipeline.add_component("text_embedder", SentenceTransformersTextEmbedder(model=self.llmmodel.embedding_name))
-        retrieval_pipeline.add_component("retriever", QdrantEmbeddingRetriever(document_store=document_store, top_k=20))
+        retrieval_pipeline.add_component("retriever", PgvectorEmbeddingRetriever(document_store=document_store, top_k=5))
         retrieval_pipeline.add_component("prompt_builder", PromptBuilder(template=template))
         retrieval_pipeline.add_component("llm", OllamaGenerator(model=self.llmmodel.name, timeout=250, url=self.llmmodel.url))
         retrieval_pipeline.add_component(name="answer_builder", instance=AnswerBuilder())
@@ -127,9 +129,12 @@ class LLMService(ILLMService):
         print(f"""LLM Reply: {response["answer_builder"]["answers"][0].data}""")
         return response["answer_builder"]["answers"][0].data, prompt
 
+
     @override
     def ask_rag_pipeline(self, chat_input):
-        model_result = f"RAG: {chat_input}"
+        # model_result = f"RAG: {chat_input}"
+        model_result, metadata = self.llm_rag_handler(chat_input["text"], chat_input["files"])
+        print(f"Model result: {model_result}")
         for i in range(len(model_result)):
             time.sleep(0.0001)
             yield model_result[: i+1], None

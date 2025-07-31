@@ -32,13 +32,13 @@ response_examples = {
 }
 
 
-def get_llm_service(qdrantdb) -> LLMService:
+def get_llm_service(vectordb) -> LLMService:
     """ Get the LLM service from application layer. It uses the QdrantDBRepository as the vectordb_repository  
     
     Returns:
         LLMPipeline
     """
-    return LLMService(vectordb_repository=qdrantdb)
+    return LLMService(vectordb_repository=vectordb)
 
 
 # HTTP STATUS CODES

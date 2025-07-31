@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     DB_PORT: str = "5432"
     DB_NAME: str = "postgres"
     DB_SCHEMA: Optional[str] = "example_schema_name"
+    OLLAMA_API_URL: str = "http://localhost:11434"
 
     # Logger
     LOG_LEVEL: str = "DEBUG"  

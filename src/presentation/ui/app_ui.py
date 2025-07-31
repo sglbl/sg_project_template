@@ -4,11 +4,13 @@ import gradio as gr
 import gradio_log as grl
 from pathlib import Path
 from loguru import logger
+from src.config import settings
 from src.application import utils
 from src.presentation.dependencies import *
 from src.application.llm_service import *
 from src.presentation.ui.asset import custom_js
 from src.infra.repo_implementations.qdrant_repository import QdrantDBRepository
+from src.infra.repo_implementations.pgvector_repository import PostgresVectorDBRepository
 
 
 examples = [[{"text": "Give me the all products", "files": []}], 
@@ -33,13 +35,13 @@ def ask_question(chat_input, history, model_mode):
 
 
 def get_models_list():
-    get_models_response = requests.get("https://ollama-plain.deducedata.solutions/api/tags", timeout=10)  # if you're outside, run zerotier vpn before
+    get_models_response = requests.get(f"{settings.OLLAMA_API_URL}/api/tags", timeout=10)  # if you're outside, run zerotier vpn before
     if get_models_response.status_code != 200:
         print(f"Error fetching models: {get_models_response.status_code}. No models available.")
         return ["No models available"]
     print(f"Available models: {get_models_response.status_code}")
     llm_models = [get_models_response.json()["models"][i]["name"] for i in range(len(get_models_response.json()["models"]))]
-    llm_models.insert(0, "gpt-4o-mini")  # add the OpenAI models
+    llm_models.insert(1, "gpt-4o-mini")  # add the OpenAI models
     return llm_models
 
 
@@ -88,8 +90,9 @@ def run_ui(launch_demo: bool = True) -> gr.Blocks:
                 dropdown = gr.Dropdown(choices=all_models, label="Select the model", interactive=True, allow_custom_value=False)
                 # create the default model
                 qdrantdb = QdrantDBRepository()
-                global llm_pipeline, sqlite_db
-                llm_pipeline = get_llm_service(qdrantdb)
+                postgresdb = PostgresVectorDBRepository()
+                global llm_pipeline
+                llm_pipeline = get_llm_service(postgresdb)
                 create_model_for_ui(dropdown.value)
 
             with gr.Column(visible=True) as outputs_view_chatbot:
@@ -112,7 +115,7 @@ def run_ui(launch_demo: bool = True) -> gr.Blocks:
                 #     chat = gr.ChatInterface(fn=ask_rag_pipeline, type="messages", chatbot=chatbot, multimodal=True, save_history=True, additional_outputs=[_metadata_info])
 
                 chat.textbox.placeholder = "Enter message or upload file (.csv, .db, .txt)..."
-                chat.textbox.file_types = [".csv", ".db", ".txt"]
+                chat.textbox.file_types = [".csv", ".db", ".txt", ".pdf"]
                 chat.textbox.file_count = "multiple"
                 chat.textbox.show_label = False
                 

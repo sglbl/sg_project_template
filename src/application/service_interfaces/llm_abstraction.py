@@ -57,11 +57,12 @@ class ILLMService(Interface):
         raise NotImplementedError
 
 
-    def create_retrieval_pipeline(self, document_store):
+    def create_retrieval_pipeline(self, document_store, embedding_retriver):
         """ Create the retrieval pipeline that will be used to retrieve the documents
             
         Args:
             document_store: Qdrant, Chroma, etc.
+            embedding_retriver: The retriever for the vector database (QdrantEmbeddingRetriever, PgvectorEmbeddingRetriever, etc.)
         """
         raise NotImplementedError
 
