@@ -1,7 +1,7 @@
 from sqlmodel import SQLModel, select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy import inspect, engine
-from src.infra.postgres.database import get_db
+from src.infra.postgres.database_async import get_db
 from loguru import logger
 from src.domain.models.sql_models import DataGraph, Data
 

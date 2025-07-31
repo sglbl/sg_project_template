@@ -1,7 +1,7 @@
 # tests/test_db.py
 import pytest
 import asyncio
-from src.infra.postgres.database import get_db
+from src.infra.postgres.database_async import get_db
 from src.infra.postgres.db_operations import insert_sqlmodel_list, get_data_by_name
 from src.domain.models.sql_models import Data, DataGraph
 

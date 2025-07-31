@@ -3,7 +3,6 @@ from src.config import settings
 from src.domain.repo_interfaces.vectordb_repository import IVectorDBRepository
 from haystack_integrations.document_stores.pgvector import PgvectorDocumentStore
 from haystack_integrations.components.retrievers.pgvector import PgvectorEmbeddingRetriever
-from src.infra.postgres.create_vdb import connect_to_db, setup_schema, create_embeddings_table
 
 
 class PostgresVectorDBRepository(IVectorDBRepository):
@@ -12,9 +11,6 @@ class PostgresVectorDBRepository(IVectorDBRepository):
         self.create_embedding_retriever(top_k=25)
         
     def create_document_store(self):
-        conn = connect_to_db()
-        cursor = conn.cursor()
-        setup_schema(cursor, schema_name=settings.DB_SCHEMA)
         # create_embeddings_table(cursor, table_name="embeddings2", dim=3)
         print("Creating document store with pgvector...")
         # os.environ["PG_CONN_STR"] = settings.DB_URL

@@ -6,10 +6,17 @@ from asyncpg.exceptions import ConnectionDoesNotExistError
 from sqlmodel import SQLModel, text
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from contextlib import contextmanager
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from src.config import settings
 from src.config import settings
 from src.domain.models.sql_models import Data 
 
 # NOTE: Call all the tables (in domain.models) to register them
+
+
+# ASYNC DB connection
 
 # # Create the engine
 engine = create_async_engine(
@@ -31,7 +38,7 @@ async def get_db():
         # change schema
         await session.exec(text(f"SET search_path TO {settings.DB_SCHEMA}"))
         yield session
-
+        
 
 @logger.catch(reraise=True)
 async def init_db_with_retry(retries=10, delay=2):

@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import RedirectResponse, JSONResponse, PlainTextResponse
 from contextlib import asynccontextmanager
 from src.presentation.ui.app_ui import run_ui
-from ...infra.postgres import database
+from ...infra.postgres import database_async
 from ...application import utils
 from ...config import settings
 from ..dependencies import *

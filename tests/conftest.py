@@ -2,7 +2,7 @@ import os
 import pytest
 import argparse
 import asyncio
-from src.infra.postgres.database import init_db, create_tables
+from src.infra.postgres.database_async import init_db, create_tables
 
 @pytest.fixture(scope="session", autouse=True)
 async def init_test_db_once(request):
