@@ -1,7 +1,7 @@
 # tests/test_db.py
 import pytest
 import asyncio
-from src.infra.postgres.database_async import get_db
+from src.infra.postgres.database_async import get_db_async
 from src.infra.postgres.db_operations import insert_sqlmodel_list, get_data_by_name
 from src.domain.models.sql_models import Data, DataGraph
 
@@ -17,7 +17,7 @@ def event_loop():
 @pytest.fixture()
 async def db_session():
     """Provide a session with the test DB schema set."""
-    async with get_db() as session:
+    async with get_db_async() as session:
         yield session
 
 

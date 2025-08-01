@@ -39,7 +39,6 @@ def get_models_list():
     if get_models_response.status_code != 200:
         print(f"Error fetching models: {get_models_response.status_code}. No models available.")
         return ["No models available"]
-    print(f"Available models: {get_models_response.status_code}")
     llm_models = [get_models_response.json()["models"][i]["name"] for i in range(len(get_models_response.json()["models"]))]
     llm_models.insert(1, "gpt-4o-mini")  # add the OpenAI models
     return llm_models

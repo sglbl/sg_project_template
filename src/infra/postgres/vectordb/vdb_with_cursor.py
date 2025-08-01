@@ -47,7 +47,7 @@ def setup_pgvector_extension(cursor):
         raise
 
 
-def create_embeddings_table(cursor, table_name: str = "embeddings", dim: int = 3):
+def create_embeddings_table(cursor, table_name: str = "embeddings_trial", dim: int = 3):
     """Create the embeddings table with specified vector dimension."""
     try:
         create_table_sql = sql.SQL("""
@@ -68,7 +68,7 @@ def create_embeddings_table(cursor, table_name: str = "embeddings", dim: int = 3
         raise
 
 
-def insert_data(cursor, table_name: str = "embeddings"):
+def insert_data(cursor, table_name: str = "embeddings_trial"):
     """ Insert sample data into the embeddings table for testing purposes."""
 
     try:
@@ -84,7 +84,7 @@ def insert_data(cursor, table_name: str = "embeddings"):
             ("label2", "http://example.com/2", "The article on cats", 150, np.random.rand(3).tolist()),
             ("label3", "http://example.com/3", "The article on cars", 200, np.random.rand(3).tolist()),
             ("label4", "http://example.com/4", "The article on books", 250, np.random.rand(3).tolist()),
-            ("label5", "http://example.com/5", "The article on embeddings", 300, np.random.rand(3).tolist())
+            ("label5", "http://example.com/5", "The article on embeddings_trial", 300, np.random.rand(3).tolist())
         ]
 
         # Insert data into the table
@@ -96,7 +96,7 @@ def insert_data(cursor, table_name: str = "embeddings"):
         raise
 
 
-def query_similar_embeddings(cursor, query_vector, table_name: str = "embeddings", top_k: int = 5):
+def query_similar_embeddings(cursor, query_vector, table_name: str = "embeddings_trial", top_k: int = 5):
     """Query the top K similar embeddings from the table."""
     try:
         query = sql.SQL("""

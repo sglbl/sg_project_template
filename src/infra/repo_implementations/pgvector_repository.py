@@ -10,18 +10,18 @@ class PostgresVectorDBRepository(IVectorDBRepository):
         self.create_document_store()
         self.create_embedding_retriever(top_k=25)
         
-    def create_document_store(self):
+    def create_document_store(self, table_name: str = "embeddings", dim: int = 768):
         # create_embeddings_table(cursor, table_name="embeddings2", dim=3)
         print("Creating document store with pgvector...")
-        # os.environ["PG_CONN_STR"] = settings.DB_URL
-        os.environ["PG_CONN_STR"] = f"postgresql://{settings.DB_USER}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
+
+        os.environ["PG_CONN_STR"] = settings.SYNC_DB_URL
 
         self.document_store = PgvectorDocumentStore(
             schema_name=settings.DB_SCHEMA,
-            table_name="embeddings2",
+            table_name=table_name,
             recreate_table=True,
             vector_function="cosine_similarity",
-            embedding_dimension=768,
+            embedding_dimension=dim,
         )
         return self.document_store
     

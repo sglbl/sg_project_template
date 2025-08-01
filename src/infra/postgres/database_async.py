@@ -1,14 +1,11 @@
-import os
 import asyncio
 from loguru import logger
 from contextlib import asynccontextmanager
 from asyncpg.exceptions import ConnectionDoesNotExistError
-from sqlmodel import SQLModel, text
+from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
-from contextlib import contextmanager
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from src.config import settings
 from src.config import settings
 from src.domain.models.sql_models import Data 
@@ -33,7 +30,7 @@ AsyncSessionLocal = async_sessionmaker(
 
 
 @asynccontextmanager
-async def get_db():
+async def get_db_async():
     async with AsyncSessionLocal() as session:
         # change schema
         await session.exec(text(f"SET search_path TO {settings.DB_SCHEMA}"))

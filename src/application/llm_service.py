@@ -5,7 +5,7 @@ from loguru import logger
 from overrides import override
 from src.config import settings
 from src.domain.models.data_classes import *
-from src.application.service_interfaces.llm_abstraction import ILLMService
+from src.application.service_interfaces.i_llm import ILLMService
 from src.domain.repo_interfaces.vectordb_repository import IVectorDBRepository
 
 from haystack import Pipeline

@@ -11,7 +11,7 @@ from src.domain.models.sql_models import Data
 
 # --- Sync SQLAlchemy engine ---
 sync_engine = create_engine(
-    url=f"postgresql://{settings.DB_USER}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}",
+    url=settings.SYNC_DB_URL,
     echo=settings.SQLALCHEMY_LOG_LEVEL,
     future=True,
     pool_pre_ping=True
