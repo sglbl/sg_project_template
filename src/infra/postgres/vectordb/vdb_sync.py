@@ -63,7 +63,6 @@ def insert_data(session, table_name: str = "embeddings_trial", dim: int = 3):
     logger.info(f"Sample data inserted into '{table_name}' table.")
 
 
-
 def query_similar_embeddings_sync(session, query_vector, table_name: str = "embeddings_trial", top_k: int = 5):
     try:
         query_text = text(f"""
