@@ -9,8 +9,6 @@ from src.application import utils
 from src.presentation.dependencies import *
 from src.application.llm_service import *
 from src.presentation.ui.assets import custom_js
-from src.infra.repo_implementations.qdrant_repository import QdrantDBRepository
-from src.infra.repo_implementations.pgvector_repository import PostgresVectorDBRepository
 
 
 examples = [[{"text": "Give me the all products", "files": []}], 
@@ -62,6 +60,10 @@ def add_to_db(x: gr.LikeData):
    
 # src/presentation/ui/app_ui.py
 def run_ui(services, launch_demo: bool = True) -> gr.Blocks:
+    global llm_pipeline
+    llm_service: LLMService = services["llm_service"]
+    llm_pipeline = llm_service
+
     # Create a logger
     utils.set_logger("DEBUG", write_to_file=True)
     # Remove the previous db
@@ -92,12 +94,6 @@ def run_ui(services, launch_demo: bool = True) -> gr.Blocks:
                 gr.Markdown("Please select the model and the simulation mode", elem_classes="row-header")
 
                 dropdown = gr.Dropdown(choices=all_models, label="Select the model", interactive=True, allow_custom_value=False)
-                # create the default model
-                # ----------------------------
-                # Injected Services instead of creating infra here
-                # ----------------------------
-                global llm_pipeline
-                llm_pipeline: LLMService = services["llm_service"]
 
                 # Call your existing function as before
                 create_model_for_ui(dropdown.value)

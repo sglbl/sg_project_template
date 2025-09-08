@@ -1,6 +1,6 @@
 # src/presentation/bootstrap.py
-from src.infra.repo_implementations.qdrant_repository import QdrantDBRepository
-from src.infra.repo_implementations.pgvector_repository import PostgresVectorDBRepository
+from src.infra.persistence.qdrant_repository import QdrantDBRepository
+from src.infra.persistence.pgvector_repository import PostgresVectorDBRepository
 from src.presentation.dependencies import get_llm_service
 
 def create_services(model: str = "postgres") -> dict:

@@ -1,6 +1,6 @@
 import os
 import argparse
-from src.infra.repo_implementations.qdrant_repository import QdrantDBRepository
+from src.infra.persistence.qdrant_repository import QdrantDBRepository
 from src.presentation.ui import ui_with_multimodal
 from src.presentation.dependencies import get_llm_service
 
