@@ -6,19 +6,7 @@ from src.domain.repo_interfaces.vectordb_repository import IVectorDBRepository
 
 
 class ILLMService(Interface):    
-    """LLM Pipeline interface
-
-    Attributes:
-    Protocol : Does not allow to create instances of the abstract class
-    """
-    def __init__(self, vectordb_repository: IVectorDBRepository):
-        """LLM Pipeline service constructor
-
-        Args:
-            vectordb_repository (IVectorDBRepository): Repository for the vector database (qdrant, chroma, etc.)
-        """
-        raise NotImplementedError
-    
+    """LLM Pipeline interface"""
     
     def create_model(self, llm_model_name: str, embedding_model_name: str, mode: Modes):
         """ Create the LLM, embedding model and pipelines

@@ -26,6 +26,8 @@ class LLMService(ILLMService):
 
     Superclass:
         ILLMService (Interface): Interface for the LLM Pipeline
+    Constructor Args:
+        vectordb_repository (IVectorDBRepository): Repository for the vector database (qdrant, chroma, etc.)
     """
     
     def __init__(self, vectordb_repository: IVectorDBRepository):
