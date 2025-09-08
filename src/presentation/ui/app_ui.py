@@ -44,7 +44,7 @@ def get_models_list(reraise_exception: bool = False) -> list:
         if reraise_exception:
             raise ConnectionError(f"Error fetching models on {settings.OLLAMA_API_URL}: {e}") from None
         logger.warning(f"Error fetching models on {settings.OLLAMA_API_URL}: {e}")
-
+    logger.debug(f"Available models: {llm_models}")
     return llm_models
 
 
@@ -60,7 +60,8 @@ def add_to_db(x: gr.LikeData):
     print(f'Printing liked: {x.liked}')
 
    
-def run_ui(launch_demo: bool = True) -> gr.Blocks:
+# src/presentation/ui/app_ui.py
+def run_ui(services, launch_demo: bool = True) -> gr.Blocks:
     # Create a logger
     utils.set_logger("DEBUG", write_to_file=True)
     # Remove the previous db
@@ -92,10 +93,13 @@ def run_ui(launch_demo: bool = True) -> gr.Blocks:
 
                 dropdown = gr.Dropdown(choices=all_models, label="Select the model", interactive=True, allow_custom_value=False)
                 # create the default model
-                qdrantdb = QdrantDBRepository()
-                postgresdb = PostgresVectorDBRepository()
+                # ----------------------------
+                # Injected Services instead of creating infra here
+                # ----------------------------
                 global llm_pipeline
-                llm_pipeline = get_llm_service(postgresdb)
+                llm_pipeline: LLMService = services["llm_service"]
+
+                # Call your existing function as before
                 create_model_for_ui(dropdown.value)
 
             with gr.Column(visible=True) as outputs_view_chatbot:

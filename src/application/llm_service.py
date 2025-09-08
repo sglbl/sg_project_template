@@ -31,6 +31,9 @@ class LLMService(ILLMService):
     def __init__(self, vectordb_repository: IVectorDBRepository):
         self.vectordb_repository = vectordb_repository
 
+    def __repr__(self):
+        return f"LLMService(vectordb_repository={self.vectordb_repository} llmmodel={self.llmmodel})"
+
     @override
     def create_model(self, llm_model_name, embedding_model_name, mode=Modes.OLLAMA):
         logger.opt(colors=True).info(f"\nUsing the LLM Model <bg #AF5FD7>'{llm_model_name}'</>") # and {embedding_model_name}")    
