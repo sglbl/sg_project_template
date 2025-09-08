@@ -3,7 +3,7 @@ import os
 import time
 import gradio as gr
 from src.application.llm_service import *
-from src.presentation.ui.asset import *
+from src.presentation.ui.assets import *
 
 
 examples = [[{"text": "Where did normans invade", "files": []}], [{"text": "where did normans invade, answer in english", "files": []}]]
