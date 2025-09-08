@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     DB_NAME: str = "postgres"
     DB_SCHEMA: str = "example_schema_name"
     OLLAMA_API_URL: str = "http://localhost:11434"
+    OPENAI_API_KEY: Optional[str] = None
 
     # Logger
     LOG_LEVEL: str = "DEBUG"  

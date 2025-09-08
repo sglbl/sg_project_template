@@ -8,7 +8,7 @@ from src.config import settings
 from src.application import utils
 from src.presentation.dependencies import *
 from src.application.llm_service import *
-from src.presentation.ui.asset import custom_js
+from src.presentation.ui.assets import custom_js
 from src.infra.repo_implementations.qdrant_repository import QdrantDBRepository
 from src.infra.repo_implementations.pgvector_repository import PostgresVectorDBRepository
 
@@ -34,13 +34,17 @@ def ask_question(chat_input, history, model_mode):
     return list(answer)[-1]
 
 
-def get_models_list():
-    get_models_response = requests.get(f"{settings.OLLAMA_API_URL}/api/tags", timeout=10)  # if you're outside, run zerotier vpn before
-    if get_models_response.status_code != 200:
-        print(f"Error fetching models: {get_models_response.status_code}. No models available.")
-        return ["No models available"]
-    llm_models = [get_models_response.json()["models"][i]["name"] for i in range(len(get_models_response.json()["models"]))]
-    llm_models.insert(1, "gpt-4o-mini")  # add the OpenAI models
+def get_models_list(reraise_exception: bool = False) -> list:
+    llm_models = ["gpt-4o-mini"]
+    try:
+        resp = requests.get(f"{settings.OLLAMA_API_URL}/api/tags", timeout=10)
+        resp.raise_for_status()
+        llm_models.extend([m["name"] for m in resp.json().get("models", [])])
+    except requests.exceptions.RequestException as e:
+        if reraise_exception:
+            raise ConnectionError(f"Error fetching models on {settings.OLLAMA_API_URL}: {e}") from None
+        logger.warning(f"Error fetching models on {settings.OLLAMA_API_URL}: {e}")
+
     return llm_models
 
 
@@ -66,7 +70,7 @@ def run_ui(launch_demo: bool = True) -> gr.Blocks:
     
     # Create the interface
     theme = gr.themes.Soft(radius_size="sm", neutral_hue=gr.themes.Color(c100="#FFFFFF", c200="#9399b2", c300="#7f849c", c400="#6c7086", c50="#cdd6f4", c500="#585b70", c600="#45475a", c700="#313244", c800="#1e1e2e", c900="#181825", c950="#11111b"))
-    custom_css = "src/presentation/ui/asset/custom_ui.css"        
+    custom_css = "src/presentation/ui/assets/custom_ui.css"        
     title = "My Project"
     with gr.Blocks(title=title, theme=theme, css_paths=custom_css, js=custom_js.js) as demo:
         # create title with the logo
