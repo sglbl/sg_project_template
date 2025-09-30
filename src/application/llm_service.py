@@ -9,11 +9,14 @@ from src.application.service_interfaces.i_llm import ILLMService
 from src.domain.repo_interfaces.vectordb_repository import IVectorDBRepository
 
 from haystack import Pipeline
+from haystack.utils import Secret
 from haystack_integrations.components.generators.ollama import OllamaGenerator
 from haystack.components.writers import DocumentWriter
 from haystack.components.builders.prompt_builder import PromptBuilder
 from haystack.components.preprocessors import DocumentCleaner, DocumentSplitter
 from haystack.components.embedders import SentenceTransformersDocumentEmbedder, SentenceTransformersTextEmbedder
+from haystack.components.embedders import OpenAITextEmbedder, OpenAIDocumentEmbedder
+from haystack.components.generators.openai import OpenAIGenerator
 from haystack.components.builders.answer_builder import AnswerBuilder
 from haystack_integrations.components.retrievers.qdrant import QdrantEmbeddingRetriever
 from haystack_integrations.components.retrievers.pgvector import PgvectorEmbeddingRetriever
@@ -44,7 +47,7 @@ class LLMService(ILLMService):
             openai_token = os.getenv("OPENAI_API_KEY")
             if openai_token is None:
                 raise ValueError("You need to put the OpenAI API key in .env file")
-            self.llmmodel = LLMModel(name=llm_model_name, url="NOT_USED", embedding_name=embedding_model_name, embedding_dim=1536, mode=mode, api_key=openai_token)
+            self.llmmodel = LLMModel(name=llm_model_name, url="NOT_USED", embedding_name=embedding_model_name, embedding_dim=768, mode=mode, api_key=openai_token)
         else: # Modes.OLLAMA
             self.llmmodel = LLMModel(name=llm_model_name, url=f"{settings.OLLAMA_API_URL}/api/generate", embedding_name=embedding_model_name)
 
@@ -69,7 +72,10 @@ class LLMService(ILLMService):
         pipeline_indexing.add_component("converter", converter)
         pipeline_indexing.add_component("cleaner", DocumentCleaner())
         pipeline_indexing.add_component("splitter", DocumentSplitter(split_by="word", split_length=200, split_overlap = 30))
-        pipeline_indexing.add_component("embedder", SentenceTransformersDocumentEmbedder(model=self.llmmodel.embedding_name, meta_fields_to_embed=metadata_fields_to_embed))
+        if self.llmmodel.mode == Modes.OPENAI:
+            pipeline_indexing.add_component("embedder", OpenAIDocumentEmbedder(model=self.llmmodel.embedding_name, api_key=Secret.from_token(self.llmmodel.api_key), dimensions=self.llmmodel.embedding_dim, meta_fields_to_embed=metadata_fields_to_embed))
+        else:
+            pipeline_indexing.add_component("embedder", SentenceTransformersDocumentEmbedder(model=self.llmmodel.embedding_name, meta_fields_to_embed=metadata_fields_to_embed))
         pipeline_indexing.add_component("writer", DocumentWriter(document_store=document_store, policy=DuplicatePolicy.OVERWRITE))
         
         pipeline_indexing.connect("converter", "cleaner")
@@ -95,13 +101,20 @@ class LLMService(ILLMService):
         """
 
         retrieval_pipeline = Pipeline()
-        retrieval_pipeline.add_component("text_embedder", SentenceTransformersTextEmbedder(model=self.llmmodel.embedding_name))
+        if self.llmmodel.mode == Modes.OPENAI:
+            retrieval_pipeline.add_component("text_embedder", OpenAITextEmbedder(model=self.llmmodel.embedding_name, api_key=Secret.from_token(self.llmmodel.api_key), dimensions=self.llmmodel.embedding_dim))
+        else:
+            retrieval_pipeline.add_component("text_embedder", SentenceTransformersTextEmbedder(model=self.llmmodel.embedding_name))
         retrieval_pipeline.add_component("retriever", PgvectorEmbeddingRetriever(document_store=document_store, top_k=5))
         retrieval_pipeline.add_component("prompt_builder", PromptBuilder(template=template))
-        retrieval_pipeline.add_component("llm", OllamaGenerator(model=self.llmmodel.name, timeout=250, url=self.llmmodel.url))
+        
+        if self.llmmodel.mode == Modes.OPENAI:
+            retrieval_pipeline.add_component("llm", OpenAIGenerator(model=self.llmmodel.name, timeout=250, api_key=Secret.from_token(self.llmmodel.api_key), generation_kwargs={"temperature": 0}))
+        else:
+            retrieval_pipeline.add_component("llm", OllamaGenerator(model=self.llmmodel.name, timeout=250, url=self.llmmodel.url))
         retrieval_pipeline.add_component(name="answer_builder", instance=AnswerBuilder())
 
-        retrieval_pipeline.connect("text_embedder", "retriever")    
+        retrieval_pipeline.connect("text_embedder.embedding", "retriever.query_embedding")    
         retrieval_pipeline.connect("retriever", "prompt_builder")
         retrieval_pipeline.connect("prompt_builder", "llm")
         retrieval_pipeline.connect("llm.replies", "answer_builder.replies")

@@ -11,7 +11,7 @@ if __name__ == "__main__":
         import os
         if e.name == "src":
             print(f"{e}, running the app with '\033[92mpython -m src.main_ui'\033[0m instead!")
-            os.system("python -m src.main")
+            os.system("python -m src.main_ui")
         else:
             print(f'Error: {e}. Please check the modules!\n')
             raise e
