@@ -38,7 +38,7 @@ def run_ui(llmservice_dependency: LLMService):
     # Run the app
     with gr.Blocks(title="Sg GPT") as demo:        
         # create title with the logo
-        with open("data/images/logo.png", "rb") as f:
+        with open("data/assets/images/logo.png", "rb") as f:
             logo_base64 = base64.b64encode(f.read()).decode()
         title_with_logo = f""" <h1 style="text-align:center; font-family:'system-ui'; display:block;">SG GPT</h1>
                             <img src="data:image/jpeg;base64,{logo_base64}" width="100" style='display:block; margin-left: auto; 
@@ -94,7 +94,7 @@ def run_ui(llmservice_dependency: LLMService):
     demo.launch(
         server_name=os.getenv("GRADIO_SERVER_NAME", "0.0.0.0"),
         server_port=int(os.getenv("GRADIO_SERVER_PORT", 8000)),
-        favicon_path="./data/images/favicon.ico"
+        favicon_path="./data/assets/images/favicon.ico"
     )
 
 if __name__ == "__main__":

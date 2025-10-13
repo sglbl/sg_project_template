@@ -80,7 +80,7 @@ def run_ui(services, launch_demo: bool = True) -> gr.Blocks:
         with gr.Row(elem_classes="row-header") as title:
             logo_with_title = f"""
                 <h1 style="text-align:center; bold; display:block; font-family:'Montserrat';">{title}</h1>
-                <img src="/gradio_api/file=data/images/logo.png" width="120" style='display:block; margin-left: auto; 
+                <img src="/gradio_api/file=data/assets/images/logo.png" width="120" style='display:block; margin-left: auto; 
                 margin-right: auto; padding-top: 1ch; align-items: center; justify-content: center;'>
             """
             # Header with logo
@@ -107,7 +107,7 @@ def run_ui(services, launch_demo: bool = True) -> gr.Blocks:
                     bubble_full_width=True,
                     type="messages",
                     placeholder="<strong>Your Data Gpt</strong><br>Ask Me Anything",
-                    avatar_images=("data/images/avatars/user.png", "data/images/avatars/robot.png"),
+                    avatar_images=("data/assets/images/avatars/user.png", "data/assets/images/avatars/robot.png"),
                 )
                 
                 button_hidden_other_results = gr.Button(elem_id="hidden_other_results", visible=False)
@@ -142,8 +142,8 @@ def run_ui(services, launch_demo: bool = True) -> gr.Blocks:
         demo.launch(
             server_name=os.getenv("GRADIO_SERVER_NAME", "0.0.0.0"),
             server_port=int(os.getenv("GRADIO_SERVER_PORT", 8000)),
-            favicon_path="./data/images/favicon.ico",
-            allowed_paths=["./data/images", "./data/example_inputs", "/tmp/**"],
+            favicon_path="./data/assets/images/favicon.ico",
+            allowed_paths=["./data/assets/**", "./data/assets/images/", "/tmp/**"],
             show_error=True,
             show_api=True
         )

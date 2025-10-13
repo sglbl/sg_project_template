@@ -10,10 +10,10 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ### Managing the Virtual Environment
 
-Create the **python3.10** `.venv` virtual environment with this command on the project root directory.
+Create the **python3.12** `.venv` virtual environment with this command on the project root directory.
 
 ```bash
-uv venv --python 3.10.12
+uv venv --python 3.12
 ```
 
 Activate the virtual environment.
@@ -35,7 +35,7 @@ uv sync
 ```
 
 #### Other Requirements
-Put the secret tokens, keys, etc. in `.env` file in root directory. (Check the example in [`.env.example`](data/example_inputs/.env.example) file)
+Put the secret tokens, keys, etc. in `.env` file in root directory. (Check the example in [`.env.example`](data/config/.env.example) file)
 
 ### Running the Application
 
@@ -55,7 +55,7 @@ pdoc3 --html -o data/_app_docs/ src --force
 
 ---
 ### Full Structure 
-<img src="data/docs/onion-architecture.png" width="500"/>
+<img src="https://sglbl.github.io/sg_project_template/data/docs/onion-architecture.png" width="500"/>
 
 ```diff
 .
