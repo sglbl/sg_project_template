@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import ValidationError
 from src.presentation.dependencies import *
-from src.domain.models.pydantic_schemas import *
+from src.domain.schemas.pydantic_schemas import *
 
 router_name = __name__.split(".")[-1] # get the name of the file to use it in the router
 
