@@ -55,7 +55,7 @@ pdoc3 --html -o data/_app_docs/ src --force
 
 ---
 ### Full Structure 
-<img src="https://sglbl.github.io/sg_project_template/data/docs/onion-architecture.png" width="500"/>
+<img src="https://sglbl.github.io/sg_project_template/data/example_inputs/onion-architecture.png" width="500"/>
 
 ```diff
 .

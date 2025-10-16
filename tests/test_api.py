@@ -42,7 +42,7 @@ def test_gradio(args, question):
     
     result = client.predict(
         message={"text":"Answer the question if the file has answer", "files": input_file_paths},
-		param_2="No models available",
+		param_2="gpt-4o-mini",
 		api_name="/chat"
     )
 

@@ -10,7 +10,7 @@ def argument_parser():
     embedding_models = ["bge-m3", "bge-m3-unsupervised", "nomic-embed-text-v1", "multilingual-e5-large-instruct"] # even worse: #"bge-large-en-v1.5" #"all-MiniLM-L6-v2" # or "all-mpnet-base-v2"
     # Define the parser
     des = """This is an application for Deduce GPT. You can define the model using --llm or/and --embedding"""
-    epi = """Example: python app.py [--embedding bge-m3]"""
+    epi = """Example: python src/main_with_args.py [--embedding bge-m3]"""
     parser = argparse.ArgumentParser(description=des, epilog=epi)
     
     o_group = parser.add_argument_group('Optional Arguments')
