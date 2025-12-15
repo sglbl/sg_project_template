@@ -91,3 +91,16 @@ filterwarnings = ["ignore::DeprecationWarning", "ignore::FutureWarning", "ignore
 
 [tool.autopep8]
 max_line_length = 150
+
+[tool.pyright]
+reportMissingImports = "error"
+reportMissingTypeStubs = false
+reportArgumentType = false
+reportAttributeAccessIssue = false
+reportOptionalMemberAccess = false
+reportIncompatibleVariableOverride = false
+reportReturnType = false
+reportGeneralTypeIssues = false
+reportAssignmentType = false
+reportCallIssue = false
+reportUnusedCallResult = false
