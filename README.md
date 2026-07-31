@@ -1,103 +1,133 @@
-# Project Setup
+# SG Project Template
 <!-- Author: @sglbl -->
-### Installing `uv` project manager
 
-Ensure you have [`uv`](https://sglbl.notion.site/UV-149a7f36b84480b0b4f4f074883bcd42) installed on your system. If not, install it using the following command:
+A clean, modular Python application template using **Clean Architecture** (Onion Architecture), **Streamlit UI**, **FastAPI REST API**, **Typer CLI**, **PostgreSQL / SQLModel**, and **Marimo Notebooks**.
+
+---
+
+## 🚀 Quick Start
+
+### 1. Prerequisites & Virtual Environment
+
+Ensure you have [`uv`](https://sglbl.notion.site/UV-149a7f36b84480b0b4f4f074883bcd42) installed:
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### Managing the Virtual Environment
-
-Create the **python3.12** `.venv` virtual environment with this command on the project root directory.
+Create and activate the Python 3.12 virtual environment:
 
 ```bash
 uv venv --python 3.12
-```
-
-Activate the virtual environment.
-```bash
-# You can activate the virtual environment with the following command.
 source .venv/bin/activate
-
-# You can deactivate the virtual environment with the following command.
-deactivate
 ```
-> Next time the project workstation is opened, these commands can be used to activate/deactivate the virtual environment.
 
-### Setting Up the Project Environment
-
-Once `uv` is installed and environment is activated, use this to set up the project dependencies:
+Install project dependencies:
 
 ```bash
 uv sync
 ```
 
-#### Other Requirements
-Put the secret tokens, keys, etc. in `.env` file in root directory. (Check the example in [`.env.example`](data/config/.env.example) file)
+---
 
-### Running the Application
+## ⚡ Running the Application
 
+You can execute commands directly using the root executable `./run` or `python -m src.main`:
 
 ```bash
-python -m src.main
-python -m src.main_api
+# Display CLI help menu & options
+./run
+# (or python -m src.main)
+
+# Launch Streamlit UI
+./run ui
+
+# Launch FastAPI REST API server (port 8001)
+./run api
+
+# Check environment & DB status
+./run status
+
+# Display project version
+./run version
 ```
 
 ---
-### Generate Html Docs
+
+## 📊 Interactive Marimo Notebooks
+
+Exploratory notebooks are placed in the root [`notebooks/`](notebooks) directory to keep `src/` clean:
+
 ```bash
-pdoc3 --html -o data/_app_docs/ src --force
+# Edit interactive Marimo notebook in browser
+marimo edit notebooks/explore_marimo.py
+
+# Serve notebook as a standalone web app
+marimo run notebooks/explore_marimo.py
 ```
 
-**Note:** Docs will compile the written Google Docstring for the classes and functions.
+---
+
+## 🧪 Testing & Static Verification
+
+Run static type checks and unit test suite:
+
+```bash
+# Run unit tests and Pyright type verification
+pytest -m "not integration"
+
+# Run full test suite including live service checks
+pytest
+```
 
 ---
-### Full Structure 
-<img src="https://sglbl.github.io/sg_project_template/data/example_inputs/onion-architecture.png" width="500"/>
 
-```diff
+## 📚 HTML Documentation Generation
+
+Generate HTML documentation from docstrings using `pdoc3`:
+
+```bash
+pdoc3 --html -o data/_docs/ src --force
+```
+
+---
+
+## 🏗️ Project Architecture & Layout
+
+```
 .
-@@─ pyproject.toml                      # All project details and python dependencies. (Created by uv) @@
-├── README.md                           # Project overview and instructions for use.
-├── data                                # Directory for data-related files.
-│   ├── docs                            # Documentation files related to data.
-│   ├── images                          # Directory for storing image assets.
-│   ├── ml_models                       # Directory for storing LLMs and ML models.
-│   └── processed                       # Directory for processed data outputs.
-├── docker                              # Docker-related configurations and scripts.
-│   ├── x.Dockerfile                    # Dockerfile for building the project's container for x.
-│   ├── docker-build.sh                 # Shell script to automate Docker builds.
-│   └── docker-compose.yml              # Defining multi-container Docker applications.
-!── src                                 # Source code using onion architecture (Dependency goes inwards)
-│   ├── main_api.py                     # Entry point for the API layer of the application.  
-│   ├── main_ui.py                      # Entry point for the UI layer of the application.  
-+   ├── application                     # Contains high-level application logic.  
-│   │   ├── x_services/                 # Service layer for LLM-related operations.  
-│   │   ├── service_interfaces/         # Interface for abstraction of services.
-│   │   └── utils.py                    # Helper functions for the app.  
-+   ├── domain                          # Contains core business logic and domain models.  
-│   │   ├── models                      # Directory for domain-specific data models.  
-│   │   │   └── data_models.py          # Business logic / domain data models with data classes.  
-│   │   └── repository_interfaces       # Interfaces for repository patterns.  
-│   │       └── y_repository.py         # Interface for some external operations.  
-+   ├── infra                           # Infrastructure code, particularly for database handling.  
-│   │   ├── database                    # Database-related configurations and utilities.  
-│   │   │   └── db_create.py            # Script to initialize and create database schema.  
-│   │   └── repository_implementations  # Implementations of repository interfaces.  
-│   │       └── y_repository.py         # Implementation of repository.  
-+   └── presentation                    # Presentation layer like APIs and UIs.  
-│       ├── dependencies.py             # Dependencies for presentation layer (API token checks, etc.).  
-│       ├── rest                        # API-related presentation logic.  
-│       │   ├── routers                 # API route definitions.  
-│       │   │   └── items.py            # Routes related to item operations.  
-│       │   ├── schemas.py              # Data validation and serialization schemas.  
-│       │   └── serve_api.py            # Code to serve the API, possibly using FastAPI or Flask.  
-│       └── ui                          # UI-related presentation logic.  
-│           ├── asset.py                # CSS & JS functions needed for UI.  
-│           └── gradio_ui.py            # UI Implementation.  
-├── tests                               # Directory for test cases and configurations.  
-│   ├── conftest.py                     # Test fixtures and setup configurations.  
-│   └── test_api.py                     # Test cases for API endpoints.  
+├── run                                 # Root executable wrapper script for CLI commands
+├── pyproject.toml                      # Project metadata & dependencies
+├── README.md                           # Project instructions & overview
+├── data/                               # Application assets, configs, and sample inputs
+├── notebooks/                          # Root-level Marimo & Jupyter exploratory notebooks
+│   ├── README.md                       # Marimo usage guide
+│   ├── explore_marimo.py              # Interactive Plotly analytics notebook
+│   └── trial.ipynb                     # Jupyter notebook
+├── src/                                # Application source code (Clean Architecture)
+│   ├── main.py                         # Application CLI entrypoint
+│   ├── version.py                      # Application version string (__version__)
+│   ├── config.py                       # Configuration & pydantic-settings
+│   ├── application/                    # Application use cases & helper utilities
+│   │   └── utils.py                    # Helper utilities
+│   ├── domain/                         # Core domain logic, models, & repository interfaces
+│   │   ├── models/                     # SQLModel & data classes
+│   │   ├── schemas/                    # Pydantic schemas (ResponseMessage, etc.)
+│   │   └── repo_interfaces/            # Abstractions for persistence repositories
+│   ├── infra/                          # Infrastructure & external adapters
+│   │   ├── logging.py                  # Loguru logging setup
+│   │   ├── postgres/                   # Postgres DB operations & async/sync engines
+│   │   └── persistence/                # Repository implementations (pgvector, qdrant)
+│   └── presentation/                   # Presentation layer (UI, REST API, CLI)
+│       ├── cli.py                      # Typer CLI application commands
+│       ├── bootstrap.py                # Service dependency container
+│       ├── dependencies.py             # FastAPI dependency checks & response examples
+│       ├── rest/                       # FastAPI REST API routers & server runner
+│       └── ui/                         # Streamlit UI app, sidebar, and assets
+└── tests/                              # Pytest test suite & static type verification
+    ├── conftest.py                     # Test fixtures
+    ├── test_static.py                  # Pyright static type checker suite
+    ├── test_ui.py                      # Streamlit UI helper tests
+    ├── test_api.py                     # REST API test suite
+    └── test_db.py                      # Database integration tests
 ```

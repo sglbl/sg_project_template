@@ -31,7 +31,7 @@ else
 fi
 
 # Step 4: Copy directories safely (only if they don't exist)
-for dir in .vscode data docs src tests docker .agents .claude; do
+for dir in .vscode data docs notebooks src tests docker .agents; do
     [ ! -d "$dir" ] && [ -d "temp_template/$dir" ] && cp -r "temp_template/$dir" "$dir"
 done
 
