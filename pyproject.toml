@@ -6,33 +6,37 @@ authors = [
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
-    "gradio==5.20.0",
-    "haystack-ai>=2.15.2",
-    "lingua-language-detector==2.0.2",
     "loguru==0.7.3",
     "matplotlib<=3.10.0",
-    "ollama-haystack==0.0.7",
-    "pandas[excel]==2.2.3",
     "python-dotenv>=1.0.1",
-    "qdrant-haystack==8.1.0",
-    "ring>=0.10.1",
+    "pandas[excel]==2.2.3",
     "sentence-transformers==3.4.1",
-    "tabulate==0.9.0",
     "transformers==4.49.0",
-    "gradio-log>=0.0.8",
     "overrides>=7.7.0",
     "pypdf>=5.3.1",
+    "pydantic>=2.7",
     "pydantic-settings>=2.9.1",
     "sqlmodel>=0.0.24",
     "asyncpg>=0.30.0",
     "pytest-cov>=6.2.1",
-    "sympy>=1.13.1",
     "pytest-asyncio>=1.1.0",
-    "psycopg2>=2.9.10",
-    "pgvector>=0.4.1",
-    "pgvector-haystack>=5.2.1",
+    "sympy>=1.13.1",
+    "typer>=0.12",
+    "rich>=13",
+    "httpx>=0.27",
+    "polars>=0.20",
+    "pyarrow>=16",
+    "orjson>=3.10",
+    "PyYAML>=6.0",
+    "duckdb>=1.5.5",
+    "requests>=2.34.2",
+    "tqdm>=4.69.0",
+    "duckdb-cli>=1.5.5",
+    "plotly>=6.9.0",
+    "kaleido>=1.3.0",
+    "marimo>=0.23.15"
 ]
 
 
@@ -47,6 +51,7 @@ dev = [
     "pyproject-toml>=0.0.12",
     "pytest>=8.3.3",
     "pyright>=1.1.403",
+    "mypy>=1.10",
 ]
 
 
@@ -60,7 +65,7 @@ gpu = [
 
 [tool.uv]
 index-strategy = "unsafe-best-match"
-conflicts = [ # type:ignore
+conflicts = [
   [
     { extra = "cpu" },
     { extra = "gpu" },
@@ -85,12 +90,19 @@ explicit = true
 
 [tool.pytest.ini_options]
 pythonpath = "." # Add the project root path to the pythonpath [to be able to import the 'src' module]
+testpaths = ["tests"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "session"
 filterwarnings = ["ignore::DeprecationWarning", "ignore::FutureWarning", "ignore::PendingDeprecationWarning"]
 
 [tool.autopep8]
 max_line_length = 150
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+explicit_package_bases = true
 
 [tool.pyright]
 reportMissingImports = "error"

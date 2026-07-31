@@ -22,6 +22,7 @@
 **/.toolstarget
 **/.vs
 **/.vscode
+**/temp
 **/*.*proj.user
 **/*.dbmdl
 **/*.jfm
