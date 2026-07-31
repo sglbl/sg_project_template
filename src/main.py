@@ -12,7 +12,7 @@ _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from src.presentation.cli import app  # noqa: E402
+from src.presentation.cli import app 
 
 if __name__ == "__main__":
     app(prog_name="./run")

@@ -1,18 +1,28 @@
-# Description: Dockerfile for building the image with python light version and uv
-FROM python:3.10.12-slim
-# Install git to clone the repository 
-RUN apt-get update && apt-get install git ffmpeg libsm6 libxext6 -y
-# Copy the uv and uvx binaries from the uv package manager image
+# Description: Dockerfile for Streamlit presentation UI
+FROM python:3.12-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git ffmpeg libsm6 libxext6 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy uv binaries
 COPY --from=ghcr.io/astral-sh/uv:0.7.8 /uv /uvx /bin/
-# Set the working directory
+
+# Set working directory
 WORKDIR /app
-# Copy files to the working directory [except the files mentioned in .dockerignore]
+
+# Copy dependency specifications first for Docker layer caching
+COPY pyproject.toml uv.lock* ./
+
+# Install dependencies system-wide
+RUN uv pip install -r pyproject.toml --system --extra cpu
+
+# Copy source files
 COPY . .
-# Install the dependencies from the pyproject.toml file on system-wide
-RUN uv pip install -r pyproject.toml --system --no-cache-dir --extra cpu
-# Expose the port 8000
-EXPOSE 8000
-# Set this environment variable to see the print statements in the logs
+
+EXPOSE 8501
+
 ENV PYTHONUNBUFFERED=1
-# Run the main module from the source
-CMD ["python3", "-m", "src.main"]
+
+CMD ["streamlit", "run", "src/presentation/ui/app_ui.py", "--server.address", "0.0.0.0", "--server.port", "8501"]
