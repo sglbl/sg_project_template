@@ -132,6 +132,7 @@ credentials.json
 
 # mypy
 .mypy_cache/
+.ruff_cache/
 .dmypy.json
 dmypy.json
 .~lock.**
@@ -148,6 +149,7 @@ dask-worker-space
 # Data Files
 /data/qdrant_data/
 /data/chroma_data/
+__marimo__/cache/
 _**
 # except __init__.py
 !__**.py 
@@ -156,3 +158,6 @@ _**
 # Pdoc3 / Pdoc / Pydoc documentation
 /html/
 data/docs/sg_**
+
+# Agent detail, remove it if you want to sync
+.agents/**

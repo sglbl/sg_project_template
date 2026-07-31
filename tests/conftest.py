@@ -1,7 +1,14 @@
 import os
+import sys
+from pathlib import Path
 import pytest
 import argparse
 import asyncio
+
+_ROOT = Path(__file__).resolve().parent.parent
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
 from src.infra.postgres.database_async import init_db, create_tables
 
 @pytest.fixture(scope="session", autouse=True)
