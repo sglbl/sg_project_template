@@ -34,11 +34,13 @@ def _collect_pyright_diagnostics() -> list[dict[str, Any]]:
 
 def _format_diag(diag: dict[str, Any]) -> str:
     """One-line diagnostic message: `<file>:<line>:<col> [<rule>] <msg>`."""
+    if not isinstance(diag, dict) or "file" not in diag:
+        return "clean"
     file = diag["file"].rsplit("/", 1)[-1]
-    line = diag["range"]["start"]["line"] + 1
-    col = diag["range"]["start"]["character"] + 1
+    line = diag.get("range", {}).get("start", {}).get("line", 0) + 1
+    col = diag.get("range", {}).get("start", {}).get("character", 0) + 1
     rule = diag.get("rule") or "unknown"
-    return f"  {file}:{line}:{col} [{rule}] {diag['message']}"
+    return f"  {file}:{line}:{col} [{rule}] {diag.get('message', '')}"
 
 
 def _case_id(diag: dict[str, Any]) -> str:
@@ -48,6 +50,9 @@ def _case_id(diag: dict[str, Any]) -> str:
 
 # Collect once at module load — one pyright run, one list of errors.
 _DIAGNOSTICS = _collect_pyright_diagnostics()
+
+
+_DIAG_PARAM = _DIAGNOSTICS if _DIAGNOSTICS else [{}]
 
 
 def test_pyright_clean() -> None:
@@ -60,7 +65,7 @@ def test_pyright_clean() -> None:
 
 
 @pytest.mark.skipif(not _DIAGNOSTICS, reason="no pyright errors to report")
-@pytest.mark.parametrize("diag", _DIAGNOSTICS, ids=_case_id)
+@pytest.mark.parametrize("diag", _DIAG_PARAM, ids=_case_id)
 def test_pyright_diagnostic(diag: dict[str, Any]) -> None:
     """Each pyright error becomes its own failing test (for CI dashboards)."""
     pytest.fail(_format_diag(diag))

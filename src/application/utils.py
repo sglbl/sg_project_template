@@ -8,29 +8,7 @@ from loguru import logger
 from overrides import EnforceOverrides
 
 
-def set_logger(level="TRACE", write_to_file=False, remove_file_if_exists=True):
-    ''' 
-    Set logger settings with level\n
-    To see all the logs, set the level to TRACE; for normal logs set to DEBUG, if you don't want to see those logs, set the level to INFO
-    Logger hierarchy+colors:  
-    - trace(turquoise), debug(cyan), info(white), critical(purple bg), success(green), warning(yellow), error(red)
-    '''
-    logger.remove() # remove the default logger
-    # Adding new levels: Critical = Text with Purple Background, Title: Light 
-    logger.level("CRITICAL", color = "<bold><bg #AF5FD7>")
-    try:
-        logger.level("TITLE")
-    except ValueError:
-        logger.level("TITLE", color="<bold><fg 86>", no=21)
-    
-    # Format the logger with new settings
-    logger.add(sys.stdout, format = "<lvl>{message}</lvl>", colorize=True, backtrace=True, diagnose=True, level=level)  
-    if write_to_file:
-        # remove the file if it exists
-        if remove_file_if_exists:
-            Path("/tmp/app_logs.log").unlink(missing_ok=True)
-        logger.add("/tmp/app_logs.log", format = "<lvl>{message}</lvl>", colorize=True, level=level)
-    
+
 
 def exception_printer_with_vars(exception, local_vars, loguru_exception=False):
     '''Prints the exception with the **local variable values** at the time of exception'''

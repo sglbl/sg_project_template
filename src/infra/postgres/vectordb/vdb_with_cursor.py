@@ -1,9 +1,10 @@
+from typing import Any
 import numpy as np
 import psycopg2
 from psycopg2 import sql
 from loguru import logger
-from src.application import utils
 from src.config import settings
+from src.infra.logging import setup_logger
 
 """ Run the code with:
 python -m src.infra.postgres.create_vdb
@@ -119,8 +120,10 @@ def query_similar_embeddings(cursor, query_vector, table_name: str = "embeddings
 
 def run():
     """Main function to set up the database schema and table."""
-    utils.set_logger(level=settings.LOG_LEVEL)
+    setup_logger(level=settings.LOG_LEVEL)
 
+    conn: Any = None
+    cursor: Any = None
     try:
         conn = connect_to_db()
         cursor = conn.cursor()
@@ -140,9 +143,9 @@ def run():
     except Exception as e:
         logger.error(f"An error occurred during setup: {e}")
     finally:
-        if 'cursor' in locals():
+        if cursor is not None:
             cursor.close()
-        if 'conn' in locals():
+        if conn is not None:
             conn.close()
             logger.info("Database connection closed.")
 

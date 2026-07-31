@@ -1,8 +1,6 @@
 from typing import Annotated
 from pydantic import BaseModel
 from fastapi import Header, HTTPException
-from src.domain.models import *
-from src.application.llm_service import *
 
 
 # Generate docs with: pdoc3 --html -o data/_docs/ src --force
@@ -30,15 +28,6 @@ response_examples = {
     404: {"description": "Item not found", "content": {
         "application/json": {"example": {"detail": "Item not found"}}}},
 }
-
-
-def get_llm_service(vectordb) -> LLMService:
-    """ Get the LLM service from application layer. It uses the QdrantDBRepository as the vectordb_repository  
-    
-    Returns:
-        LLMPipeline
-    """
-    return LLMService(vectordb_repository=vectordb)
 
 
 # HTTP STATUS CODES

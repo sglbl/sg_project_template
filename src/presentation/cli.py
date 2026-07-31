@@ -8,6 +8,8 @@ from rich.panel import Panel
 from rich.table import Table
 
 from src.version import __version__
+from src.config import settings
+from src.infra.logging import setup_logger
 
 app = typer.Typer(
     name="sg-project-template",
@@ -16,6 +18,12 @@ app = typer.Typer(
     no_args_is_help=True,
 )
 console = Console()
+
+
+@app.callback()
+def main_callback() -> None:
+    """Initialize logging configuration."""
+    setup_logger(level=settings.LOG_LEVEL)
 
 
 @app.command()
@@ -48,19 +56,26 @@ def api(
 
 @app.command()
 def ui(
-    llm: str = typer.Option("llama3.1", "--llm", help="LLM model to run (e.g. gemma, llama3.1, none)"),
-    embedding: str = typer.Option("bge-m3", "--embedding", help="Embedding model to run (e.g. bge-m3, nomic-embed-text-v1)"),
+    port: int = typer.Option(8501, help="Port for Streamlit server"),
+    host: str = typer.Option("0.0.0.0", help="Host address for Streamlit server"),
 ) -> None:
-    """Run the Gradio UI presentation server."""
-    console.print(f"[bold green]Starting UI application (LLM: {llm}, Embedding: {embedding})...[/bold green]")
-    try:
-        from src.presentation.ui.app_ui import run_ui as launch_ui
-        from src.presentation.bootstrap import create_services
+    """Run the Streamlit UI presentation server."""
+    console.print(f"[bold green]Starting Streamlit UI on {host}:{port}...[/bold green]")
+    import subprocess
 
-        services = create_services(model="postgres")
-        launch_ui(services=services)
+    cmd = [
+        "streamlit",
+        "run",
+        "src/presentation/ui/app_ui.py",
+        "--server.address",
+        host,
+        "--server.port",
+        str(port),
+    ]
+    try:
+        subprocess.run(cmd, check=True)
     except Exception as e:
-        console.print(f"[bold red]Failed to start UI application:[/bold red] {e}")
+        console.print(f"[bold red]Failed to start Streamlit UI:[/bold red] {e}")
         raise typer.Exit(code=1)
 
 

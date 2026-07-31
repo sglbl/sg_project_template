@@ -21,6 +21,7 @@ async def db_session():
         yield session
 
 
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_insert_and_retrieve_data_graph(db_session):
     # Create a Data object
