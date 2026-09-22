@@ -13,6 +13,20 @@ class Settings(BaseSettings):
     OLLAMA_API_URL: str = "http://localhost:11434"
     OPENAI_API_KEY: Optional[str] = None
 
+    # MLOps & Experiment Tracking Configuration
+    MLFLOW_TRACKING_URI: str = "http://localhost:5000"
+    MLFLOW_EXPERIMENT_NAME: str = "default-experiment"
+    MINIO_ENDPOINT_URL: str = "http://localhost:9000"
+    AWS_ACCESS_KEY_ID: str = "minioadmin"
+    AWS_SECRET_ACCESS_KEY: str = "minioadmin"
+    AWS_REGION: str = "us-east-1"
+    
+    # Path Configuration
+    MODEL_ARTIFACTS_DIR: str = "artifacts/models"
+    DATA_RAW_DIR: str = "data/raw"
+    DATA_PROCESSED_DIR: str = "data/processed"
+    REPORTS_DIR: str = "artifacts/reports"
+
     # Logger
     LOG_LEVEL: str = "DEBUG"  
     
