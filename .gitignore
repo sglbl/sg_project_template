@@ -161,3 +161,12 @@ data/docs/sg_**
 
 # Agent detail, remove it if you want to sync
 .agents/**
+
+# MLOps runtime artifacts & local databases
+mlruns/
+mlflow.db
+artifacts/
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep

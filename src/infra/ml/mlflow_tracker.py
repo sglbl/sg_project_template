@@ -34,16 +34,29 @@ class MLflowTracker(ITrackerRepository, IRegistryRepository):
             mlflow.set_tracking_uri(self.tracking_uri)
             mlflow.set_experiment(self.experiment_name)
             self.client = MlflowClient(tracking_uri=self.tracking_uri)
+            # Test connection
+            self.client.search_experiments(max_results=1)
             logger.info(f"Connected MLflow tracker to {self.tracking_uri} [experiment: {self.experiment_name}]")
         except Exception as e:
-            logger.warning(f"Could not connect to MLflow server at {self.tracking_uri}: {e}. Falling back to local tracking.")
-            self.client = MlflowClient()
+            local_uri = "sqlite:///mlflow.db"
+            logger.warning(f"Could not connect to MLflow server at {self.tracking_uri}: {e}. Falling back to local tracking at {local_uri}.")
+            self.tracking_uri = local_uri
+            mlflow.set_tracking_uri(local_uri)
+            mlflow.set_experiment(self.experiment_name)
+            self.client = MlflowClient(tracking_uri=local_uri)
 
     # --- ITrackerRepository Methods ---
 
     def start_run(self, run_name: Optional[str] = None) -> str:
         """Start a new experiment tracking run and return run_id."""
-        active_run = mlflow.start_run(run_name=run_name)
+        try:
+            active_run = mlflow.start_run(run_name=run_name)
+        except Exception as e:
+            logger.warning(f"Failed starting run on {self.tracking_uri}: {e}. Retrying with local sqlite...")
+            self.tracking_uri = "sqlite:///mlflow.db"
+            mlflow.set_tracking_uri(self.tracking_uri)
+            active_run = mlflow.start_run(run_name=run_name)
+
         run_id = str(active_run.info.run_id)
         logger.info(f"Started MLflow run '{run_name or 'unnamed'}' (ID: {run_id})")
         return run_id
