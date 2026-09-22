@@ -96,7 +96,7 @@ pdoc3 --html -o data/_docs/ src --force
 
 ## 🏗️ Project Architecture & Layout
 
-```
+```bash
 .
 ├── run                                 # Root executable wrapper script for CLI commands
 ├── pyproject.toml                      # Project metadata & dependencies
