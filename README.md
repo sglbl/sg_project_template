@@ -17,10 +17,10 @@ Ensure you have [`uv`](https://sglbl.notion.site/UV-149a7f36b84480b0b4f4f074883b
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-Create and activate the Python 3.12 virtual environment:
+Create and activate the Python virtual environment:
 
 ```bash
-uv venv --python 3.12
+uv venv
 source .venv/bin/activate
 ```
 

@@ -40,17 +40,16 @@ services:
       - "5000:5000"
     command: mlflow server --backend-store-uri postgresql://postgres:postgres@postgres:5432/mlflow --default-artifact-root s3://mlflow-artifacts/ --host 0.0.0.0
 
-  # S3 Object Storage Service (MinIO or RustFS)
-  minio:
-    image: minio/minio:RELEASE.2024-05-28T17-19-04Z
-    container_name: s3_storage_server
+  # High-Performance Rust S3 Object Storage Service (RustFS / Garage)
+  rustfs:
+    image: dxflrs/garage:v1.0.0
+    container_name: rustfs_storage_server
     ports:
-      - "9000:9000"
-      - "9001:9001"
-    environment:
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=minioadmin
-    command: server /data --console-address ":9001"
+      - "9000:3900"
+    volumes:
+      - ./data/rustfs_storage/meta:/var/lib/garage/meta
+      - ./data/rustfs_storage/data:/var/lib/garage/data
+    restart: unless-stopped
 
   postgres:
     image: postgres:16-alpine
