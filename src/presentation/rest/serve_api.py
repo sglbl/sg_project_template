@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from src.config import settings
 from src.infra.logging import setup_logger
 from src.presentation.dependencies import get_token, response_examples
-from src.presentation.rest.routers import items
+from src.presentation.rest.routers import items, ml
 
 
 @asynccontextmanager
@@ -17,9 +17,13 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
+    title="SG MLOps Application API",
+    description="Clean Architecture REST API with MLOps Serving, Predictions, and Drift Monitoring",
+    version="0.1.0",
     lifespan=lifespan #, dependencies=[Depends(get_token)] # you can also add mandatory dependencies here [instead of only for items router],
-)
+    )
 app.include_router(items.router)
+app.include_router(ml.router)
 
 
 @app.get("/", include_in_schema=False)

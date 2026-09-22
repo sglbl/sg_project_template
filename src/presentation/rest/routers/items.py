@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import ValidationError
 from src.presentation.dependencies import get_token, response_examples
-from src.domain.schemas.pydantic_schemas import ResponseMessage
+from src.domain.schemas.common import ResponseMessage
 
 router_name = __name__.split(".")[-1]  # get the name of the file to use it in the router
 
