@@ -35,8 +35,8 @@ def pytest_addoption(parser):
     p_group.addoption("--model", action="store", default="llama3.1",
                         choices=["llama3.1", "gpt4"],
                         help="Model mode to run.")
-    p_group.addoption("--input_path", action="store", default="./data/example_inputs/", 
-                      help="Input folder path with videos.")
+    p_group.addoption("--input_path", action="store", default="./data/raw/", 
+                      help="Input folder path with raw data.")
     p_group.addoption("--output_file", action="store", default=None, 
                       help="Output file name with results.")
         

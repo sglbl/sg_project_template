@@ -28,6 +28,9 @@ Install project dependencies:
 
 ```bash
 uv sync
+
+cp .env.example .env
+# Fill the .env with correct values
 ```
 
 ---

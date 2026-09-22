@@ -37,7 +37,7 @@ def main_ui() -> None:
     logo_url = "https://deduceds.github.io/assets/images/logo/logo_horizontal_mini.png"
     st.set_page_config(
         page_title="SG Project Template",
-        page_icon="data/assets/images/favicon.ico",
+        page_icon="src/presentation/ui/assets/favicon.ico",
         layout="wide",
         menu_items={
             "About": f"### Built by ![**Deduce Data Solutions**]({logo_url})\n\n**SG Project Template** - Streamlit Clean Architecture."
@@ -48,8 +48,8 @@ def main_ui() -> None:
     st.markdown(hide_anchor_css, unsafe_allow_html=True)
 
     # Encode logo images if present
-    logo1 = get_base64_image("data/assets/images/logo2.png")
-    logo2 = get_base64_image("data/assets/images/logo.png")
+    logo1 = get_base64_image("src/presentation/ui/assets/logo2.png")
+    logo2 = get_base64_image("src/presentation/ui/assets/logo.png")
 
     # Render Sidebar
     with st.sidebar:

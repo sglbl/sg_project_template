@@ -5,7 +5,18 @@ from pydantic import BaseModel, Field
 
 
 class PredictRequest(BaseModel):
-    features: dict[str, Any] = Field(..., description="Feature key-value pairs for model prediction")
+    features: dict[str, Any] = Field(
+        ...,
+        description="Feature key-value pairs for model prediction",
+        examples=[
+            {
+                "sepal_length": 5.1,
+                "sepal_width": 3.5,
+                "petal_length": 1.4,
+                "petal_width": 0.2,
+            }
+        ],
+    )
     model_name: Optional[str] = Field(None, description="Optional target model name, defaults to active production model")
     model_version: Optional[str] = Field(None, description="Optional target model version")
 

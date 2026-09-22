@@ -8,12 +8,16 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - ./.env:/app/.env:ro
     environment:
       - PYTHONUNBUFFERED=1
       - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - RUSTFS_ENDPOINT_URL=http://rustfs:9000
       - MINIO_ENDPOINT_URL=http://rustfs:9000
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-minioadmin}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-minioadmin}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-rustfsadmin}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-rustfsadmin}
+      - DB_HOST=${DB_HOST:-postgres}
     ports:
       - "8501:8501"
 
@@ -24,6 +28,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - ./.env:/app/.env:ro
     environment:
       - PYTHONUNBUFFERED=1
     ports:
@@ -37,14 +43,17 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - ./.env:/app/.env:ro
     ports:
       - "8100:8000"
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - RUSTFS_ENDPOINT_URL=http://rustfs:9000
       - MINIO_ENDPOINT_URL=http://rustfs:9000
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-minioadmin}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-minioadmin}
-      - DB_HOST=postgres
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-rustfsadmin}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-rustfsadmin}
+      - DB_HOST=${DB_HOST:-postgres}
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:v2.15.0
@@ -68,8 +77,8 @@ services:
       - "9010:9000"
       - "9011:9001"
     environment:
-      - RUSTFS_ACCESS_KEY=${RUSTFS_ACCESS_KEY:-${AWS_ACCESS_KEY_ID:-minioadmin}}
-      - RUSTFS_SECRET_KEY=${RUSTFS_SECRET_KEY:-${AWS_SECRET_ACCESS_KEY:-minioadmin}}
+      - RUSTFS_ACCESS_KEY=${RUSTFS_ACCESS_KEY:-${AWS_ACCESS_KEY_ID:-rustfsadmin}}
+      - RUSTFS_SECRET_KEY=${RUSTFS_SECRET_KEY:-${AWS_SECRET_ACCESS_KEY:-rustfsadmin}}
       - RUSTFS_ADDRESS=:9000
       - RUSTFS_CONSOLE_ADDRESS=:9001
       - RUSTFS_CONSOLE_ENABLE=true

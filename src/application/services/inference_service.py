@@ -69,10 +69,13 @@ class InferenceService:
             raise RuntimeError("No active model loaded in InferenceService. Train or export a model first.")
 
         # Extract features array in consistent order
-        if self._feature_names:
-            features_vec = [float(request.features.get(f, 0.0)) for f in self._feature_names]
-        else:
-            features_vec = [float(val) for val in request.features.values()]
+        try:
+            if self._feature_names:
+                features_vec = [float(request.features.get(f, 0.0)) for f in self._feature_names]
+            else:
+                features_vec = [float(val) for val in request.features.values()]
+        except (ValueError, TypeError) as err:
+            raise ValueError(f"All feature values must be numeric numbers. Error: {err}")
 
         input_arr = np.array([features_vec], dtype=np.float32)
 

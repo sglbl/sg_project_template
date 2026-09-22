@@ -44,6 +44,12 @@ async def predict_endpoint(request: PredictRequest) -> PredictResponse:
         service = get_inference_service()
         response = service.predict(request)
         return response
+    except ValueError as e:
+        logger.warning(f"Prediction input validation error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
     except Exception as e:
         logger.error(f"Prediction endpoint error: {e}")
         raise HTTPException(

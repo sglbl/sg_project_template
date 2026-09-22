@@ -9,13 +9,17 @@ from src.presentation.ui.assets import get_logo_html
 def check_postgres_connection() -> tuple[bool, str]:
     """Helper to check Postgres database connection."""
     try:
-        from sqlalchemy import text
-        from src.infra.postgres.database_sync import get_db_sync
-        with get_db_sync() as db:
-            db.execute(text("SELECT 1;"))
-        return True, f"Connected to Postgres ({settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME})"
+        from sqlalchemy import create_engine, text
+        from src.config import Settings
+        live_settings = Settings()
+        engine = create_engine(live_settings.SYNC_DB_URL, pool_pre_ping=True)
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1;"))
+        return True, f"Connected to Postgres ({live_settings.DB_HOST}:{live_settings.DB_PORT}/{live_settings.DB_NAME})"
     except Exception as e:
-        return False, f"Postgres unavailable: {e}"
+        from src.config import Settings
+        live_settings = Settings()
+        return False, f"Postgres unavailable ({live_settings.DB_HOST}:{live_settings.DB_PORT}): {e}"
 
 
 def fetch_api_items(api_url: str = "http://localhost:8001") -> tuple[bool, dict]:

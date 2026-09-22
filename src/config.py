@@ -14,11 +14,14 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: Optional[str] = None
 
     # MLOps & Experiment Tracking Configuration
-    MLFLOW_TRACKING_URI: str = "http://localhost:5000"
+    MLFLOW_TRACKING_URI: str = "http://localhost:5100"
     MLFLOW_EXPERIMENT_NAME: str = "default-experiment"
-    MINIO_ENDPOINT_URL: str = "http://localhost:9000"
-    AWS_ACCESS_KEY_ID: str = "minioadmin"
-    AWS_SECRET_ACCESS_KEY: str = "minioadmin"
+    RUSTFS_ENDPOINT_URL: str = "http://localhost:9010"
+    MINIO_ENDPOINT_URL: Optional[str] = "http://localhost:9010"
+    AWS_ACCESS_KEY_ID: str = "rustfsadmin"
+    AWS_SECRET_ACCESS_KEY: str = "rustfsadmin"
+    RUSTFS_ACCESS_KEY: str = "rustfsadmin"
+    RUSTFS_SECRET_KEY: str = "rustfsadmin"
     AWS_REGION: str = "us-east-1"
     
     # Path Configuration
