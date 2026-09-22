@@ -1,8 +1,8 @@
-from typing import Protocol
+from typing import Any, Protocol
 
 
 class IVectorDBRepository(Protocol):
-    def create_document_store(self):
+    def create_document_store(self) -> Any:
         ...
-    def create_embedding_retriever(self, top_k):
+    def create_embedding_retriever(self, top_k: int) -> Any:
         ...

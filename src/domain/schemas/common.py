@@ -1,11 +1,11 @@
 from pydantic import BaseModel, Field
 from fastapi import UploadFile
-from typing import Optional
+from typing import Any, Optional
 
 
 class ResponseMessage(BaseModel):
     detail: str = "Success"
-    data: Optional[list | dict] = None
+    data: Optional[list[Any] | dict[str, Any]] = None
 
 class MultiFileUpload(BaseModel):
     file1: UploadFile = Field(..., description="Excel file")
