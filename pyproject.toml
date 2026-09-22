@@ -6,7 +6,7 @@ authors = [
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
     "loguru==0.7.3",
     "matplotlib>=3.0.0",
@@ -69,6 +69,39 @@ mlops = [
     "skl2onnx>=1.17.0",
     "xgboost>=2.1.0",
 ]
+
+[project.optional-dependencies]
+cpu = [
+  "torch",
+]
+gpu = [
+  "torch",
+]
+
+[tool.uv]
+index-strategy = "unsafe-best-match"
+conflicts = [
+  [
+    { extra = "cpu" },
+    { extra = "gpu" },
+  ],
+]
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu", extra = "cpu", marker = "platform_system != 'Darwin'" },
+  { index = "pytorch-gpu", extra = "gpu", marker = "platform_system != 'Darwin'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-gpu"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true
 
 [tool.pytest.ini_options]
 pythonpath = "." # Add the project root path to the pythonpath [to be able to import the 'src' module]

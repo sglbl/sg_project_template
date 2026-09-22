@@ -6,56 +6,89 @@ services:
       context: .
       dockerfile: docker/ui.Dockerfile
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       - PYTHONUNBUFFERED=1
       - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - MINIO_ENDPOINT_URL=http://rustfs:9000
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-minioadmin}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-minioadmin}
     ports:
-      - 8501:8501
+      - "8501:8501"
 
   marimo:
     build:
       context: .
       dockerfile: docker/marimo.Dockerfile
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       - PYTHONUNBUFFERED=1
     ports:
-      - 2719:2718
+      - "2719:2718"
 
   api:
     build:
       context: .
       dockerfile: docker/ui.Dockerfile
-    command: python -m src.main api
+    command: python -m src.main api --host 0.0.0.0 --port 8000
+    restart: unless-stopped
+    env_file:
+      - .env
     ports:
-      - "8000:8000"
+      - "8100:8000"
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - MINIO_ENDPOINT_URL=http://rustfs:9000
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-minioadmin}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-minioadmin}
       - DB_HOST=postgres
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:v2.15.0
     container_name: mlflow_server
+    env_file:
+      - .env
     ports:
-      - "5000:5000"
-    command: mlflow server --backend-store-uri postgresql://postgres:postgres@postgres:5432/mlflow --default-artifact-root s3://mlflow-artifacts/ --host 0.0.0.0
-
-  # High-Performance Rust S3 Object Storage Service (RustFS / Garage)
-  rustfs:
-    image: dxflrs/garage:v1.0.0
-    container_name: rustfs_storage_server
-    ports:
-      - "9000:3900"
+      - "5100:5000"
+    command: mlflow server --backend-store-uri sqlite:////mlflow/mlflow.db --default-artifact-root /mlflow/artifacts --host 0.0.0.0
     volumes:
-      - ./data/rustfs_storage/meta:/var/lib/garage/meta
-      - ./data/rustfs_storage/data:/var/lib/garage/data
+      - mlflow-data:/mlflow
+    restart: unless-stopped
+
+  # High-Performance Rust S3 Object Storage Service (RustFS)
+  rustfs:
+    image: rustfs/rustfs:latest
+    container_name: rustfs_storage_server
+    env_file:
+      - .env
+    ports:
+      - "9010:9000"
+      - "9011:9001"
+    environment:
+      - RUSTFS_ACCESS_KEY=${RUSTFS_ACCESS_KEY:-${AWS_ACCESS_KEY_ID:-minioadmin}}
+      - RUSTFS_SECRET_KEY=${RUSTFS_SECRET_KEY:-${AWS_SECRET_ACCESS_KEY:-minioadmin}}
+      - RUSTFS_ADDRESS=:9000
+      - RUSTFS_CONSOLE_ADDRESS=:9001
+      - RUSTFS_CONSOLE_ENABLE=true
+    volumes:
+      - rustfs-data:/data
+    command: /data
     restart: unless-stopped
 
   postgres:
     image: postgres:16-alpine
+    env_file:
+      - .env
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+      - POSTGRES_DB=${DB_NAME:-postgres}
     ports:
-      - "5432:5432"
+      - "5433:5432"
+
+volumes:
+  mlflow-data:
+  rustfs-data:

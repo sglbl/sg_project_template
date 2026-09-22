@@ -48,7 +48,7 @@ def api(
     console.print(f"[bold blue]Starting API server on {host}:{port}...[/bold blue]")
     try:
         from src.presentation.rest import serve_api
-        serve_api.run_api()
+        serve_api.run_api(host=host, port=port)
     except Exception as e:
         console.print(f"[bold red]Failed to start API server:[/bold red] {e}")
         raise typer.Exit(code=1)

@@ -38,12 +38,12 @@ async def greet_user():
     return PlainTextResponse(content="Hello to the API World", status_code=200)
 
 
-def run_api():
+def run_api(host: str = "0.0.0.0", port: int = 8000):
     ''' Set the global logger level and run the API with specified host and port '''
     setup_logger(level=settings.LOG_LEVEL)
 
     # without injecting gradio
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run(app, host=host, port=port)
 
 
 if __name__ == "__main__":

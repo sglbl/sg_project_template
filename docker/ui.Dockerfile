@@ -15,8 +15,8 @@ WORKDIR /app
 # Copy dependency specifications first for Docker layer caching
 COPY pyproject.toml uv.lock* ./
 
-# Install dependencies system-wide
-RUN uv pip install -r pyproject.toml --system --extra cpu
+# Install dependencies system-wide with CPU PyTorch (skips NVIDIA CUDA drivers) and MLOps packages
+RUN uv pip install -r pyproject.toml --extra cpu --group mlops --system
 
 # Copy source files
 COPY . .
