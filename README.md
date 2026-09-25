@@ -57,8 +57,13 @@ You can execute all CLI commands directly using the root executable `./run` (or 
 ./run version
 ```
 
-### MLOps Pipelines (MLflow & RustFS S3)
+### MLOps Pipelines (MLflow, DVC & RustFS S3)
 ```bash
+# 0. Data Version Control (DVC) backed by RustFS S3 storage
+./run dvc status                           # Check data tracking status
+./run dvc push                             # Push raw data to RustFS S3 bucket
+./run dvc pull                             # Pull raw data from RustFS S3 bucket
+
 # 1. Ingest raw data, validate schema, and create train/test parquet splits
 ./run ingest
 

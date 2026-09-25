@@ -1,0 +1,5 @@
+[core]
+    remote = rustfs
+['remote "rustfs"']
+    url = s3://data
+    endpointurl = http://localhost:9010
