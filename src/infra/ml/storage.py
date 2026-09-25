@@ -39,6 +39,15 @@ class S3StorageProvider(IStorageRepository):
                 aws_access_key_id=self.access_key,
                 aws_secret_access_key=self.secret_key,
             )
+            # Ensure bucket exists
+            try:
+                s3_client.head_bucket(Bucket=self.bucket_name)
+            except Exception:
+                try:
+                    s3_client.create_bucket(Bucket=self.bucket_name)
+                except Exception:
+                    pass
+
             s3_client.upload_file(local_path, self.bucket_name, remote_key)
             dest_url = f"s3://{self.bucket_name}/{remote_key}"
             logger.info(f"Uploaded {local_path} to S3/RustFS at {dest_url}")

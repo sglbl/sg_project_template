@@ -62,7 +62,7 @@ services:
       - .env
     ports:
       - "5100:5000"
-    command: mlflow server --backend-store-uri sqlite:////mlflow/mlflow.db --default-artifact-root /mlflow/artifacts --host 0.0.0.0
+    command: mlflow server --backend-store-uri sqlite:////mlflow/mlflow.db --artifacts-destination /mlflow/artifacts --serve-artifacts --host 0.0.0.0
     volumes:
       - mlflow-data:/mlflow
     restart: unless-stopped

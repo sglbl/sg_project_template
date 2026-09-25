@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-exec python -m src.main "$@"
+exec ./.venv/bin/python -m src.main "$@"

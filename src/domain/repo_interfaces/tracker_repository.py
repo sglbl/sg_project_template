@@ -4,7 +4,7 @@ from typing import Any, Optional, Protocol
 
 
 class ITrackerRepository(Protocol):
-    def start_run(self, run_name: Optional[str] = None) -> str:
+    def start_run(self, run_name: Optional[str] = None, tags: Optional[dict[str, str]] = None) -> str:
         """Start a new experiment tracking run and return run_id."""
         ...
 

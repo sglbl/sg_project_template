@@ -1,6 +1,7 @@
 """MLflow implementation of ITrackerRepository and IRegistryRepository."""
 
 import os
+from pathlib import Path
 from typing import Any, Optional
 from loguru import logger
 import mlflow
@@ -22,10 +23,12 @@ class MLflowTracker(ITrackerRepository, IRegistryRepository):
     ) -> None:
         self.tracking_uri = tracking_uri or settings.MLFLOW_TRACKING_URI
         self.experiment_name = experiment_name or settings.MLFLOW_EXPERIMENT_NAME
+        self._active_run_id: Optional[str] = None
 
         # Configure environment for S3/RustFS/MinIO access if present
-        if settings.MINIO_ENDPOINT_URL:
-            os.environ["MLFLOW_S3_ENDPOINT_URL"] = settings.MINIO_ENDPOINT_URL
+        endpoint = getattr(settings, "RUSTFS_ENDPOINT_URL", None) or settings.MINIO_ENDPOINT_URL
+        if endpoint:
+            os.environ["MLFLOW_S3_ENDPOINT_URL"] = endpoint
             os.environ["AWS_ACCESS_KEY_ID"] = settings.AWS_ACCESS_KEY_ID
             os.environ["AWS_SECRET_ACCESS_KEY"] = settings.AWS_SECRET_ACCESS_KEY
             os.environ["AWS_DEFAULT_REGION"] = settings.AWS_REGION
@@ -47,17 +50,22 @@ class MLflowTracker(ITrackerRepository, IRegistryRepository):
 
     # --- ITrackerRepository Methods ---
 
-    def start_run(self, run_name: Optional[str] = None) -> str:
+    def start_run(
+        self,
+        run_name: Optional[str] = None,
+        tags: Optional[dict[str, str]] = None,
+    ) -> str:
         """Start a new experiment tracking run and return run_id."""
         try:
-            active_run = mlflow.start_run(run_name=run_name)
+            active_run = mlflow.start_run(run_name=run_name, tags=tags)
         except Exception as e:
             logger.warning(f"Failed starting run on {self.tracking_uri}: {e}. Retrying with local sqlite...")
             self.tracking_uri = "sqlite:///mlflow.db"
             mlflow.set_tracking_uri(self.tracking_uri)
-            active_run = mlflow.start_run(run_name=run_name)
+            active_run = mlflow.start_run(run_name=run_name, tags=tags)
 
         run_id = str(active_run.info.run_id)
+        self._active_run_id = run_id
         logger.info(f"Started MLflow run '{run_name or 'unnamed'}' (ID: {run_id})")
         return run_id
 
@@ -101,27 +109,63 @@ class MLflowTracker(ITrackerRepository, IRegistryRepository):
         model_name: str,
         artifact_path: str,
         tags: Optional[dict[str, str]] = None,
+        description: Optional[str] = None,
     ) -> str:
         """Register a model artifact in MLflow Model Registry."""
         try:
-            result = mlflow.register_model(model_uri=artifact_path, name=model_name, tags=tags)
+            # Ensure registered model container exists
+            try:
+                self.client.create_registered_model(name=model_name)
+            except Exception:
+                pass
+
+            if self._active_run_id:
+                uri = f"runs:/{self._active_run_id}/{Path(artifact_path).name}"
+                result = self.client.create_model_version(
+                    name=model_name,
+                    source=uri,
+                    run_id=self._active_run_id,
+                    tags=tags,
+                    description=description,
+                )
+            else:
+                uri = artifact_path
+                result = self.client.create_model_version(
+                    name=model_name,
+                    source=uri,
+                    tags=tags,
+                    description=description,
+                )
+
             version = str(result.version)
             logger.info(f"Successfully registered model '{model_name}' version {version}")
             return version
         except Exception as e:
             logger.warning(f"Could not register model in MLflow: {e}. Generating local version tag.")
-            return "1.0.0"
+            return "1"
 
     def transition_stage(self, model_name: str, version: str, stage: ModelStage) -> None:
         """Transition model version stage in registry."""
         try:
-            self.client.transition_model_version_stage(
-                name=model_name,
-                version=version,
-                stage=stage.value,
-                archive_existing_versions=(stage == ModelStage.PRODUCTION),
-            )
-            logger.info(f"Transitioned model '{model_name}' v{version} to stage {stage.value}")
+            int_version = version.split(".")[0] if "." in version else version
+            import warnings
+            with warnings.catch_warnings():
+                warnings.filterwarnings("ignore", category=FutureWarning)
+                self.client.transition_model_version_stage(
+                    name=model_name,
+                    version=int_version,
+                    stage=stage.value,
+                    archive_existing_versions=(stage == ModelStage.PRODUCTION),
+                )
+            try:
+                self.client.set_registered_model_alias(
+                    name=model_name,
+                    alias=stage.value.lower(),
+                    version=int_version,
+                )
+            except Exception:
+                pass
+            logger.info(f"Transitioned model '{model_name}' v{int_version} to stage {stage.value}")
         except Exception as e:
             logger.warning(f"Could not transition model stage in MLflow: {e}")
 

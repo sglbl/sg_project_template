@@ -10,6 +10,7 @@ class IRegistryRepository(Protocol):
         model_name: str,
         artifact_path: str,
         tags: Optional[dict[str, str]] = None,
+        description: Optional[str] = None,
     ) -> str:
         """Register a new model artifact and return registered version string."""
         ...
