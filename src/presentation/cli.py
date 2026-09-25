@@ -243,7 +243,7 @@ def drift(
 
 @app.command(name="export-onnx")
 def export_onnx_cmd(
-    model_pkl: str = typer.Option("artifacts/models/random_forest.pkl", "--model-pkl", "-m", help="Path to pickled model artifact"),
+    model_pkl: str = typer.Option("data/models/random_forest.pkl", "--model-pkl", "-m", help="Path to pickled model artifact"),
     output_onnx: str = typer.Option(None, "--out", "-o", help="Destination ONNX model path"),
 ) -> None:
     """Export a trained scikit-learn model to ONNX runtime format."""

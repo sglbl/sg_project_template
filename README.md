@@ -60,9 +60,9 @@ You can execute all CLI commands directly using the root executable `./run` (or 
 ### MLOps Pipelines (MLflow, DVC & RustFS S3)
 ```bash
 # 0. Data Version Control (DVC) backed by RustFS S3 storage
-./run dvc status                           # Check data tracking status
-./run dvc push                             # Push raw data to RustFS S3 bucket
-./run dvc pull                             # Pull raw data from RustFS S3 bucket
+./dvc status                           # Check data tracking status
+./dvc push                             # Push raw data to RustFS S3 bucket
+./dvc pull                             # Pull raw data from RustFS S3 bucket
 
 # 1. Ingest raw data, validate schema, and create train/test parquet splits
 ./run ingest
@@ -77,7 +77,7 @@ You can execute all CLI commands directly using the root executable `./run` (or 
 ./run drift
 
 # 4. Convert trained model binary (.pkl) to ONNX format
-./run export-onnx --model-path artifacts/models/random_forest.pkl
+./run export-onnx --model-path data/models/random_forest.pkl
 
 # 5. Execute quick CLI model prediction with feature JSON
 ./run predict --features '{"sepal_length": 5.1, "sepal_width": 3.5, "petal_length": 1.4, "petal_width": 0.2}'
@@ -175,12 +175,11 @@ pdoc3 --html -o data/_docs/ src --force
 ├── compose.yaml                        # Docker Compose configuration (MLflow, RustFS, Postgres, API, UI)
 ├── pyproject.toml                      # Project metadata & dependencies
 ├── README.md                           # Project instructions & overview
-├── artifacts/                          # Generated runtime artifacts
+├── data/                               # Data storage & runtime outputs
+│   ├── raw/                            # Immutable raw CSV/Parquet files
+│   ├── processed/                      # Transformed & split training datasets
 │   ├── models/                         # Serialized trained models (.onnx, .pkl)
 │   └── reports/                        # Evidently drift reports (.html)
-├── data/                               # Strictly dataset tables
-│   ├── raw/                            # Immutable raw CSV/Parquet files
-│   └── processed/                      # Transformed & split training datasets
 ├── docs/                               # Architecture blueprints & roadmaps
 │   ├── images/                         # Architecture diagrams (onion-architecture.png)
 │   └── MLOPS_ROADMAP.md                # 2026 MLOps architectural specification

@@ -165,8 +165,9 @@ data/docs/sg_**
 # MLOps runtime artifacts & local databases
 mlruns/
 mlflow.db
-artifacts/
 data/raw/*
-!data/raw/.gitkeep
 data/processed/*
-!data/processed/.gitkeep
+data/models/*
+data/reports/*
+# Sequential check so .gitkeep files are not ignored
+!**/.gitkeep

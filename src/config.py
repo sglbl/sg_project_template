@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     DB_USER: str = "postgres"
     DB_PASSWORD: str = "postgres"
     DB_HOST: str = "localhost"
-    DB_PORT: str = "5432"
+    DB_PORT: str = "5435"
     DB_NAME: str = "postgres"
     DB_SCHEMA: str = "example_schema_name"
     OLLAMA_API_URL: str = "http://localhost:11434"
@@ -25,10 +25,10 @@ class Settings(BaseSettings):
     AWS_REGION: str = "us-east-1"
     
     # Path Configuration
-    MODEL_ARTIFACTS_DIR: str = "artifacts/models"
+    MODEL_ARTIFACTS_DIR: str = "data/models"
     DATA_RAW_DIR: str = "data/raw"
     DATA_PROCESSED_DIR: str = "data/processed"
-    REPORTS_DIR: str = "artifacts/reports"
+    REPORTS_DIR: str = "data/reports"
 
     # Logger
     LOG_LEVEL: str = "DEBUG"  
