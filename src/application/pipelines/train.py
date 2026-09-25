@@ -63,6 +63,7 @@ class ModelTrainingPipeline:
         target_col: str,
         model_name: str = "baseline_model",
         tune: bool = False,
+        close_run: bool = True,
     ) -> Tuple[str, ModelMetadata]:
         """Train model, evaluate metrics, log to tracker, and persist binary artifact."""
         train_df = pd.read_parquet(train_path)
@@ -85,7 +86,13 @@ class ModelTrainingPipeline:
 
         # Start tracking run
         if self.tracker:
-            self.tracker.start_run(run_name=f"train_{model_name}")
+            run_suffix = "optuna" if tune else "baseline"
+            run_name = f"train_{model_name}_{run_suffix}"
+            run_tags = {
+                "tuning": "optuna" if tune else "baseline",
+                "model_type": "RandomForest",
+            }
+            self.tracker.start_run(run_name=run_name, tags=run_tags)
             self.tracker.log_params(params)
 
         # Train model
@@ -113,7 +120,8 @@ class ModelTrainingPipeline:
 
         if self.tracker:
             self.tracker.log_artifact(str(model_file))
-            self.tracker.end_run()
+            if close_run:
+                self.tracker.end_run()
 
         metadata = ModelMetadata(
             name=model_name,

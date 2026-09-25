@@ -60,7 +60,13 @@ class DataIngestionPipeline:
         """Split dataset into train/test sets and persist to processed data directory."""
         # Convert to pandas for sklearn train_test_split
         pdf = df.to_pandas()
-        train_df, test_df = train_test_split(pdf, test_size=test_size, random_state=42)
+        stratify_col = pdf[target_col] if target_col in pdf.columns else None
+        train_df, test_df = train_test_split(
+            pdf,
+            test_size=test_size,
+            random_state=42,
+            stratify=stratify_col,
+        )
 
         train_path = self.processed_dir / f"{dataset_name}_train.parquet"
         test_path = self.processed_dir / f"{dataset_name}_test.parquet"
