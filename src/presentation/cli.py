@@ -3,6 +3,7 @@
 import sys
 from pathlib import Path
 import typer
+import typer._completion_classes as typer_cc
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -10,6 +11,9 @@ from rich.table import Table
 from src.version import __version__
 from src.config import settings
 from src.infra.logging import setup_logger
+
+# Register shell completion classes (Zsh, Bash, Fish) with Click so tab completion works even with add_completion=False
+typer_cc.completion_init()
 
 app = typer.Typer(
     name="sg-project-template",
