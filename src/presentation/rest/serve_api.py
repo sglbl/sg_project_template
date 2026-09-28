@@ -38,7 +38,7 @@ async def greet_user():
     return PlainTextResponse(content="Hello to the API World", status_code=200)
 
 
-def run_api(host: str = "0.0.0.0", port: int = 8000):
+def run_api(host: str = "0.0.0.0", port: int = 8001):
     ''' Set the global logger level and run the API with specified host and port '''
     setup_logger(level=settings.LOG_LEVEL)
 

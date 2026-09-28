@@ -42,7 +42,7 @@ def version() -> None:
 @app.command()
 def api(
     host: str = typer.Option("0.0.0.0", help="Host to bind API server"),
-    port: int = typer.Option(8000, help="Port for API server"),
+    port: int = typer.Option(8001, help="Port for API server"),
 ) -> None:
     """Run the REST API presentation server."""
     console.print(f"[bold blue]Starting API server on {host}:{port}...[/bold blue]")
@@ -315,6 +315,37 @@ def export_env(
         )
     except Exception as e:
         console.print(f"[bold red]Failed to export environment template:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+@app.command(name="completion")
+def completion(
+    shell: str = typer.Argument("zsh", help="Target shell (zsh or bash)"),
+) -> None:
+    """Output shell autocompletion script for ./run."""
+    if shell.lower() == "zsh":
+        typer.echo(
+            '#compdef run ./run\n\n'
+            '_run_completion() {\n'
+            '  local cmd="${words[1]}"\n'
+            '  eval $(env _TYPER_COMPLETE_ARGS="${words[1,$CURRENT]}" _RUN_COMPLETE=complete_zsh "$cmd")\n'
+            '}\n\n'
+            'compdef _run_completion run ./run'
+        )
+    elif shell.lower() == "bash":
+        typer.echo(
+            '_run_completion() {\n'
+            '  local IFS=$\'\\n\'\n'
+            '  local cmd="${COMP_WORDS[0]}"\n'
+            '  COMPREPLY=( $( env COMP_WORDS="${COMP_WORDS[*]}" \\\n'
+            '                 COMP_CWORD=$COMP_CWORD \\\n'
+            '                 _RUN_COMPLETE=complete_bash "$cmd" ) )\n'
+            '  return 0\n'
+            '}\n\n'
+            'complete -o default -F _run_completion run ./run'
+        )
+    else:
+        typer.echo(f"Unsupported shell: {shell}. Please specify 'zsh' or 'bash'.", err=True)
         raise typer.Exit(code=1)
 
 

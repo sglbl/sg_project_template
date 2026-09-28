@@ -15,4 +15,4 @@ if str(_PROJECT_ROOT) not in sys.path:
 from src.presentation.cli import app 
 
 if __name__ == "__main__":
-    app(prog_name="./run")
+    app(prog_name="run")
