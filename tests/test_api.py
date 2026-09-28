@@ -15,7 +15,7 @@ def get_api_url(local_or_remote: str) -> str:
     if local_or_remote == "remote":
         return os.environ.get("API_URL", "https://sgproject.url")
     else:
-        return os.environ.get("API_URL", "http://localhost:8001")
+        return os.environ.get("API_URL", "http://localhost:8100")
 
 
 @pytest.mark.integration

@@ -7,9 +7,10 @@ class Settings(BaseSettings):
     DB_USER: str = "postgres"
     DB_PASSWORD: str = "postgres"
     DB_HOST: str = "localhost"
-    DB_PORT: str = "5435"
+    DB_PORT: str = "5433"
     DB_NAME: str = "postgres"
-    DB_SCHEMA: str = "example_schema_name"
+    API_URL: str = "http://localhost:8100"
+    DB_SCHEMA: str = "example_schema"
     OLLAMA_API_URL: str = "http://localhost:11434"
     OPENAI_API_KEY: Optional[str] = None
 
@@ -56,8 +57,8 @@ class Settings(BaseSettings):
         dotenv_settings: PydanticBaseSettingsSource,
         file_secret_settings: PydanticBaseSettingsSource,
     ) -> tuple[PydanticBaseSettingsSource, ...]:
-        """ Increase the priority of the dotenv settings to load them first """
-        return init_settings, dotenv_settings, env_settings, file_secret_settings
+        """ Use the default loading error, because of docker injections would take priority on docker """
+        return init_settings, env_settings, dotenv_settings, file_secret_settings
 
     # Pydantic settings configuration
     model_config = SettingsConfigDict(

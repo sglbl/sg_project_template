@@ -17,7 +17,9 @@ services:
       - MINIO_ENDPOINT_URL=http://rustfs:9000
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-rustfsadmin}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-rustfsadmin}
-      - DB_HOST=${DB_HOST:-postgres}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - API_URL=http://api:8000
     ports:
       - "8501:8501"
 
@@ -32,6 +34,14 @@ services:
       - ./.env:/app/.env:ro
     environment:
       - PYTHONUNBUFFERED=1
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - RUSTFS_ENDPOINT_URL=http://rustfs:9000
+      - MINIO_ENDPOINT_URL=http://rustfs:9000
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-rustfsadmin}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-rustfsadmin}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - API_URL=http://api:8000
     ports:
       - "2719:2718"
 
@@ -53,7 +63,8 @@ services:
       - MINIO_ENDPOINT_URL=http://rustfs:9000
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-rustfsadmin}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-rustfsadmin}
-      - DB_HOST=${DB_HOST:-postgres}
+      - DB_HOST=postgres
+      - DB_PORT=5432
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:v2.15.0

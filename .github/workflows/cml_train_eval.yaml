@@ -32,12 +32,16 @@ jobs:
           uv sync --group mlops --group dev
 
       - name: Ingest & Train Production Model
+        env:
+          RUSTFS_ENDPOINT_URL: ""
         run: |
           uv run python -m src.main ingest
           uv run python -m src.main train --model-name random_forest --export-onnx
           uv run python -m src.main drift --report-name pr_drift_report
 
       - name: Run Test Suite
+        env:
+          RUSTFS_ENDPOINT_URL: ""
         run: |
           uv run pytest tests/test_ml_pipeline.py tests/test_ml_api.py -v
 

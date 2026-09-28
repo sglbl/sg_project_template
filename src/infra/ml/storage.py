@@ -30,14 +30,22 @@ class S3StorageProvider(IStorageRepository):
         if not os.path.exists(local_path):
             raise FileNotFoundError(f"Source file not found: {local_path}")
 
+        if not self.endpoint_url:
+            dest_path = self.local_root / "remote_cache" / remote_key
+            dest_path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(local_path, dest_path)
+            return str(dest_path)
+
         try:
             # S3 client attempt if boto3 is installed
             import boto3
+            from botocore.config import Config
             s3_client = boto3.client(
                 "s3",
                 endpoint_url=self.endpoint_url,
                 aws_access_key_id=self.access_key,
                 aws_secret_access_key=self.secret_key,
+                config=Config(connect_timeout=1, retries={"max_attempts": 1}),
             )
             # Ensure bucket exists
             try:
@@ -64,13 +72,22 @@ class S3StorageProvider(IStorageRepository):
         out_path = Path(local_path)
         out_path.parent.mkdir(parents=True, exist_ok=True)
 
+        if not self.endpoint_url:
+            cached = self.local_root / "remote_cache" / remote_key
+            if cached.exists():
+                shutil.copy2(cached, out_path)
+                return str(out_path)
+            raise FileNotFoundError(f"Remote key '{remote_key}' not found locally or in remote storage")
+
         try:
             import boto3
+            from botocore.config import Config
             s3_client = boto3.client(
                 "s3",
                 endpoint_url=self.endpoint_url,
                 aws_access_key_id=self.access_key,
                 aws_secret_access_key=self.secret_key,
+                config=Config(connect_timeout=1, retries={"max_attempts": 1}),
             )
             s3_client.download_file(self.bucket_name, remote_key, str(out_path))
             logger.info(f"Downloaded s3://{self.bucket_name}/{remote_key} to {local_path}")
@@ -85,13 +102,19 @@ class S3StorageProvider(IStorageRepository):
 
     def exists(self, remote_key: str) -> bool:
         """Check if remote object exists."""
+        if not self.endpoint_url:
+            cached = self.local_root / "remote_cache" / remote_key
+            return cached.exists()
+
         try:
             import boto3
+            from botocore.config import Config
             s3_client = boto3.client(
                 "s3",
                 endpoint_url=self.endpoint_url,
                 aws_access_key_id=self.access_key,
                 aws_secret_access_key=self.secret_key,
+                config=Config(connect_timeout=1, retries={"max_attempts": 1}),
             )
             s3_client.head_object(Bucket=self.bucket_name, Key=remote_key)
             return True

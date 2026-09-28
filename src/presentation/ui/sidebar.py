@@ -22,11 +22,14 @@ def check_postgres_connection() -> tuple[bool, str]:
         return False, f"Postgres unavailable ({live_settings.DB_HOST}:{live_settings.DB_PORT}): {e}"
 
 
-def fetch_api_items(api_url: str = "http://localhost:8001") -> tuple[bool, dict]:
+def fetch_api_items(api_url: str | None = None) -> tuple[bool, dict]:
     """Helper to query the REST API endpoint."""
+    from src.config import Settings
+    live_settings = Settings()
+    target_url = api_url or live_settings.API_URL
     try:
         response = requests.get(
-            f"{api_url}/items/",
+            f"{target_url}/items/",
             headers={"accept": "application/json", "token": "sg_super_secret_token"},
             timeout=3,
         )
@@ -34,7 +37,7 @@ def fetch_api_items(api_url: str = "http://localhost:8001") -> tuple[bool, dict]
             return True, response.json()
         return False, {"error": f"API returned status {response.status_code}"}
     except Exception as e:
-        return False, {"error": f"API unreachable at {api_url}: {e}"}
+        return False, {"error": f"API unreachable at {target_url}: {e}"}
 
 
 def sidebar_info(logo1: str, logo2: str) -> dict[str, str]:
@@ -89,7 +92,6 @@ def sidebar_info(logo1: str, logo2: str) -> dict[str, str]:
     st.caption(
         "**SG Project Template**\n\n"
         "Built with Streamlit & Clean Architecture.\n\n"
-        "© Deduce Data Solutions"
     )
 
     return {
