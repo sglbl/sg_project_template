@@ -70,3 +70,22 @@ def test_pyright_diagnostic(diag: dict[str, Any]) -> None:
     """Each pyright error becomes its own failing test (for CI dashboards)."""
     pytest.fail(_format_diag(diag))
 
+
+def test_env_example_matches_settings() -> None:
+    """Verify that .env.example contains all fields defined in Settings SSOT."""
+    from pathlib import Path
+    from src.config import Settings
+
+    env_example_path = Path(".env.example")
+    assert env_example_path.exists(), ".env.example does not exist"
+
+    env_keys = set()
+    for line in env_example_path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            env_keys.add(line.split("=", 1)[0].strip())
+
+    setting_keys = set(Settings.model_fields.keys())
+    missing = setting_keys - env_keys
+    assert not missing, f"Missing keys in .env.example: {missing}. Run './run export-env' to sync."
+

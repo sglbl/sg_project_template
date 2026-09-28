@@ -263,7 +263,7 @@ services:
 ## ✅ Implementation Steps Checklist
 
 - [ ] **Step 1:** Add dependencies to `pyproject.toml` (`mlflow`, `optuna`, `dvc`, `pandera`, `evidently`, `onnxruntime`, `scikit-learn`, `xgboost`).
-- [ ] **Step 2:** Extend `src/config.py` with ML settings (`MLFLOW_TRACKING_URI`, `MINIO_ENDPOINT_URL`, `MODEL_ARTIFACTS_DIR`).
+- [ ] **Step 2:** Extend `src/config.py` with ML settings (`MLFLOW_TRACKING_URI`, `RUSTFS_ENDPOINT_URL`, `MODEL_ARTIFACTS_DIR`).
 - [ ] **Step 3:** Define domain interfaces (`src/domain/repo_interfaces/tracker.py`, `registry.py`, `feature_store.py`).
 - [ ] **Step 4:** Implement pipeline modules (`src/application/pipelines/ingest.py`, `train.py`, `evaluate.py`, `export.py`).
 - [ ] **Step 5:** Implement ML services & providers (`src/infra/ml/mlflow_tracker.py`, `src/infra/serving/onnx_engine.py`).

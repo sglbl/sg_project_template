@@ -19,7 +19,7 @@ class S3StorageProvider(IStorageRepository):
         secret_key: str = "",
         bucket_name: str = "artifacts",
     ) -> None:
-        self.endpoint_url = endpoint_url or settings.RUSTFS_ENDPOINT_URL or settings.MINIO_ENDPOINT_URL
+        self.endpoint_url = endpoint_url or settings.RUSTFS_ENDPOINT_URL or settings.RUSTFS_ENDPOINT_URL
         self.access_key = access_key or settings.RUSTFS_ACCESS_KEY or settings.AWS_ACCESS_KEY_ID
         self.secret_key = secret_key or settings.RUSTFS_SECRET_KEY or settings.AWS_SECRET_ACCESS_KEY
         self.bucket_name = bucket_name

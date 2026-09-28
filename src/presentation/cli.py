@@ -92,7 +92,7 @@ def status() -> None:
     table.add_row("Database Name", settings.DB_NAME)
     table.add_row("Log Level", settings.LOG_LEVEL)
     table.add_row("MLflow Tracking URI", settings.MLFLOW_TRACKING_URI)
-    table.add_row("MinIO / RustFS Endpoint", settings.MINIO_ENDPOINT_URL)
+    table.add_row("MinIO / RustFS Endpoint", settings.RUSTFS_ENDPOINT_URL)
     table.add_row("Model Artifacts Dir", settings.MODEL_ARTIFACTS_DIR)
 
     console.print(table)
@@ -292,6 +292,29 @@ def predict(
         console.print(table)
     except Exception as e:
         console.print(f"[bold red]Prediction failed:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+@app.command(name="export-env")
+def export_env(
+    output: Path = typer.Option(Path(".env.example"), "--output", "-o", help="Target output file path"),
+) -> None:
+    """Generate or synchronize .env.example from Settings SSOT."""
+    from src.config import generate_env_example
+
+    console.print(f"[bold cyan]Exporting Settings SSOT to {output}...[/bold cyan]")
+    try:
+        generate_env_example(output_path=output)
+        console.print(
+            Panel.fit(
+                f"[bold green]Successfully generated {output}[/bold green]\n"
+                f"[dim]All fields, types, and host defaults are in sync with src/config.py[/dim]",
+                title="Environment Export",
+                border_style="green",
+            )
+        )
+    except Exception as e:
+        console.print(f"[bold red]Failed to export environment template:[/bold red] {e}")
         raise typer.Exit(code=1)
 
 

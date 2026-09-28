@@ -171,3 +171,6 @@ data/models/*
 data/reports/*
 # Sequential check so .gitkeep files are not ignored
 !**/.gitkeep
+
+# Use SSOF file instead as README states
+.env.example

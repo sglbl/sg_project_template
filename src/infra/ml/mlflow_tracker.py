@@ -26,7 +26,7 @@ class MLflowTracker(ITrackerRepository, IRegistryRepository):
         self._active_run_id: Optional[str] = None
 
         # Configure environment for S3/RustFS/MinIO access if present
-        endpoint = getattr(settings, "RUSTFS_ENDPOINT_URL", None) or settings.MINIO_ENDPOINT_URL
+        endpoint = getattr(settings, "RUSTFS_ENDPOINT_URL", None) or settings.RUSTFS_ENDPOINT_URL
         if endpoint:
             os.environ["MLFLOW_S3_ENDPOINT_URL"] = endpoint
             os.environ["AWS_ACCESS_KEY_ID"] = settings.AWS_ACCESS_KEY_ID

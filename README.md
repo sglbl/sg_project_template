@@ -28,9 +28,14 @@ Install project dependencies:
 
 ```bash
 uv sync
+```
 
+Fill the `.env` file with your actual values:
+```bash
+# Generate .env.example from Config Settings SSOT (Source of Truth)
+./run export-env
+# Copy .env.example to .env
 cp .env.example .env
-# Fill the .env with correct values
 ```
 
 ---
