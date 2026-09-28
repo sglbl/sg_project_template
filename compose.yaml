@@ -4,16 +4,15 @@ services:
   ui:
     build: 
       context: .
-      dockerfile: docker/ui.Dockerfile
+      dockerfile: docker/app.Dockerfile
     restart: unless-stopped
-    env_file:
-      - .env
     volumes:
       - ./.env:/app/.env:ro
+    env_file:
+      - .env
     environment:
       - PYTHONUNBUFFERED=1
       - MLFLOW_TRACKING_URI=http://mlflow:5000
-      - RUSTFS_ENDPOINT_URL=http://rustfs:9000
       - RUSTFS_ENDPOINT_URL=http://rustfs:9000
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-rustfsadmin}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-rustfsadmin}
@@ -22,6 +21,26 @@ services:
       - API_URL=http://api:8000
     ports:
       - "8501:8501"
+
+  api:
+    build: 
+      context: .
+      dockerfile: docker/app.Dockerfile
+    command: python -m src.main api --host 0.0.0.0 --port 8001
+    restart: unless-stopped
+    volumes:
+      - ./.env:/app/.env:ro
+    env_file:
+      - .env
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - RUSTFS_ENDPOINT_URL=http://rustfs:9000
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-rustfsadmin}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-rustfsadmin}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+    ports:
+      - "8100:8001"
 
   marimo:
     build:
@@ -36,7 +55,6 @@ services:
       - PYTHONUNBUFFERED=1
       - MLFLOW_TRACKING_URI=http://mlflow:5000
       - RUSTFS_ENDPOINT_URL=http://rustfs:9000
-      - RUSTFS_ENDPOINT_URL=http://rustfs:9000
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-rustfsadmin}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-rustfsadmin}
       - DB_HOST=postgres
@@ -44,27 +62,6 @@ services:
       - API_URL=http://api:8000
     ports:
       - "2719:2718"
-
-  api:
-    build:
-      context: .
-      dockerfile: docker/ui.Dockerfile
-    command: python -m src.main api --host 0.0.0.0 --port 8000
-    restart: unless-stopped
-    env_file:
-      - .env
-    volumes:
-      - ./.env:/app/.env:ro
-    ports:
-      - "8100:8000"
-    environment:
-      - MLFLOW_TRACKING_URI=http://mlflow:5000
-      - RUSTFS_ENDPOINT_URL=http://rustfs:9000
-      - RUSTFS_ENDPOINT_URL=http://rustfs:9000
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-rustfsadmin}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-rustfsadmin}
-      - DB_HOST=postgres
-      - DB_PORT=5432
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:v2.15.0
@@ -84,9 +81,6 @@ services:
     container_name: rustfs_storage_server
     env_file:
       - .env
-    ports:
-      - "9010:9000"
-      - "9011:9001"
     environment:
       - RUSTFS_ACCESS_KEY=${RUSTFS_ACCESS_KEY:-${AWS_ACCESS_KEY_ID:-rustfsadmin}}
       - RUSTFS_SECRET_KEY=${RUSTFS_SECRET_KEY:-${AWS_SECRET_ACCESS_KEY:-rustfsadmin}}
@@ -97,6 +91,9 @@ services:
       - rustfs-data:/data
     command: /data
     restart: unless-stopped
+    ports:
+      - "9010:9000"
+      - "9011:9001"
 
   postgres:
     image: postgres:16-alpine

@@ -1,4 +1,4 @@
-# Description: Dockerfile for Streamlit presentation UI
+# Description: Dockerfile for core application services (Streamlit UI, FastAPI REST API)
 FROM python:3.12-slim
 
 # Install system dependencies

@@ -198,65 +198,13 @@ jobs:
 
 ## 🐳 6. Multi-Service Infrastructure (`compose.yaml`)
 
-```yaml
-name: sgproject-mlops
-
-services:
-  api:
-    build:
-      context: .
-      dockerfile: docker/ui.Dockerfile
-    command: python -m src.main api
-    ports:
-      - "8000:8000"
-    environment:
-      - MLFLOW_TRACKING_URI=http://mlflow:5000
-      - DB_HOST=postgres
-
-  ui:
-    build:
-      context: .
-      dockerfile: docker/ui.Dockerfile
-    ports:
-      - "8501:8501"
-    environment:
-      - MLFLOW_TRACKING_URI=http://mlflow:5000
-
-  marimo:
-    build:
-      context: .
-      dockerfile: docker/marimo.Dockerfile
-    ports:
-      - "2719:2718"
-
-  mlflow:
-    image: ghcr.io/mlflow/mlflow:v2.15.0
-    container_name: mlflow_server
-    ports:
-      - "5000:5000"
-    command: mlflow server --backend-store-uri postgresql://postgres:postgres@postgres:5432/mlflow --default-artifact-root s3://mlflow-artifacts/ --host 0.0.0.0
-
-  # S3 Object Storage Service (MinIO or RustFS)
-  minio:
-    image: minio/minio:RELEASE.2024-05-28T17-19-04Z
-    container_name: s3_storage_server
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    environment:
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=minioadmin
-    command: server /data --console-address ":9001"
-
-  postgres:
-    image: postgres:16-alpine
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
-    ports:
-      - "5432:5432"
-```
+This has the services of 
+- ui
+- api
+- marimo
+- mlflow
+- rustfs
+- postgres
 
 ---
 
