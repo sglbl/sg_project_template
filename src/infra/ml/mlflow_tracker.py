@@ -33,6 +33,25 @@ class MLflowTracker(ITrackerRepository, IRegistryRepository):
             os.environ["AWS_SECRET_ACCESS_KEY"] = settings.AWS_SECRET_ACCESS_KEY
             os.environ["AWS_DEFAULT_REGION"] = settings.AWS_REGION
 
+        # Fast connectivity check for remote HTTP/HTTPS endpoints to prevent long backoff hangs
+        if self.tracking_uri.startswith(("http://", "https://")):
+            import socket
+            from urllib.parse import urlparse
+
+            parsed = urlparse(self.tracking_uri)
+            host = parsed.hostname or "localhost"
+            port = parsed.port or (443 if parsed.scheme == "https" else 80)
+            try:
+                with socket.create_connection((host, port), timeout=1.0):
+                    pass
+            except (socket.timeout, ConnectionRefusedError, OSError) as conn_err:
+                local_uri = "sqlite:///mlflow.db"
+                logger.warning(
+                    f"MLflow server at {self.tracking_uri} is unreachable ({conn_err}). "
+                    f"Falling back immediately to local tracking at {local_uri}."
+                )
+                self.tracking_uri = local_uri
+
         try:
             mlflow.set_tracking_uri(self.tracking_uri)
             mlflow.set_experiment(self.experiment_name)

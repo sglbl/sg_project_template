@@ -34,6 +34,7 @@ jobs:
       - name: Ingest & Train Production Model
         env:
           RUSTFS_ENDPOINT_URL: ""
+          MLFLOW_TRACKING_URI: "sqlite:///mlflow.db"
         run: |
           uv run python -m src.main ingest
           uv run python -m src.main train --model-name random_forest --export-onnx
@@ -42,6 +43,7 @@ jobs:
       - name: Run Test Suite
         env:
           RUSTFS_ENDPOINT_URL: ""
+          MLFLOW_TRACKING_URI: "sqlite:///mlflow.db"
         run: |
           uv run pytest tests/test_ml_pipeline.py tests/test_ml_api.py -v
 
