@@ -5851,6 +5851,18 @@ wheels = [
 ]
 
 [[package]]
+name = "returns"
+version = "0.29.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/29/e6/f5ada68dfb47e9c032683813f3cd9a810978d8ce541866d365076215906f/returns-0.29.0.tar.gz", hash = "sha256:fd9831594403229595dc705fee632a9be24a497df10aa3b9b72405d75d54e8ad", size = 106314, upload-time = "2026-08-02T08:36:26.976Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c2/b6/660f9724d574eee210ba89cc8fc2c41a5d960947bcea7d780847ce766e21/returns-0.29.0-py3-none-any.whl", hash = "sha256:db43c06d228f84b3d93c0418313c37c5ee4ecdb7a0f10326c24444f9baaf074c", size = 160951, upload-time = "2026-08-02T08:36:28.291Z" },
+]
+
+[[package]]
 name = "rfc3339-validator"
 version = "0.1.4"
 source = { registry = "https://pypi.org/simple" }
@@ -6264,6 +6276,7 @@ dependencies = [
     { name = "duckdb" },
     { name = "duckdb-cli" },
     { name = "fastapi" },
+    { name = "greenlet" },
     { name = "httpx" },
     { name = "kaleido" },
     { name = "loguru" },
@@ -6283,6 +6296,7 @@ dependencies = [
     { name = "python-dotenv" },
     { name = "pyyaml" },
     { name = "requests" },
+    { name = "returns" },
     { name = "rich" },
     { name = "sentence-transformers" },
     { name = "sqlmodel" },
@@ -6339,6 +6353,7 @@ requires-dist = [
     { name = "duckdb", specifier = ">=1.5.5" },
     { name = "duckdb-cli", specifier = ">=1.5.5" },
     { name = "fastapi", specifier = ">=0.141.1" },
+    { name = "greenlet", specifier = ">=3.5.6" },
     { name = "httpx", specifier = ">=0.27" },
     { name = "kaleido", specifier = ">=1.3.0" },
     { name = "loguru", specifier = "==0.7.3" },
@@ -6358,6 +6373,7 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "requests", specifier = ">=2.34.2" },
+    { name = "returns", specifier = ">=0.29.0" },
     { name = "rich", specifier = ">=13" },
     { name = "sentence-transformers", specifier = "==3.4.1" },
     { name = "sqlmodel", specifier = ">=0.0.24" },

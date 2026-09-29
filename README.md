@@ -187,7 +187,7 @@ pytest
 Generate HTML documentation from docstrings using `pdoc3`:
 
 ```bash
-pdoc3 --html -o data/_docs/ src --force
+pdoc3 --skip-errors --html -o docs/_html/ src --force
 ```
 
 ---

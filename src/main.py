@@ -1,8 +1,10 @@
 """CLI entry point for sg_project_template.
 
 Run with either:
-    python -m src.main ...        # preferred
-    python src/main.py ...        # also works
+```python
+    python -m src.main ...        # preferred  
+    python src/main.py ...        # also works  
+```
 """
 
 import sys
