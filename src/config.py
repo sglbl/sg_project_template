@@ -23,8 +23,6 @@ class Settings(BaseSettings):
     RUSTFS_ENDPOINT_URL: str = "http://localhost:9010"
     AWS_ACCESS_KEY_ID: str = "rustfsadmin"
     AWS_SECRET_ACCESS_KEY: str = "rustfsadmin"
-    RUSTFS_ACCESS_KEY: str = "rustfsadmin"
-    RUSTFS_SECRET_KEY: str = "rustfsadmin"
     AWS_REGION: str = "us-east-1"
     
     # Path Configuration
@@ -64,7 +62,7 @@ class Settings(BaseSettings):
 
     # Pydantic settings configuration
     model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8", case_sensitive=True
+        env_file=".env", env_file_encoding="utf-8", case_sensitive=True, extra="ignore"
     )
 
 # Create an instance of the Settings class

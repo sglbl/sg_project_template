@@ -18,7 +18,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-rustfsadmin}
       - DB_HOST=postgres
       - DB_PORT=5432
-      - API_URL=http://api:8000
+      - API_URL=http://api:8001
     ports:
       - "8501:8501"
 
@@ -59,7 +59,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-rustfsadmin}
       - DB_HOST=postgres
       - DB_PORT=5432
-      - API_URL=http://api:8000
+      - API_URL=http://api:8001
     ports:
       - "2719:2718"
 
@@ -82,8 +82,8 @@ services:
     env_file:
       - .env
     environment:
-      - RUSTFS_ACCESS_KEY=${RUSTFS_ACCESS_KEY:-${AWS_ACCESS_KEY_ID:-rustfsadmin}}
-      - RUSTFS_SECRET_KEY=${RUSTFS_SECRET_KEY:-${AWS_SECRET_ACCESS_KEY:-rustfsadmin}}
+      - RUSTFS_ACCESS_KEY=${AWS_ACCESS_KEY_ID:-rustfsadmin}
+      - RUSTFS_SECRET_KEY=${AWS_SECRET_ACCESS_KEY:-rustfsadmin}
       - RUSTFS_ADDRESS=:9000
       - RUSTFS_CONSOLE_ADDRESS=:9001
       - RUSTFS_CONSOLE_ENABLE=true
