@@ -116,11 +116,31 @@ The table below demonstrates the real-world impact of automated hyperparameter o
 
 ## 🐳 Docker Compose Stack
 
-Run the full production stack with a single command:
+Run the complete containerized stack (including UI, API, notebooks, and all backing infrastructure) with a single command:
 
 ```bash
 docker compose up -d --build
 ```
+
+
+You can execute all CLI commands directly using the root executable `./run` (or `python -m src.main`).
+
+### 📦 Container Dependencies for `./run` Commands
+Some commands operate purely offline on your local filesystem, while others interact with backing infrastructure:
+
+| Command | Required Container Service | How to Start |
+| :--- | :--- | :--- |
+| `./run ingest`, `./run predict`, `./run export-onnx` | **None** (100% local on disk) | Runs standalone |
+| `./run train`, `./run train --tune` | **MLflow** (`http://localhost:5100`) | `docker compose up -d mlflow` |
+| `dvc push`, `dvc pull` | **RustFS S3** (`http://localhost:9010`) | `docker compose up -d rustfs` |
+| `./run status` | **PostgreSQL & RustFS** | `docker compose up -d postgres rustfs` |
+| `./run ui`, `./run api` (local dev) | Backing DB & MLflow services | `docker compose up -d postgres rustfs mlflow` |
+
+> [!TIP]
+> **Recommended for local development**: Spin up only the backing infrastructure in Docker so you can run and iterate on `./run` commands or scripts locally:
+> ```bash
+> docker compose up -d postgres rustfs mlflow
+> ```
 
 | Service | Local URL | Credentials / Notes |
 | :--- | :--- | :--- |
