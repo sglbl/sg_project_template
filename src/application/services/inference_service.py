@@ -21,6 +21,7 @@ class InferenceService:
         self._onnx_engine: Optional[ONNXInferenceEngine] = None
         self._fallback_model: Optional[Any] = None
         self._feature_names: list[str] = []
+        self._target_names: dict[int, str] = {0: "Setosa", 1: "Versicolor", 2: "Virginica"}
 
         self._load_active_model()
 
@@ -88,9 +89,16 @@ class InferenceService:
 
         elapsed_ms = (time.perf_counter() - start_time) * 1000.0
 
+        label_name: Optional[str] = None
+        try:
+            label_name = self._target_names.get(int(prediction))
+        except (ValueError, TypeError):
+            pass
+
         model_name = Path(self.active_model_path).stem if self.active_model_path else "active_model"
         return PredictResponse(
             prediction=prediction,
+            label_name=label_name,
             model_name=model_name,
             model_version=request.model_version or "1.0.0",
             execution_time_ms=round(elapsed_ms, 2),

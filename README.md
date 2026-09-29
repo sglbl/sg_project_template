@@ -34,7 +34,7 @@ Fill the `.env` file with your actual values:
 ```bash
 # Generate .env.example from Config Settings SSOT (Source of Truth)
 ./run export-env
-# Copy .env.example to .env
+# Copy .env.example to .env and edit it.
 cp .env.example .env
 ```
 
@@ -119,7 +119,7 @@ The table below demonstrates the real-world impact of automated hyperparameter o
 Run the full production stack with a single command:
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 | Service | Local URL | Credentials / Notes |

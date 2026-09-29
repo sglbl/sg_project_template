@@ -23,6 +23,7 @@ class PredictRequest(BaseModel):
 
 class PredictResponse(BaseModel):
     prediction: Any = Field(..., description="Model prediction output (class label or numerical value)")
+    label_name: Optional[str] = Field(None, description="Human-readable class name if mapped")
     probabilities: Optional[dict[str, float]] = Field(None, description="Class probabilities for classification models")
     model_name: str = Field(..., description="Model name used for inference")
     model_version: str = Field(..., description="Model version used for inference")
