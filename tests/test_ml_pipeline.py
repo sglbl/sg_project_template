@@ -92,8 +92,10 @@ def test_drift_evaluation(sample_dataset: tuple[str, str], tmp_path: Path):
     ref_path = tmp_path / "ref.parquet"
     cur_path = tmp_path / "cur.parquet"
 
-    df.iloc[:75].to_parquet(ref_path)
-    df.iloc[75:].to_parquet(cur_path)
+    ref_df = df.sample(frac=0.5, random_state=42)
+    cur_df = df.drop(ref_df.index)
+    ref_df.to_parquet(ref_path)
+    cur_df.to_parquet(cur_path)
 
     eval_pipe = ModelEvaluationPipeline(reports_dir=str(tmp_path))
     drift_detected, drift_share, html_path = eval_pipe.run_drift_analysis(

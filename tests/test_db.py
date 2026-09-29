@@ -1,24 +1,36 @@
 # tests/test_db.py
 import pytest
 import asyncio
-from src.infra.postgres.database_async import get_db_async
+from sqlmodel import delete
+from src.infra.postgres.database_async import get_db_async, init_db, create_tables
 from src.infra.postgres.db_operations import insert_sqlmodel_list, get_data_by_name
 from src.domain.models.sql_models import Data, DataGraph
 
 
-@pytest.fixture(scope="session")
-def event_loop():
-    """Ensure event loop works for pytest-asyncio."""
-    loop = asyncio.get_event_loop()
-    yield loop
-    loop.close()
+
 
 
 @pytest.fixture()
 async def db_session():
-    """Provide a session with the test DB schema set."""
+    """Provide a session with initialized tables and isolated test data."""
+    try:
+        await init_db()
+        await create_tables()
+    except Exception as e:
+        pytest.skip(f"PostgreSQL connection unavailable: {e}")
+
     async with get_db_async() as session:
-        yield session
+        # Pre-cleanup in case previous run was interrupted
+        await session.exec(delete(DataGraph).where(DataGraph.data_fk == "test_dataset"))
+        await session.exec(delete(Data).where(Data.name == "test_dataset"))
+        await session.commit()
+        try:
+            yield session
+        finally:
+            # Post-cleanup
+            await session.exec(delete(DataGraph).where(DataGraph.data_fk == "test_dataset"))
+            await session.exec(delete(Data).where(Data.name == "test_dataset"))
+            await session.commit()
 
 
 @pytest.mark.integration
