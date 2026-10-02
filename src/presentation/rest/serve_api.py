@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse, PlainTextResponse
 from contextlib import asynccontextmanager
+from prometheus_fastapi_instrumentator import Instrumentator
 from src.config import settings
 from src.infra.logging import setup_logger
 from src.presentation.dependencies import get_token, response_examples
@@ -22,6 +23,7 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan #, dependencies=[Depends(get_token)] # you can also add mandatory dependencies here [instead of only for items router],
     )
+Instrumentator().instrument(app).expose(app)
 app.include_router(items.router)
 app.include_router(ml.router)
 

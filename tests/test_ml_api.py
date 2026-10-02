@@ -67,3 +67,11 @@ def test_ml_predict_endpoint():
     assert "model_name" in data
     assert data["prediction"] in [0, 1, 2]
     assert data["execution_time_ms"] >= 0.0
+
+
+def test_metrics_endpoint():
+    """Verify GET /metrics exposes Prometheus metrics."""
+    response = client.get("/metrics")
+    assert response.status_code == 200
+    assert "http_requests_total" in response.text or "http_request_duration_seconds" in response.text or "process_cpu_seconds_total" in response.text
+

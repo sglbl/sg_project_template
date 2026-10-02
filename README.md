@@ -196,48 +196,93 @@ pdoc3 --skip-errors --html -o docs/_html/ src --force
 
 ```bash
 .
-├── run                                 # Root executable wrapper script for CLI commands
-├── compose.yaml                        # Docker Compose configuration (MLflow, RustFS, Postgres, API, UI)
-├── pyproject.toml                      # Project metadata & dependencies
-├── README.md                           # Project instructions & overview
-├── data/                               # Data storage & runtime outputs
-│   ├── raw/                            # Immutable raw CSV/Parquet files
-│   ├── processed/                      # Transformed & split training datasets
-│   ├── models/                         # Serialized trained models (.onnx, .pkl)
-│   └── reports/                        # Evidently drift reports (.html)
-├── docs/                               # Architecture blueprints & roadmaps
-│   ├── images/                         # Architecture diagrams (onion-architecture.png)
-│   └── MLOPS_ROADMAP.md                # 2026 MLOps architectural specification
-├── notebooks/                          # Root-level Marimo & Jupyter exploratory notebooks
-│   ├── README.md                       # Marimo usage guide
-│   ├── explore_marimo.py               # Interactive Plotly analytics notebook
-│   └── trial.ipynb                     # Jupyter notebook
-├── src/                                # Application source code (Clean Architecture)
-│   ├── main.py                         # Application CLI entrypoint
-│   ├── version.py                      # Application version string (__version__)
-│   ├── config.py                       # Configuration & pydantic-settings
-│   ├── application/                    # Application use cases, pipelines & services
-│   │   ├── pipelines/                  # Ingest, train, export (ONNX), evaluate (Evidently)
-│   │   ├── services/                   # MLService & InferenceService orchestration
-│   │   └── utils.py                    # Helper utilities
-│   ├── domain/                         # Core domain logic, models, & repository interfaces
-│   │   ├── models/                     # SQLModel & ML entity classes
-│   │   ├── schemas/                    # Pydantic request/response schemas
-│   │   └── repo_interfaces/            # Typing Protocol interfaces (Tracker, Storage, Registry)
-│   ├── infra/                          # Infrastructure & external adapters
-│   │   ├── logging.py                  # Loguru logging setup
-│   │   ├── ml/                         # MLflowTracker, S3StorageProvider (RustFS), DuckDB
-│   │   ├── serving/                    # ONNXRuntime inference engine
-│   │   ├── postgres/                   # Postgres DB operations & async/sync engines
-│   │   └── persistence/                # Repository implementations
-│   └── presentation/                   # Presentation layer (UI, REST API, CLI)
-│       ├── cli.py                      # Typer CLI application commands
-│       ├── rest/                       # FastAPI REST API routers (/ml, /items) & server runner
-│       └── ui/                         # Streamlit UI app, tabs, and local assets
-└── tests/                              # Pytest test suite & static type verification
-    ├── conftest.py                     # Test fixtures
-    ├── test_ml_api.py                  # ML REST API endpoint test suite
-    ├── test_ml_pipeline.py             # ML training, ONNX export & drift test suite
-    ├── test_api.py                     # Item REST API test suite
-    └── test_static.py                  # Pyright static type checker suite
+├── run                                         # Root executable wrapper script for CLI commands
+├── compose.yaml                                # Docker Compose configuration (MLflow, RustFS, Postgres, API, UI)
+├── pyproject.toml                              # Project metadata & dependencies
+├── README.md                                   # Project instructions & overview
+├── data/                                       # Data storage & runtime outputs
+│   ├── raw/                                    # Immutable raw CSV/Parquet files
+│   ├── processed/                              # Transformed & split training datasets
+│   ├── models/                                 # Serialized trained models (.onnx, .pkl)
+│   └── reports/                                # Evidently drift reports (.html)
+├── docs/                                       # Architecture blueprints & roadmaps
+│   ├── images/                                 # Architecture diagrams (onion-architecture.png)
+│   ├── MLOPS_ROADMAP.md                        # 2026 MLOps architectural specification
+│   └── MLOPS_RATING.md                         # MLOps maturity assessment & scorecard (8.8/10)
+├── notebooks/                                  # Root-level Marimo & Jupyter exploratory notebooks
+│   ├── README.md                               # Marimo usage guide
+│   ├── explore_marimo.py                       # Interactive Plotly analytics notebook
+│   └── trial.ipynb                             # Jupyter notebook
+├── src/                                        # Application source code (Clean Architecture)
+│   ├── main.py                                 # Application CLI entrypoint (Typer commands)
+│   ├── main_api.py                             # FastAPI application server launcher
+│   ├── main_ui.py                              # Streamlit dashboard launcher
+│   ├── version.py                              # Application version string (__version__)
+│   ├── config.py                               # Centralized configuration & pydantic-settings
+│   ├── application/                            # Application use cases, pipelines & services
+│   │   ├── utils.py                            # Pipeline & application helper utilities
+│   │   ├── pipelines/                          # Data, training, export & evaluation workflows
+│   │   │   ├── ingest.py                       # Data loader, Pandera schema validation & split
+│   │   │   ├── train.py                        # Model training loop, Optuna tuning & evaluation
+│   │   │   ├── export.py                       # Model serialization & ONNX runtime conversion
+│   │   │   └── evaluate.py                     # Metric calculation & statistical drift detection
+│   │   └── services/                           # Application orchestration services
+│   │       ├── ml_service.py                   # Orchestrates ingest -> train -> eval -> register
+│   │       └── inference_service.py            # Low-latency inference engine backed by ONNX Runtime
+│   ├── domain/                                 # Core domain models, schemas & contracts
+│   │   ├── models/                             # Domain entities & business data classes
+│   │   │   ├── llm_models.py                   # LLM configurations & prompt domain models
+│   │   │   ├── ml_entities.py                  # Model & dataset registry domain dataclasses
+│   │   │   └── sql_models.py                   # SQLModel relational table definitions
+│   │   ├── repo_interfaces/                    # Protocol interfaces (structural duck typing)
+│   │   │   ├── tracker_repository.py           # Protocol for MLflow/W&B experiment tracking
+│   │   │   ├── registry_repository.py          # Protocol for model registry lifecycle operations
+│   │   │   ├── storage_repository.py           # Protocol for S3/RustFS artifact & model storage
+│   │   │   └── vectordb_repository.py          # Protocol for vector search & embeddings
+│   │   └── schemas/                            # Boundary contracts & Pydantic validation schemas
+│   │       ├── common.py                       # Generic API response envelopes & error schemas
+│   │       └── ml_schemas.py                   # Prediction requests, responses & drift payloads
+│   ├── infra/                                  # Infrastructure implementations & external adapters
+│   │   ├── logging.py                          # Structured Loguru logger initialization
+│   │   ├── supabase_client.py                  # Supabase client adapter & configuration
+│   │   ├── ml/                                 # MLOps storage & tracking implementations
+│   │   │   ├── feature_store.py                # DuckDB analytical feature storage implementation
+│   │   │   ├── mlflow_tracker.py               # MLflow tracker & registry with fast socket probe
+│   │   │   └── storage.py                      # S3 / RustFS remote object storage provider
+│   │   ├── serving/                            # Model inference engines
+│   │   │   └── onnx_engine.py                  # High-performance ONNX Runtime inference engine
+│   │   ├── postgres/                           # PostgreSQL engine & connection management
+│   │   │   ├── database_async.py               # Async SQLAlchemy session & engine
+│   │   │   ├── database_sync.py                # Synchronous SQLAlchemy session & engine
+│   │   │   ├── db_operations.py                # Database migrations & schema management
+│   │   │   └── vectordb/                       # Vector DB drivers (Async, Sync, Cursor, Monad)
+│   │   │       ├── vdb_async.py                # Async pgvector operations
+│   │   │       ├── vdb_sync.py                 # Synchronous pgvector operations
+│   │   │       ├── vdb_monad.py                # Monadic result pgvector handlers
+│   │   │       └── vdb_with_cursor.py          # Raw cursor pgvector operations
+│   │   └── persistence/                        # Concrete repository adapters
+│   │       ├── pgvector_repository.py          # PostgreSQL pgvector repository
+│   │       └── qdrant_repository.py            # Qdrant vector database repository
+│   └── presentation/                           # Presentation layer (CLI, REST API, UI)
+│       ├── bootstrap.py                        # Dependency container & service bootstrap
+│       ├── cli.py                              # Typer CLI subcommands (train, eval, export, drift)
+│       ├── dependencies.py                     # FastAPI dependency injection providers
+│       ├── rest/                               # FastAPI web service
+│       │   ├── serve_api.py                    # FastAPI application setup, CORS & router mount
+│       │   └── routers/                        # API route controllers
+│       │       ├── items.py                    # Generic CRUD item routes
+│       │       └── ml.py                       # Machine Learning routes (/predict, /models/active)
+│       └── ui/                                 # Streamlit frontend application
+│           ├── app_ui.py                       # Multi-tab dashboard (Registry, Drift, Prediction)
+│           ├── assets.py                       # Frontend static asset loader
+│           ├── sidebar.py                      # Sidebar navigation & service health monitor
+│           └── assets/                         # Custom CSS styles, logo & favicon assets
+└── tests/                                      # Pytest test suite & static type verification
+    ├── conftest.py                             # Test fixtures & test DB session setup
+    ├── test_api.py                             # Generic REST API endpoints test suite
+    ├── test_db.py                              # PostgreSQL & async database tests
+    ├── test_ml_api.py                          # ML REST API endpoint test suite
+    ├── test_ml_pipeline.py                     # ML pipeline, ONNX export & drift test suite
+    ├── test_static.py                          # Static type checker & code validation suite
+    └── test_ui.py                              # Streamlit UI smoke & component test suite
 ```

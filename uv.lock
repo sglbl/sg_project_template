@@ -4977,6 +4977,19 @@ wheels = [
 ]
 
 [[package]]
+name = "prometheus-fastapi-instrumentator"
+version = "8.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "prometheus-client" },
+    { name = "starlette" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/95/f4/cdcebf7094b03b99fba71ac8f56bd6f227973642662f49d272332d8419b3/prometheus_fastapi_instrumentator-8.1.0.tar.gz", hash = "sha256:b77f3043665e8d28e2bbd21017506195a43d9adf1d402d01bf95b494b7e560e1", size = 20492, upload-time = "2026-07-26T11:12:44.202Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/44/b9/91a2246e6cf01b7ccb14479803c8a50f9c258ae5c6a0f16ba3294820632b/prometheus_fastapi_instrumentator-8.1.0-py3-none-any.whl", hash = "sha256:b9f40b2cff3f7891ca0610b3ae4fc6ec723fd326b04bb659819aaeb821a0fc7d", size = 19649, upload-time = "2026-07-26T11:12:45.168Z" },
+]
+
+[[package]]
 name = "prompt-toolkit"
 version = "3.0.53"
 source = { registry = "https://pypi.org/simple" }
@@ -6325,6 +6338,7 @@ dependencies = [
     { name = "overrides" },
     { name = "plotly" },
     { name = "polars" },
+    { name = "prometheus-fastapi-instrumentator" },
     { name = "psycopg2-binary" },
     { name = "pyarrow" },
     { name = "pydantic" },
@@ -6340,6 +6354,7 @@ dependencies = [
     { name = "sentence-transformers" },
     { name = "sqlmodel" },
     { name = "streamlit" },
+    { name = "suletree" },
     { name = "sympy" },
     { name = "tqdm" },
     { name = "transformers" },
@@ -6403,6 +6418,7 @@ requires-dist = [
     { name = "overrides", specifier = ">=7.7.0" },
     { name = "plotly", specifier = ">=6.9.0" },
     { name = "polars", specifier = ">=0.20" },
+    { name = "prometheus-fastapi-instrumentator", specifier = ">=7.0.0" },
     { name = "psycopg2-binary", specifier = ">=2.9.12" },
     { name = "pyarrow", specifier = ">=16" },
     { name = "pydantic", specifier = ">=2.7" },
@@ -6418,6 +6434,7 @@ requires-dist = [
     { name = "sentence-transformers", specifier = "==3.4.1" },
     { name = "sqlmodel", specifier = ">=0.0.24" },
     { name = "streamlit", specifier = ">=1.35.0" },
+    { name = "suletree", specifier = ">=0.1.0" },
     { name = "sympy", specifier = ">=1.13.1" },
     { name = "torch", marker = "sys_platform == 'darwin' and extra == 'cpu'" },
     { name = "torch", marker = "sys_platform == 'darwin' and extra == 'gpu'" },
@@ -6796,6 +6813,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ce/98/399d9b5bea64f0db9a37a800e420ba563dcde293e91d244c7d96acaeb313/streamlit-1.64.0.tar.gz", hash = "sha256:5c3f9a9dec13b5c5197a9c764ebf1a9d77f9e19c1b4af008779cb45c368961a3", size = 9535360, upload-time = "2026-09-15T19:13:53.576Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d7/8e/e635448a7fd6d92211d4ff2150356b8dffd3fcdc05c00511c61110078871/streamlit-1.64.0-py3-none-any.whl", hash = "sha256:4daf63aa9eaa5452d0edc64a5bdb0c4ad25580fe3c62c270455f3c43e9db5098", size = 10093987, upload-time = "2026-09-15T19:13:51.284Z" },
+]
+
+[[package]]
+name = "suletree"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/57/38/9af5f989ada2a9947a172fbd52d5bdb2bb2f7001cfbcb8dd169b2ede1d74/suletree-0.1.0.tar.gz", hash = "sha256:bd509a4c28acd982a4ba82d5f0267c9bd4f2fe733a6ca422d900e25338f3016a", size = 2558, upload-time = "2025-10-08T09:46:23.504Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/79/2a/587c6dd0c0ea19712a065631b9ef4968333e31347f51420c69612ac0c61d/suletree-0.1.0-py3-none-any.whl", hash = "sha256:698e0563402f25d0fa6aa675842f0477bc2e509eca6b6c7d760430a731d6573c", size = 3130, upload-time = "2025-10-08T09:46:22.199Z" },
 ]
 
 [[package]]
