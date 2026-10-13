@@ -14,6 +14,10 @@ async def lifespan(app: FastAPI):
     ''' The lifespan function to initialize the database before the app starts and close it after the app stops '''
     # await database.init_db()
     # await database.create_tables()
+    try:
+        ml.get_inference_service()
+    except Exception:
+        pass
     yield    
 
 

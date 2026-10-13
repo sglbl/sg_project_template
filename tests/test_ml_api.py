@@ -74,4 +74,7 @@ def test_metrics_endpoint():
     response = client.get("/metrics")
     assert response.status_code == 200
     assert "http_requests_total" in response.text or "http_request_duration_seconds" in response.text or "process_cpu_seconds_total" in response.text
+    assert "ml_model_status" in response.text
+    assert "ml_data_drift_detected" in response.text
+
 
