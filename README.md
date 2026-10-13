@@ -132,7 +132,7 @@ Some commands operate purely offline on your local filesystem, while others inte
 | :--- | :--- | :--- |
 | `./run ingest`, `./run predict`, `./run export-onnx` | **None** (100% local on disk) | Runs standalone |
 | `./run train`, `./run train --tune` | **MLflow** (`http://localhost:5100`) | `docker compose up -d mlflow` |
-| `dvc push`, `dvc pull` | **RustFS S3** (`http://localhost:9010`) | `docker compose up -d rustfs` |
+| `dvc push`, `dvc pull` | **RustFS S3** (`http://localhost:9100`) | `docker compose up -d rustfs` |
 | `./run status` | **PostgreSQL & RustFS** | `docker compose up -d postgres rustfs` |
 | `./run ui`, `./run api` (local dev) | Backing DB & MLflow services | `docker compose up -d postgres rustfs mlflow` |
 
@@ -142,15 +142,17 @@ Some commands operate purely offline on your local filesystem, while others inte
 > docker compose up -d postgres rustfs mlflow
 > ```
 
-| Service | Local URL | Credentials / Notes |
+| Service | Local URL / Endpoint | Credentials / Notes |
 | :--- | :--- | :--- |
-| **Streamlit UI** | [http://localhost:8501](http://localhost:8501) | Model Serving Sandbox & Drift Monitoring |
-| **FastAPI REST API** | [http://localhost:8100/docs](http://localhost:8100/docs) | Interactive Swagger API documentation |
+| **Streamlit UI (Docker)** | [http://localhost:8600](http://localhost:8600) | Model Serving Sandbox & Drift Monitoring (Docker) |
+| **FastAPI REST API (Docker)**| [http://localhost:8100/docs](http://localhost:8100/docs) | Interactive Swagger API documentation |
 | **MLflow Server** | [http://localhost:5100](http://localhost:5100) | Experiment Tracking & Model Registry |
-| **RustFS S3 Console** | [http://localhost:9011](http://localhost:9011) | User: `rustfsadmin` \| Pass: `rustfsadmin` |
-| **RustFS S3 API** | `http://localhost:9010` | S3 protocol endpoint for SDKs & pipelines |
-| **Marimo Notebook** | [http://localhost:2719](http://localhost:2719) | Interactive notebook workspace |
-| **PostgreSQL** | `localhost:5433` | User: `postgres` \| DB: `postgres` |
+| **RustFS S3 Console** | [http://localhost:9101](http://localhost:9101) | User: `rustfsadmin` \| Pass: `rustfsadmin` |
+| **RustFS S3 API** | `http://localhost:9100` | S3 protocol endpoint for SDKs & pipelines |
+| **Marimo Notebook (Docker)** | [http://localhost:2800](http://localhost:2800) | Interactive notebook workspace |
+| **PostgreSQL (Docker)** | `localhost:5500` | User: `postgres` \| DB: `postgres` |
+| **Prometheus Telemetry** | [http://localhost:9090](http://localhost:9090) | Time-series metrics scraper for `/metrics` |
+| **Grafana Dashboards** | [http://localhost:3100](http://localhost:3100) | User: `admin` \| Pass: `admin` |
 
 ---
 

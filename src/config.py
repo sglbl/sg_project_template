@@ -13,14 +13,14 @@ class Settings(BaseSettings):
     DB_USER: str = "postgres"
     DB_PASSWORD: str = "postgres"
     DB_HOST: str = "localhost"
-    DB_PORT: str = "5433"
+    DB_PORT: str = "5500"
     DB_NAME: str = "postgres"
     DB_SCHEMA: str = "example_schema"
 
     # MLOps, RustFS S3, & MLflow Configuration
     MLFLOW_TRACKING_URI: str = "http://localhost:5100"
     MLFLOW_EXPERIMENT_NAME: str = "default-experiment"
-    RUSTFS_ENDPOINT_URL: str = "http://localhost:9010"
+    RUSTFS_ENDPOINT_URL: str = "http://localhost:9100"
     AWS_ACCESS_KEY_ID: str = "rustfsadmin"
     AWS_SECRET_ACCESS_KEY: str = "rustfsadmin"
     AWS_REGION: str = "us-east-1"
@@ -30,6 +30,16 @@ class Settings(BaseSettings):
     DATA_RAW_DIR: str = "data/raw"
     DATA_PROCESSED_DIR: str = "data/processed"
     REPORTS_DIR: str = "data/reports"
+
+    # Docker Host Port Overrides
+    UI_PORT: str = "8600"
+    API_PORT: str = "8100"
+    MARIMO_PORT: str = "2800"
+    MLFLOW_PORT: str = "5100"
+    RUSTFS_PORT: str = "9100"
+    RUSTFS_CONSOLE_PORT: str = "9101"
+    PROMETHEUS_PORT: str = "9090"
+    GRAFANA_PORT: str = "3100"
 
     # Logger
     LOG_LEVEL: str = "DEBUG"  

@@ -20,7 +20,7 @@ services:
       - DB_PORT=5432
       - API_URL=http://api:8001
     ports:
-      - "8501:8501"
+      - "${UI_PORT:-8600}:8501"
 
   api:
     build: 
@@ -40,7 +40,7 @@ services:
       - DB_HOST=postgres
       - DB_PORT=5432
     ports:
-      - "8100:8001"
+      - "${API_PORT:-8100}:8001"
 
   marimo:
     build:
@@ -61,7 +61,7 @@ services:
       - DB_PORT=5432
       - API_URL=http://api:8001
     ports:
-      - "2719:2718"
+      - "${MARIMO_PORT:-2800}:2718"
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:v2.15.0
@@ -69,7 +69,7 @@ services:
     env_file:
       - .env
     ports:
-      - "5100:5000"
+      - "${MLFLOW_PORT:-5100}:5000"
     command: mlflow server --backend-store-uri sqlite:////mlflow/mlflow.db --artifacts-destination /mlflow/artifacts --serve-artifacts --host 0.0.0.0
     volumes:
       - mlflow-data:/mlflow
@@ -92,8 +92,8 @@ services:
     command: /data
     restart: unless-stopped
     ports:
-      - "9010:9000"
-      - "9011:9001"
+      - "${RUSTFS_PORT:-9100}:9000"
+      - "${RUSTFS_CONSOLE_PORT:-9101}:9001"
 
   postgres:
     image: postgres:16-alpine
@@ -104,8 +104,33 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
       - POSTGRES_DB=${DB_NAME:-postgres}
     ports:
-      - "5433:5432"
+      - "${DB_PORT:-5500}:5432"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus_server
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana_dashboard
+    ports:
+      - "${GRAFANA_PORT:-3100}:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
 
 volumes:
   mlflow-data:
   rustfs-data:
+  prometheus-data:
+  grafana-data:
