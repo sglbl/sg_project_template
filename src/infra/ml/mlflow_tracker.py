@@ -45,7 +45,7 @@ class MLflowTracker(ITrackerRepository, IRegistryRepository):
                 with socket.create_connection((host, port), timeout=1.0):
                     pass
             except (socket.timeout, ConnectionRefusedError, OSError) as conn_err:
-                local_uri = "sqlite:///mlflow.db"
+                local_uri = self._get_local_fallback_uri()
                 logger.warning(
                     f"MLflow server at {self.tracking_uri} is unreachable ({conn_err}). "
                     f"Falling back immediately to local tracking at {local_uri}."
@@ -60,12 +60,19 @@ class MLflowTracker(ITrackerRepository, IRegistryRepository):
             self.client.search_experiments(max_results=1)
             logger.info(f"Connected MLflow tracker to {self.tracking_uri} [experiment: {self.experiment_name}]")
         except Exception as e:
-            local_uri = "sqlite:///mlflow.db"
+            local_uri = self._get_local_fallback_uri()
             logger.warning(f"Could not connect to MLflow server at {self.tracking_uri}: {e}. Falling back to local tracking at {local_uri}.")
             self.tracking_uri = local_uri
             mlflow.set_tracking_uri(local_uri)
             mlflow.set_experiment(self.experiment_name)
             self.client = MlflowClient(tracking_uri=local_uri)
+
+    @staticmethod
+    def _get_local_fallback_uri() -> str:
+        """Return the local SQLite tracking URI under data/mlflow/."""
+        mlflow_dir = Path("data/mlflow")
+        mlflow_dir.mkdir(parents=True, exist_ok=True)
+        return f"sqlite:///{mlflow_dir.resolve() / 'mlflow.db'}"
 
     # --- ITrackerRepository Methods ---
 
@@ -79,7 +86,7 @@ class MLflowTracker(ITrackerRepository, IRegistryRepository):
             active_run = mlflow.start_run(run_name=run_name, tags=tags)
         except Exception as e:
             logger.warning(f"Failed starting run on {self.tracking_uri}: {e}. Retrying with local sqlite...")
-            self.tracking_uri = "sqlite:///mlflow.db"
+            self.tracking_uri = self._get_local_fallback_uri()
             mlflow.set_tracking_uri(self.tracking_uri)
             active_run = mlflow.start_run(run_name=run_name, tags=tags)
 

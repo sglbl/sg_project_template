@@ -57,7 +57,7 @@ Rather than serving models using heavy, slow Python pickle runtime (`scikit-lear
 - Mitigation of Python pickle arbitrary code execution vulnerabilities.
 
 ### 3. Fail-Safe Developer & CI Experience
-- The MLflow tracker includes a custom non-blocking socket probe ([src/infra/ml/mlflow_tracker.py](../src/infra/ml/mlflow_tracker.py)). If an external MLflow server is unreachable, it falls back to `sqlite:///mlflow.db` within 10 milliseconds instead of hanging for 4+ minutes on HTTP backoff.
+- The MLflow tracker includes a custom non-blocking socket probe ([src/infra/ml/mlflow_tracker.py](../src/infra/ml/mlflow_tracker.py)). If an external MLflow server is unreachable, it falls back to `sqlite:///data/mlflow/mlflow.db` within 10 milliseconds instead of hanging for 4+ minutes on HTTP backoff.
 - Dependency synchronization via Astral `uv` installs dependencies in under 20 seconds on CI.
 
 ### 4. Continuous Machine Learning (CML) PR Gatekeeping

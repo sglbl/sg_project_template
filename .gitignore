@@ -165,6 +165,7 @@ data/docs/sg_**
 # MLOps runtime artifacts & local databases
 mlruns/
 mlflow.db
+data/mlflow/*
 data/raw/*
 data/processed/*
 data/models/*
