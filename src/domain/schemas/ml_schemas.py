@@ -38,9 +38,18 @@ class DatasetIngestRequest(BaseModel):
 
 
 class DriftCheckRequest(BaseModel):
-    reference_data_path: str = Field(..., description="Path to reference baseline dataset")
-    current_data_path: str = Field(..., description="Path to current dataset to check for drift")
-    target_column: str = Field(..., description="Target column name")
+    reference_data_path: str = Field(
+        default="data/processed/dataset_train.parquet",
+        description="Path to reference baseline dataset",
+    )
+    current_data_path: str = Field(
+        default="data/processed/dataset_test.parquet",
+        description="Path to current dataset to check for drift",
+    )
+    target_column: Optional[str] = Field(
+        default="target",
+        description="Target column name",
+    )
     threshold: float = Field(0.05, description="Significance threshold for drift detection")
 
 

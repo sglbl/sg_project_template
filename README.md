@@ -135,11 +135,16 @@ Some commands operate purely offline on your local filesystem, while others inte
 | `dvc push`, `dvc pull` | **RustFS S3** (`http://localhost:9100`) | `docker compose up -d rustfs` |
 | `./run status` | **PostgreSQL & RustFS** | `docker compose up -d postgres rustfs` |
 | `./run ui`, `./run api` (local dev) | Backing DB & MLflow services | `docker compose up -d postgres rustfs mlflow` |
+| Live API Observability & Telemetry | **Prometheus & Grafana** | `docker compose up -d prometheus grafana` |
 
 > [!TIP]
 > **Recommended for local development**: Spin up only the backing infrastructure in Docker so you can run and iterate on `./run` commands or scripts locally:
 > ```bash
+> # Core backing infrastructure (Database, S3 storage, and MLflow experiment tracking)
 > docker compose up -d postgres rustfs mlflow
+>
+> # Optional: Add live Prometheus scraping and Grafana dashboards for local API monitoring
+> docker compose up -d prometheus grafana
 > ```
 
 | Service | Local URL / Endpoint | Credentials / Notes |
@@ -152,7 +157,10 @@ Some commands operate purely offline on your local filesystem, while others inte
 | **Marimo Notebook (Docker)** | [http://localhost:2800](http://localhost:2800) | Interactive notebook workspace |
 | **PostgreSQL (Docker)** | `localhost:5500` | User: `postgres` \| DB: `postgres` |
 | **Prometheus Telemetry** | [http://localhost:9090](http://localhost:9090) | Time-series metrics scraper for `/metrics` |
-| **Grafana Dashboards** | [http://localhost:3100](http://localhost:3100) | User: `admin` \| Pass: `admin` |
+| **Grafana Dashboards** | [http://localhost:3100](http://localhost:3100) | User: `admin` \| Pass: `admin` (See [docs/TELEMETRY.md](docs/TELEMETRY.md)) |
+
+> [!NOTE]
+> All credentials above are default local development/test credentials. For production deployments or shared staging environments, customize them in your `.env` file (`DB_PASSWORD`, `AWS_SECRET_ACCESS_KEY`, `GRAFANA_ADMIN_PASSWORD`, etc.).
 
 ---
 

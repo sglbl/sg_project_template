@@ -110,7 +110,7 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus_server
     volumes:
-      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./docker/prometheus:/etc/prometheus:ro
       - prometheus-data:/prometheus
     ports:
       - "${PROMETHEUS_PORT:-9090}:9090"
@@ -122,7 +122,7 @@ services:
     ports:
       - "${GRAFANA_PORT:-3100}:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
     volumes:
       - ./docker/grafana/provisioning:/etc/grafana/provisioning:ro

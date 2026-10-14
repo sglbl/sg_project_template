@@ -40,6 +40,7 @@ class Settings(BaseSettings):
     RUSTFS_CONSOLE_PORT: str = "9101"
     PROMETHEUS_PORT: str = "9090"
     GRAFANA_PORT: str = "3100"
+    GRAFANA_ADMIN_PASSWORD: str = "admin"
 
     # Logger
     LOG_LEVEL: str = "DEBUG"  

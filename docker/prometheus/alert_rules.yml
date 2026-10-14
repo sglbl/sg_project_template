@@ -1,0 +1,56 @@
+groups:
+  - name: mlops_api_alerts
+    rules:
+      - alert: FastAPIServiceDown
+        expr: up{job="fastapi_api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "FastAPI REST API instance is down"
+          description: "Prometheus has been unable to scrape instance {{ $labels.instance }} for more than 1 minute."
+
+      - alert: HighHttp5xxErrorRate
+        expr: (sum(rate(http_requests_total{status=~"5.*"}[5m])) / sum(rate(http_requests_total[5m]))) * 100 > 5
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High HTTP 5xx error rate (>5%)"
+          description: "FastAPI 5xx error rate is currently at {{ $value | printf \"%.2f\" }}% over the last 5 minutes."
+
+      - alert: HighInferenceLatency
+        expr: histogram_quantile(0.95, sum(rate(ml_inference_duration_seconds_bucket[5m])) by (le, model_name)) > 0.1
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High ML inference latency on {{ $labels.model_name }}"
+          description: "P95 inference latency for model {{ $labels.model_name }} is {{ $value | printf \"%.4f\" }}s (threshold: 0.10s)."
+
+      - alert: ModelUnavailable
+        expr: ml_model_status == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "ML Model is offline: {{ $labels.model_name }}"
+          description: "Model {{ $labels.model_name }} (engine: {{ $labels.engine }}) is reporting status 0 (offline)."
+
+      - alert: ModelDataDriftDetected
+        expr: ml_data_drift_detected == 1
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Model data drift detected"
+          description: "Evidently analysis detected statistical dataset shift in incoming production inference data."
+
+      - alert: HighFeatureDriftShare
+        expr: ml_data_drift_share > 0.3
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High feature drift share (>30%)"
+          description: "{{ $value | printf \"%.2f\" }} of total features exhibit significant statistical drift."
