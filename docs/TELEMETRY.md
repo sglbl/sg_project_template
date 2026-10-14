@@ -111,6 +111,18 @@ Configured in `docker/prometheus/alert_rules.yml` and evaluated every 10 seconds
 
 ---
 
+## 🎛️ Dashboard Templating & Interactive Dropdown Filters
+
+The Grafana dashboard includes 3 top-bar template variables for dynamic interactive filtering without editing PromQL queries:
+
+| Variable | Dropdown Label | Type | Options / Source | Description |
+| :--- | :--- | :---: | :--- | :--- |
+| **`$model_name`** | **Model Name** | `query` | Dynamically queried from `ml_model_status` (Supports `All` + Multi-select) | Filters prediction counters, distribution donuts, model status, and inference latency curves for a specific model (e.g. `random_forest`). |
+| **`$rate_interval`** | **Rate Interval** | `interval` | `30s`, `1m`, `2m`, `5m`, `10m`, `15m`, `30m` (Default: `1m`) | Controls the rate calculation window across throughput, error rates, CPU load, and latency histograms. |
+| **`$handler`** | **Endpoint / Handler** | `query` | Dynamically queried from `http_requests_total` (Supports `All` + Multi-select) | Filters throughput and latency graphs for specific routes (e.g. `/ml/predict`, `/ml/drift`, `/metrics`). |
+
+---
+
 ## 🖥️ Grafana Dashboard Layout
 
 Auto-provisioned via `docker/grafana/provisioning/dashboards/fastapi_telemetry.json`:
