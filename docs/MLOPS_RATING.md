@@ -74,7 +74,7 @@ To take this template from **9.0/10** to a perfect **10/10 Enterprise Standard**
 - **Exposed Endpoint:** `/metrics` providing HTTP throughput (RPS), status codes, and P50/P95/P99 latency histograms for Prometheus/Grafana scraping.
 
 ### 2. Pipeline DAG Orchestration
-- **Current State:** Pipelines are executed sequentially via Typer CLI commands (`uv run python -m src.main ingest`, `train`, `drift`).
+- **Current State:** Pipelines are executed sequentially via Typer CLI commands (`.run ingest`, `train`, `drift`).
 - **Gap:** For complex multi-stage pipelines with retries, caching, asset lineage, and backfills, CLI scripts can become brittle.
 - **Recommendation:** Integrate a lightweight DAG orchestrator such as **Dagster** (asset-based) or **Prefect** to model data assets and dependencies declaratively.
 

@@ -151,48 +151,7 @@ python -m src.main ui
 
 ## 🔄 5. Continuous Machine Learning (CML) & GitHub Actions
 
-Create `.github/workflows/cml_train_eval.yaml`:
-
-```yaml
-name: MLOps Training & Evaluation Pipeline
-
-on:
-  push:
-    branches: [ main, mlops ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  train-and-eval:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: iterative/setup-cml@v1
-      - uses: astral-sh/setup-uv@v3
-        with:
-          version: "latest"
-
-      - name: Install Dependencies
-        run: uv sync --frozen
-
-      - name: Execute Model Training & Evaluation
-        run: |
-          uv run python -m src.main train
-          uv run python -m src.main eval
-
-      - name: Publish CML Report to PR
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "## 📈 Model Training & Evaluation Report" > report.md
-          echo "### Performance Metrics" >> report.md
-          cat artifacts/metrics/summary.md >> report.md
-          
-          echo "### Data & Concept Drift" >> report.md
-          cml-publish artifacts/reports/drift_plot.png --md >> report.md
-
-          cml comment create report.md
-```
+Create `.github/workflows/cml_train_eval.yaml`
 
 ---
 
