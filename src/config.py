@@ -41,6 +41,7 @@ class Settings(BaseSettings):
     PROMETHEUS_PORT: str = "9090"
     GRAFANA_PORT: str = "3100"
     GRAFANA_ADMIN_PASSWORD: str = "admin"
+    DAGSTER_PORT: str = "3101"
 
     # Logger
     LOG_LEVEL: str = "DEBUG"  

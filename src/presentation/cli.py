@@ -84,6 +84,32 @@ def ui(
 
 
 @app.command()
+def dagster(
+    port: int = typer.Option(3001, help="Port for Dagster webserver UI"),
+    host: str = typer.Option("127.0.0.1", help="Host address for Dagster webserver"),
+) -> None:
+    """Run the Dagster asset orchestration webserver."""
+    console.print(f"[bold magenta]Starting Dagster UI on http://{host}:{port}...[/bold magenta]")
+    import subprocess
+
+    cmd = [
+        "dagster",
+        "dev",
+        "-m",
+        "src.orchestration.dagster.definitions",
+        "-h",
+        host,
+        "-p",
+        str(port),
+    ]
+    try:
+        subprocess.run(cmd, check=True)
+    except Exception as e:
+        console.print(f"[bold red]Failed to start Dagster UI:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+@app.command()
 def status() -> None:
     """Display environment and configuration status table."""
     table = Table(title="Application Status & Environment")

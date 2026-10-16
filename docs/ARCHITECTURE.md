@@ -19,6 +19,7 @@ flowchart TD
         CLI[Typer CLI / run]
         API[FastAPI REST API]
         UI[Streamlit Dashboard]
+        Dagster[Dagster Orchestrator UI]
     end
 
     subgraph Infrastructure ["Layer 3: Infrastructure Layer (src/infra/)"]
@@ -62,8 +63,7 @@ flowchart TD
 │   ├── reports/                                # Evidently drift reports (.html)
 │   └── mlflow/                                 # Local MLflow SQLite tracking database & artifacts
 ├── docker/                                     # Container infrastructure & configurations
-│   ├── app.Dockerfile                          # Production FastAPI & Streamlit container image
-│   ├── marimo.Dockerfile                       # Interactive Marimo notebook container image
+│   ├── app.Dockerfile                          # Unified container image (FastAPI, Streamlit, Dagster & Marimo)
 │   ├── prometheus/                             # Prometheus configuration & alerting rules
 │   │   ├── prometheus.yml                      # Scrape intervals & targets config
 │   │   └── alert_rules.yml                     # 6 MLOps & API threshold alerting rules
