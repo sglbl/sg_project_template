@@ -1,10 +1,16 @@
 name: sgproject
 
+# Reusable YAML anchor to avoid repeating the build configuration and ensure identical build specs
+x-build-config: &base-build
+  image: sgproject-app:latest
+  pull_policy: never # ensure that it won't try to pull the named image from a public registry.
+  build:
+    context: .
+    dockerfile: docker/app.Dockerfile
+
 services:
   ui:
-    build: 
-      context: .
-      dockerfile: docker/app.Dockerfile
+    <<: *base-build
     restart: unless-stopped
     volumes:
       - ./.env:/app/.env:ro
@@ -23,9 +29,7 @@ services:
       - "${UI_PORT:-8600}:8501"
 
   api:
-    build: 
-      context: .
-      dockerfile: docker/app.Dockerfile
+    <<: *base-build
     command: python -m src.main api --host 0.0.0.0 --port 8001
     restart: unless-stopped
     volumes:
@@ -43,14 +47,14 @@ services:
       - "${API_PORT:-8100}:8001"
 
   marimo:
-    build:
-      context: .
-      dockerfile: docker/marimo.Dockerfile
+    <<: *base-build
+    command: marimo run notebooks/explore_marimo.py --host 0.0.0.0 --port 2718
     restart: unless-stopped
     env_file:
       - .env
     volumes:
       - ./.env:/app/.env:ro
+      - ./notebooks:/app/notebooks
     environment:
       - PYTHONUNBUFFERED=1
       - MLFLOW_TRACKING_URI=http://mlflow:5000
@@ -62,6 +66,27 @@ services:
       - API_URL=http://api:8001
     ports:
       - "${MARIMO_PORT:-2800}:2718"
+
+  dagster:
+    <<: *base-build
+    command: python -m src.main dagster --host 0.0.0.0 --port 3000
+    restart: unless-stopped
+    volumes:
+      - ./.env:/app/.env:ro
+      - ./data:/app/data
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - RUSTFS_ENDPOINT_URL=http://rustfs:9000
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-rustfsadmin}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-rustfsadmin}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - API_URL=http://api:8001
+    ports:
+      - "${DAGSTER_PORT:-3101}:3000"
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:v2.15.0
